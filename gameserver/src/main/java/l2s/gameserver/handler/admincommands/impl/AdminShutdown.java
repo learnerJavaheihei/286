@@ -73,18 +73,18 @@ public class AdminShutdown implements IAdminCommandHandler
 
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=180><center>Server Management Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=40><button value='"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"主頁":"Main")+"' action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=180><center>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"服務器管理菜單":"Server Management Menu")+"</center></td>");
+		replyMSG.append("<td width=40><button value='"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"返回":"Back")+"' action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table>");
 		replyMSG.append("<br><br>");
 		replyMSG.append("<table width=300>");
 		int totalOnline = GameObjectsStorage.getPlayers(true, true).size();
 		int realOnline = GameObjectsStorage.getPlayers(false, false).size();
-		replyMSG.append("<tr><td width=100>Players Online:</td><td width=200>" + realOnline + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Fake Players Online:</td><td width=200>" + (totalOnline - realOnline) + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Used Memory:</td><td width=200>" + StatsUtils.getMemUsedMb() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Server Rates:</td><td width=200></td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"真實在線人數：":"Players Online:")+"</td><td width=200>" + realOnline + "</td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"假在線人數：":"Fake Players Online:")+"</td><td width=200>" + (totalOnline - realOnline) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"內存使用：":"Used Memory:")+"</td><td width=200>" + StatsUtils.getMemUsedMb() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"服務器倍率：":"Server Rates:")+"</td><td width=200></td></tr>");
 
 		replyMSG.append("<tr><td width=100>&nbsp;&nbsp;&nbsp;XP:</td><td width=200>x" + Config.RATE_XP_BY_LVL[1]);
 		if(Config.RATE_XP_BY_LVL[1] != Config.RATE_XP_BY_LVL[Config.ALT_MAX_LEVEL])
@@ -111,17 +111,17 @@ public class AdminShutdown implements IAdminCommandHandler
 			replyMSG.append(" - " + Config.RATE_DROP_SPOIL_BY_LVL[Config.ALT_MAX_LEVEL]);
 		replyMSG.append("</td></tr>");
 
-		replyMSG.append("<tr><td width=100>Game Time:</td><td width=200>" + format.format(cal.getTime()) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"遊戲時間：":"Game Time:")+"</td><td width=200>" + format.format(cal.getTime()) + "</td></tr>");
 		replyMSG.append("</table><br>");
 		replyMSG.append("<table width=270>");
-		replyMSG.append("<tr><td>Enter in seconds the time till the server shutdowns bellow:</td></tr>");
+		replyMSG.append("<tr><td>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"以秒为单位输入服务器关闭的时间":"Enter in seconds the time till the server shutdowns bellow:")+"</td></tr>");
 		replyMSG.append("<br>");
-		replyMSG.append("<tr><td><center>Seconds till: <edit var=\"shutdown_time\" width=60></center></td></tr>");
+		replyMSG.append("<tr><td><center>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"時間單位：":"Seconds till:")+" <edit var=\"shutdown_time\" width=60></center></td></tr>");
 		replyMSG.append("</table><br>");
 		replyMSG.append("<center><table><tr><td>");
-		replyMSG.append("<button value=\"Shutdown\" action=\"bypass -h admin_server_shutdown $shutdown_time\" width=80 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td><td>");
-		replyMSG.append("<button value=\"Restart\" action=\"bypass -h admin_server_restart $shutdown_time\" width=80 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td><td>");
-		replyMSG.append("<button value=\"Abort\" action=\"bypass -h admin_server_abort\" width=80 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\">");
+		replyMSG.append("<button value='"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"關閉":"Shutdown")+"' action=\"bypass -h admin_server_shutdown $shutdown_time\" width=80 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td><td>");
+		replyMSG.append("<button value='"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"重啟":"Restart")+"' action=\"bypass -h admin_server_restart $shutdown_time\" width=80 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td><td>");
+		replyMSG.append("<button value='"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"中止":"Abort")+"' action=\"bypass -h admin_server_abort\" width=80 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\">");
 		replyMSG.append("</td></tr></table></center>");
 		replyMSG.append("</body></html>");
 

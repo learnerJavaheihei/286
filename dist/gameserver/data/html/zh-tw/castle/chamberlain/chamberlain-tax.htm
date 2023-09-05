@@ -1,0 +1,34 @@
+<html>
+ <body>
+ 現時的稅率是 %tax%.
+  <br>
+ 請輸入您希望設定在0%和30%之間的稅額。
+  <br>
+  <center>
+   <br>
+   <table bgcolor="cccccc" height="27" width="290">
+    <tbody>
+     <tr>
+      <td align="middle" width="50">
+       金额
+      </td>
+      <td align="left" width="190">
+       <edit type="number" var="amount" width="180">
+       </edit>
+      </td>
+      <td align="left" width="40">
+       税收
+      </td>
+     </tr>
+    </tbody>
+   </table>
+   <br>
+   <button action="bypass -h npc_%objectId%_SetTaxRate $amount" back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF" height="25" value="設置" width="90">
+    <br>
+    <button action="bypass -h npc_%objectId%_default" back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF" height="25" value="取消" width="90">
+     <br>
+    </button>
+   </button>
+  </center>
+ </body>
+</html>

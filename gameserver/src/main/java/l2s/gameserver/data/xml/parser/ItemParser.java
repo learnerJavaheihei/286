@@ -66,7 +66,8 @@ public final class ItemParser extends StatParser<ItemHolder>
 			set.set("item_id", itemElement.attributeValue("id"));
 			set.set("name", itemElement.attributeValue("name"));
 			set.set("add_name", itemElement.attributeValue("add_name", StringUtils.EMPTY));
-
+			set.set("nameEn", itemElement.attributeValue("nameEn", StringUtils.EMPTY));
+			set.set("nameCn", itemElement.attributeValue("nameCn", StringUtils.EMPTY));
 			long slot = 0;
 			for(Iterator<org.dom4j.Element> subIterator = itemElement.elementIterator(); subIterator.hasNext();)
 			{

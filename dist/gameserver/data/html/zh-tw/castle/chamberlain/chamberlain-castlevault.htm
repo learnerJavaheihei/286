@@ -1,0 +1,16 @@
+<html><head>
+[倉庫管理]<br>
+目前有 <font color="00ffff">%Treasure% 金幣</font>在城堡倉庫。<br>
+目前為止收取的稅收 <font color="CCFF00">%CollectedShops% 金幣</font>。<br>
+請輸入要取回或寄存的數量。<br>
+<center><br>
+<table height=27 width=290 bgColor="cccccc"><tbody><tr>
+<td align=middle width=50>數量</td>
+<td align=left width=190><edit width="180" var="amount" type="number"></td>
+<td align=left width=40>金幣</td>
+</tr></tbody></table><br>
+<button value="取回" action="bypass -h npc_%objectId%_TakeTreasure $amount" width=90 height=25 back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF"><br>
+<button value="寄存" action="bypass -h npc_%objectId%_PutTreasure $amount" width=90 height=25 back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF"><br>
+<button value="返回" action="bypass -h npc_%objectId%_default" width=90 height=25 back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF"><br>
+</center><br>
+</head></html>
