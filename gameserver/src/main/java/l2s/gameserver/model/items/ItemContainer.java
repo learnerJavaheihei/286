@@ -481,18 +481,58 @@ public abstract class ItemContainer
 		try
 		{
 			ItemInstance item;
-			if((item = getItemByItemId(itemId)) == null)
+			// 得到所有道具 id 相同的道具 （在包里每个格子的道具 都有不同的 obj_id）
+			List<ItemInstance> instances = getItemsByItemId(itemId);
+			if (instances == null) {
 				return false;
-
-			synchronized (item)
-			{
-				return destroyItem(item, count);
+			}
+			if (instances.size() == 1) {
+				synchronized (item = instances.get(0))
+				{
+					return destroyItem(item, count);
+				}
+			}else if (instances.size() > 1){
+				// 相同道具有多个 先判断全部加起来够不够 够就依次扣除， 不够就 false
+				long amount = 0;
+				for (ItemInstance instance : instances) {
+					amount += instance.getCount();
+				}
+				// TODO 如果总计数量大于 应该扣除的数量 执行依次扣除的方法
+				if(amount >= count){
+//					for (int i = 0; i < instances.size(); i++) {
+//						// TODO 如果某一个大于需要扣除的个数 就扣除 那个道具的数量
+//						if (instances.get(i).getCount() > count) {
+//							return destroyItem(instances.get(i),count);
+//						}
+//					}
+					// TODO 如果遍历后 没有一个道具的值 大于 count 则一个一个的扣
+					return removeListItems(instances,count);
+				}else
+					return false;
 			}
 		}
 		finally
 		{
 			writeUnlock();
 		}
+		return false;
+	}
+
+	// TODO 删除
+	public boolean removeListItems(List<ItemInstance> instances, long count){
+		long temp = count;
+		for (int i = 0; i < instances.size(); i++) {
+			temp -= instances.get(i).getCount();
+			if ( temp >= 0){
+				destroyItem(instances.get(i));
+				if (temp == 0) {
+					return true;
+				}
+			}else {
+				return destroyItem(instances.get(i), temp+instances.get(i).getCount());
+			}
+		}
+		return false;
 	}
 
 	/**

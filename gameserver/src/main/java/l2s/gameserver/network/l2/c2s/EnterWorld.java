@@ -1,7 +1,9 @@
 package l2s.gameserver.network.l2.c2s;
 
+import java.util.Comparator;
 import java.util.List;
 
+import l2s.commons.dao.JdbcEntityState;
 import l2s.gameserver.Announcements;
 import l2s.gameserver.Config;
 import l2s.gameserver.dao.MailDAO;
@@ -22,6 +24,7 @@ import l2s.gameserver.model.actor.CreatureSkillCast;
 import l2s.gameserver.model.actor.instances.creature.Abnormal;
 import l2s.gameserver.model.entity.events.impl.SiegeEvent;
 import l2s.gameserver.model.entity.residence.Castle;
+import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.model.mail.Mail;
 import l2s.gameserver.network.authcomm.AuthServerCommunication;
 import l2s.gameserver.network.authcomm.gs2as.ChangeAllowedHwid;
@@ -77,6 +80,37 @@ public class EnterWorld extends L2GameClientPacket
 
 	public static void onEnterWorld(Player activeChar)
 	{
+		// 检查背包金币
+		List<ItemInstance> itemInstances = activeChar.getInventory().getItemsByItemId(57);
+		if(itemInstances!=null && itemInstances.size() > 1){
+			// 排序-
+			itemInstances.sort(new Comparator<ItemInstance>() {
+				@Override
+				public int compare(ItemInstance item1, ItemInstance item2) {
+					// 从大到小排序
+					return Long.compare(item2.getCount(), item1.getCount());
+				}
+			});
+			ItemInstance maxCountItemInstance = itemInstances.get(0);
+			long sum = 0;
+			boolean deleteSuccess = true;
+			for (ItemInstance itemInstance : itemInstances) {
+				sum += itemInstance.getCount();
+				// 删除其他 的 金币道具
+				if (itemInstance.getObjectId() != maxCountItemInstance.getObjectId()) {
+					if (!activeChar.getInventory().destroyItem(itemInstance)) {
+						deleteSuccess = false;
+						break;
+					}
+				}
+			}
+			// 如果有一个删除失败 不执行
+			if (deleteSuccess) {
+				maxCountItemInstance.setCount(sum);
+				maxCountItemInstance.setJdbcState(JdbcEntityState.UPDATED);
+				activeChar.getInventory().store();
+			}
+		}
 		boolean first = activeChar.entering;
 
 		activeChar.sendPacket(ExLightingCandleEvent.DISABLED);
