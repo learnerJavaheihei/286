@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import l2s.gameserver.utils.AutoCancelConsignmentGold;
 import net.sf.ehcache.CacheManager;
 
 import l2s.commons.lang.StatsUtils;
@@ -277,6 +278,9 @@ public class GameServer
 		Announcements.getInstance();
 
 		PlayerMessageStack.getInstance();
+
+		// 重启自动检查
+		AutoCancelConsignmentGold.getInstance().checkConsignmentGold();
 
 		if(Config.AUTODESTROY_ITEM_AFTER > 0)
 			ItemsAutoDestroy.getInstance();

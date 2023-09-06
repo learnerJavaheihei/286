@@ -1,0 +1,116 @@
+<html><head><body scroll="no"><title>金币寄售系统</title>
+<table width=305 background="L2UI_CT1.Tab_DF_bg" border=0 cellpadding=0 cellspacing=0 align="center">
+    <tr>
+        <td align=center>
+            <table width=290 border=0 cellpadding=0 cellspacing=0>
+                <tr>
+                    <td width=145 align=center >
+                        <button value="购买金币" action="bypass -h MyUtils_intoGoldSellSystem buy page 1" width=145 height=23 back="L2UI_CT1.Tab_DF_Tab_Unselected_Over" fore="L2UI_CT1.Tab_DF_Tab_Unselected">
+                        </td>
+                    <td width=145 align=center background="L2UI_CT1.Tab_DF_Tab_Selected"><font color=DDD3B6>金币上架</font></td>
+                    </tr>
+                <tr>
+                    <td height=9></td>
+                </tr>
+            </table>
+            <table width=290 height=464 border=0 cellpadding=0 cellspacing=0>
+                <tr>
+                    <td valign="top" align="center">
+                        <table width=290 background="L2UI_CT1.Windows_DF_Drawer_Bg" border=0 cellpadding=0 cellspacing=0>
+                            <tr>
+                                <td height=36 width=25></td>
+                                <td width=385>
+                                    背包中有 <font color=LEVEL>%ownerSimplyGold%</font> 个金币,<font color=LEVEL>%ownerMemberGold%</font> 个赞助币
+                                </td>
+                                <td height=36 width=25></td>
+                            </tr>
+                            <tr>
+                                <td height=40 width=25></td>
+                                <td width=385>
+                                    交易成功后,系统会以邮件形式通知(上架3天有效期,过期后系统会自动退回).
+                                </td>
+                                <td height=40 width=25></td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table border="0" cellspacing="0" cellpadding="0" width="290" valign=center bgcolor="696969" align="center">
+                            <tr><td>
+                                <button value="寄售金币" action="" width="295" height="18" back="L2UI_CT1.ListCTRL_DF_Title_Down" fore="L2UI_CT1.ListCTRL_DF_Title">
+                            </td></tr>
+                        </table>
+                        <img src="L2UI_CT1.Gauge_DF_CP_Center" width="295" height="2">
+                        <table border="0" cellspacing="1" cellpadding="2" width="290" valign=center background="L2UI_CT1.editbox_df_bg">
+                            <tr>
+                                <td width="35" height=25>
+
+                                </td>
+                                <td width="130" height=25>
+                                    <edit var="hmsp1" width=125 height=11>
+                                </td>
+                                <td width="50" height=25>
+                                    万金币
+                                </td>
+                                <td width="50" height=25>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="35" height=25 valign=center>
+                                    售价：
+                                </td>
+                                <td width="130" height=25>
+                                    <edit var="hmsp2" width=125 height=11>
+                                </td>
+                                <td width="50" height=25>
+                                    赞助币
+                                </td>
+                                <td width="50" height=25>
+                                    <button value="上架" action="bypass -h MyUtils_intoGoldSellSystem putaway page 1 $hmsp1 $hmsp2" width=50 height=20 back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF">
+                                </td>
+                            </tr>
+                        </table>
+                        <img src="L2UI_CT1.Gauge_DF_CP_Center" width="290" height="2">
+
+                        <table border="0" cellspacing="1" cellpadding="2" width="290" align=center>
+                            <tr>
+                                <td width="290" align=center>
+                                    <Button ALIGN=CENTER action="">我的寄售</Button>
+                                </td>
+                            </tr>
+                        </table>
+                        <center>
+                        <table border="0" cellspacing="0" cellpadding="0" width="290" height="18" align=center background="L2UI_CT1.editbox_df_bg">
+                                <tr>
+                                    <td width="132">
+                                        <button value="金币" action="" width="132" height="18" back="L2UI_CT1.ListCTRL_DF_Title_Down" fore="L2UI_CT1.ListCTRL_DF_Title">
+                                    </td>
+                                    <td width="100">
+                                        <button value="售价" action="" width="100" height="18" back="L2UI_CT1.ListCTRL_DF_Title_Down" fore="L2UI_CT1.ListCTRL_DF_Title">
+                                    </td>
+                                    <td width="64">
+                                        <button value=" " action=" " width="64" height="18" back="L2UI_CT1.ListCTRL_DF_Title_Down" fore="L2UI_CT1.ListCTRL_DF_Title">
+                                    </td>
+                                </tr>
+                        </table>
+                        <table border="0" cellspacing="1" cellpadding="2" width="290" height="244" align=center background="L2UI_CT1.editbox_df_bg">
+                            <tr>
+                                <td align="center" width="268">%sellData%</td>
+                            </tr>
+                        </table>
+                        </center>
+                        <table valign="BOTTOM">
+                            <tr>
+                                <td><button value=" " action="bypass -h MyUtils_intoGoldSellSystem consignment page 1" width=15 height=15 back="L2UI_CH3.ScrollBarLeftOnBtn" fore="L2UI_CH3.ScrollBarLeftBtn"></td>
+                                <td><button value=" " action="bypass -h MyUtils_intoGoldSellSystem consignment page %page% prev" width=15 height=15 back="L2UI_CH3.prev1_down" fore="L2UI_CH3.prev1"></td>
+                                <td>%page%</td>
+                                <td><button value=" " action="bypass -h MyUtils_intoGoldSellSystem consignment page %page% next" width=15 height=15 back="L2UI_CH3.next1_down" fore="L2UI_CH3.next1"></td>
+                                <td><button value=" " action="bypass -h MyUtils_intoGoldSellSystem consignment page %pages%" width=15 height=15 back="L2UI_CH3.ScrollBarRightOnBtn" fore="L2UI_CH3.ScrollBarRightBtn"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br>
+</body></html>

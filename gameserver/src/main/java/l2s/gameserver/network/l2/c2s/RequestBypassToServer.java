@@ -28,6 +28,7 @@ import l2s.gameserver.network.l2.s2c.PackageToListPacket;
 import l2s.gameserver.utils.BypassStorage.ValidBypass;
 import l2s.gameserver.utils.BypassStorage.BypassType;
 import l2s.gameserver.utils.MulticlassUtils;
+import l2s.gameserver.utils.MyUtilsFunction;
 import l2s.gameserver.utils.NpcUtils;
 import l2s.gameserver.utils.WarehouseFunctions;
 
@@ -160,6 +161,11 @@ public class RequestBypassToServer extends L2GameClientPacket
 					String command = bp.bypass.substring(4).trim();
 					npc.onBypassFeedback(activeChar, command);
 				}
+			}
+			else if(bp.bypass.startsWith("MyUtils_"))
+			{
+				String input = bp.bypass.replace("MyUtils_", "");
+				MyUtilsFunction.onBypassFeedback(activeChar,input);
 			}
 			else if(bp.bypass.startsWith("item?"))
 			{
