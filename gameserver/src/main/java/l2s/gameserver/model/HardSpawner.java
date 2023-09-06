@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import l2s.commons.util.Rnd;
+import l2s.gameserver.Config;
+import l2s.gameserver.geometry.Location;
 import l2s.gameserver.model.instances.NpcInstance;
 import l2s.gameserver.templates.npc.MinionData;
 import l2s.gameserver.templates.spawn.SpawnNpcInfo;
@@ -52,7 +54,8 @@ public class HardSpawner extends Spawner
 
 		NpcInstance npc = npcInfo.getTemplate().getNewInstance(npcInfo.getParameters());
 		npc.setSpawn(this);
-
+		if(!Config.MONSTER_RANDOM_SPAWN)
+			npc.setSpawnedLoc(oldNpc.getSpawnedLoc());
 		List<MinionData> minionsData = npcInfo.getMinionData();
 		if(!minionsData.isEmpty())
 		{
@@ -80,7 +83,16 @@ public class HardSpawner extends Spawner
 
 		SpawnRange range = getRandomSpawnRange();
 		mob.setSpawnRange(range);
-		return initNpc0(mob, range.getRandomLoc(getReflection().getGeoIndex(), mob.isFlying()), spawn);
+		Location randomLoc = null;
+		if(!Config.MONSTER_RANDOM_SPAWN){
+			if(getFirstSpawn()){
+				randomLoc = range.getRandomLoc(getReflection().getGeoIndex(), mob.isFlying());
+			}else
+				randomLoc = mob.getSpawnedLoc();
+		}else
+			randomLoc = range.getRandomLoc(getReflection().getGeoIndex(), mob.isFlying());
+
+		return initNpc0(mob, randomLoc, spawn);
 	}
 
 	@Override

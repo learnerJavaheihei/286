@@ -156,8 +156,10 @@ public class SpawnManager
 		if(spawnerList == null)
 			return;
 
-		for(Spawner spawner : spawnerList)
+		for(Spawner spawner : spawnerList){
 			spawner.deleteAll();
+			spawner.setFirstSpawn(true);
+		}
 	}
 
 	public List<Spawner> getSpawners(String group)

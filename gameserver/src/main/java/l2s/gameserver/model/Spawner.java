@@ -54,6 +54,17 @@ public abstract class Spawner extends EventOwner implements Cloneable
 
 	protected Reflection _reflection = ReflectionManager.MAIN;
 
+	private boolean firstSpawn = true;
+
+	public boolean getFirstSpawn() {
+		return firstSpawn;
+	}
+
+	public void setFirstSpawn(boolean first) {
+		this.firstSpawn = first;
+	}
+
+
 	public String getName()
 	{
 		return "";
@@ -158,7 +169,7 @@ public abstract class Spawner extends EventOwner implements Cloneable
 	{
 		while(_currentCount + _scheduledCount < _maximumCount)
 			doSpawn(false);
-
+		setFirstSpawn(false);
 		_doRespawn = true;
 
 		return _currentCount;

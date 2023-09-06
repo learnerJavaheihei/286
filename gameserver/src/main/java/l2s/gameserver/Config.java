@@ -1409,6 +1409,7 @@ public class Config
 	
 	public static int SHARE_POSITION_COST;
 	public static int SHARED_TELEPORTS_PER_DAY;
+	public static boolean MONSTER_RANDOM_SPAWN;
 
 	public static void loadServerConfig()
 	{
@@ -2084,7 +2085,7 @@ public class Config
 	public static void loadAltSettings()
 	{
 		ExProperties altSettings = load(ALT_SETTINGS_FILE);
-
+		MONSTER_RANDOM_SPAWN = altSettings.getProperty("MonsterRandomSpawn", false);
 		STARTING_LVL = altSettings.getProperty("StartingLvl", 1);
 		STARTING_SP = altSettings.getProperty("StartingSP", 0L);
 
