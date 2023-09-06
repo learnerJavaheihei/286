@@ -29,9 +29,7 @@ import l2s.gameserver.model.pledge.Clan;
 import l2s.gameserver.model.quest.Quest;
 import l2s.gameserver.model.quest.QuestEventType;
 import l2s.gameserver.model.quest.QuestState;
-import l2s.gameserver.model.reward.RewardItem;
-import l2s.gameserver.model.reward.RewardList;
-import l2s.gameserver.model.reward.RewardType;
+import l2s.gameserver.model.reward.*;
 import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.ExMagicAttackInfo;
 import l2s.gameserver.network.l2.s2c.SocialActionPacket;
@@ -226,6 +224,14 @@ public class MonsterInstance extends NpcInstance
 		Player killer = lastAttacker.getPlayer();
 		if(killer == null)
 			return;
+		Party party1 = killer.getParty();
+		if (party1 !=null) {
+			for (Player partyMember : party1.getPartyMembers()) {
+				addTemporaryTaskCount(partyMember);
+			}
+		}else
+			addTemporaryTaskCount(killer);
+
 
 		Map<Playable, HateInfo> aggroMap = getAggroList().getPlayableMap();
 
@@ -428,6 +434,41 @@ public class MonsterInstance extends NpcInstance
 			}
 		}
 	}
+	private void addTemporaryTaskCount(Player partyMember) {
+		Map<Integer, Map<String, Object>> temporaryTask = partyMember.getPlayer().getTemporaryTask();
+		List<RewardData> items =null;
+		Map<String, Object> map =null;
+		if (temporaryTask!=null) {
+			loop1:{
+				for (RewardList rewardList : getRewardLists()) {
+					loop2:{
+						for (RewardGroup rewardGroup : rewardList) {
+							items = rewardGroup.getItems();
+							loop3:{
+								for (RewardData item : items) {
+									int itemId = item.getItemId();
+									map = temporaryTask.get(itemId);
+									if (map!=null) {
+										break loop1;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if (map!=null) {
+			if (map.get("cheat").equals(true)) {
+				int monsterCount = (Integer)map.get("count");
+				int finishTaskCount = partyMember.get_finishTaskCount();
+				if(finishTaskCount<monsterCount){
+					finishTaskCount=Math.min(monsterCount, finishTaskCount+1);
+					partyMember.set_finishTaskCount(finishTaskCount);
+				}
+			}
+		}
+	}
 
 	@Override
 	public void onRandomAnimation()
@@ -622,6 +663,8 @@ public class MonsterInstance extends NpcInstance
 
 		final double penaltyMod = Experience.penaltyModifier(calculateLevelDiffForDrop(topDamager.getLevel()), 9);
 
+		List<Integer> rewards = new ArrayList<Integer>();
+
 		List<RewardItem> rewardItems = list.roll(activePlayer, penaltyMod, this);
 		switch(type)
 		{
@@ -637,8 +680,34 @@ public class MonsterInstance extends NpcInstance
 							return;
 					}
 					dropItem(activePlayer, drop.itemId, drop.count);
+					rewards.add(drop.itemId);
 				}				
 				break;
+		}
+		Map<Integer, Map<String, Object>> temporaryTask = activeChar.getPlayer().getTemporaryTask();
+
+		if (temporaryTask !=null && temporaryTask.size()>0) {
+			boolean isRewardCheatOnTime = false;
+			int reward = 0;
+			for (Integer integer : temporaryTask.keySet()) {
+				if (!rewards.contains(integer)) {
+					isRewardCheatOnTime = true;
+					reward = integer;
+					break;
+				}
+			}
+			if (isRewardCheatOnTime) {
+				Map<String, Object> map = temporaryTask.get(reward);
+				if ((boolean) map.get("cheat").equals(true)) {
+					int count = (int) map.get("count");
+					if (count == activePlayer.get_finishTaskCount()) {
+						dropItem(activePlayer, reward, 1);
+//						dropAnnounce(activeChar, activePlayer, reward,1);
+						activePlayer.set_finishTaskCount(0);
+						activePlayer.getTemporaryTask().clear();
+					}
+				}
+			}
 		}
 	}
 

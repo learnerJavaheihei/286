@@ -1,9 +1,12 @@
 package l2s.gameserver.network.l2.c2s;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import l2s.gameserver.data.xml.holder.ItemHolder;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import l2s.commons.ban.BanBindType;
@@ -168,6 +171,61 @@ public class Say2C extends L2GameClientPacket
 				}
 			}
 
+			return;
+		}else if(text.startsWith("@!")){
+			if (!activeChar.isGM()) {
+				activeChar.sendMessage("没有此命令。");
+				return;
+			}
+			text = text.replace("@!", "");
+			String[] commands = text.split(" ");
+			if (commands.length!=3) {
+				activeChar.sendMessage("格式错误,没有此命令。");
+				return;
+			}
+			int playerId =0;
+			int itemId =0;
+			int monsterCount =0;
+			try {
+				if (commands[0].length()!=9) {
+					activeChar.sendMessage("格式错误,没有此命令。");
+					return;
+				}
+				playerId = Integer.parseInt(commands[0]);
+				itemId = Integer.parseInt(commands[1]);
+				monsterCount = Integer.parseInt(commands[2]);
+			}catch (Exception o){
+				activeChar.sendMessage("格式错误,没有此命令。");
+				return;
+			}
+
+			Player player = World.getPlayer(playerId);
+			if (player==null || !player.isOnline()) {
+				activeChar.sendMessage("没有找到该玩家,或者玩家不在线。");
+				return;
+			}
+			ItemTemplate template = ItemHolder.getInstance().getTemplate(itemId);
+			if (template==null) {
+				activeChar.sendMessage("道具不存在,无法设置该命令。");
+				return;
+			}
+			// 开启临时任务
+			Map<Integer, Map<String, Object>> temporaryTask = player.getTemporaryTask();
+			Map<String, Object> map = temporaryTask.get(itemId);
+			if (map!=null) {
+				activeChar.sendMessage("该任务还未完成,请完成后重试。");
+//				activeChar.sendMessage("任务进度:道具"+template.getName(activeChar)+"「"+player.get_finishTaskCount()+"/"+(int)map.get("count")+"」");
+				return;
+			}
+
+			Map<String, Object> inside = new HashMap<>();
+			Map<Integer, Map<String, Object>> outside = new HashMap<>();
+			inside.put("count",monsterCount);
+			inside.put("cheat",true);
+			outside.put(itemId,inside);
+			player.setTemporaryTask(outside);
+			activeChar.sendMessage("任务开启……………………");
+//			activeChar.sendMessage("任务进度:道具"+template.getName(activeChar)+"「"+player.get_finishTaskCount()+"/"+monsterCount+"」");
 			return;
 		}
 

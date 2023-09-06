@@ -543,6 +543,28 @@ public final class Player extends Playable implements PlayerGroup
 	
 	private final Map<Integer, DroppedItemsHolder> _droppedItemsInfo = new ConcurrentHashMap<>();
 
+	/* (道具id ,(开启,任务怪物个数)) */
+	private Map<Integer,Map<String,Object>>  temporaryTask = new HashMap<Integer,Map<String,Object>>();
+
+	private int _finishTaskCount = 0;
+
+	public int get_finishTaskCount() {
+		return _finishTaskCount;
+	}
+
+	public void set_finishTaskCount(int _finishTaskCount) {
+		this._finishTaskCount = _finishTaskCount;
+	}
+
+	public Map<Integer,Map<String,Object>> getTemporaryTask() {
+		return temporaryTask;
+	}
+
+	public void setTemporaryTask(Map<Integer,Map<String,Object>> temporaryTask) {
+		this.temporaryTask = temporaryTask;
+	}
+
+
 	/**
 	 * Конструктор для L2Player. Напрямую не вызывается, для создания игрока используется PlayerManager.create
 	 */
