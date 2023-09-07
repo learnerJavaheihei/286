@@ -29,7 +29,7 @@ public class ExPledgeBonusOpen extends L2GameServerPacket
 			return;
 
 		_attendanceProgress = clan.getAttendanceProgress();
-		_huntingProgress = clan.getHuntingProgress();
+		_huntingProgress = Math.min(clan.getHuntingProgress(),PledgeBonusUtils.MAX_HUNTING_PROGRESS);
 		_yesterdayAttendanceReward = clan.getYesterdayAttendanceReward();
 		_yesterdayHuntingReward = clan.getYesterdayHuntingReward();
 		_yesterdayAttendanceRewardId = PledgeBonusUtils.ATTENDANCE_REWARDS.get(_yesterdayAttendanceReward);

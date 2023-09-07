@@ -2037,7 +2037,8 @@ public class Clan implements Iterable<UnitMember>
 	{
 		if(value <= 0)
 			return;
-
+		if ((_huntingProgress.getValue() + value) >= PledgeBonusUtils.MAX_HUNTING_PROGRESS)
+			return;
 		int oldLevel = PledgeBonusUtils.getHuntingProgressLevel(getHuntingProgress());
 		_huntingProgress.setValue(_huntingProgress.getValue() + value);
 		_huntingProgress.setJdbcState(JdbcEntityState.UPDATED);
