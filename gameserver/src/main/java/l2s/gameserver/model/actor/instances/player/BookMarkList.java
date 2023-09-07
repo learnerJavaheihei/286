@@ -1,9 +1,6 @@
 package l2s.gameserver.model.actor.instances.player;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +37,7 @@ public class BookMarkList
 	private final Player owner;
 	private List<BookMark> elementData;
 	private int capacity;
+	private boolean isSaveDB = true;
 
 	public BookMarkList(Player owner, int acapacity)
 	{
@@ -79,7 +77,13 @@ public class BookMarkList
 	{
 		if(elementData.size() >= getCapacity())
 			return false;
-		return elementData.add(e);
+		boolean add = elementData.add(e);
+		boolean b;
+		if (isSaveDB) {
+			b = insertBookMark(e);
+			return b && add;
+		}
+		return add;
 	}
 
 	public BookMark get(int slot)
@@ -94,6 +98,7 @@ public class BookMarkList
 		if(slot < 1 || slot > elementData.size())
 			return;
 		elementData.remove(slot - 1);
+		removeBookMarkDB(slot);
 	}
 
 	public boolean tryTeleport(int slot)
@@ -168,29 +173,98 @@ public class BookMarkList
 
 	public void store()
 	{
+//		Connection con = null;
+//		PreparedStatement statement = null;
+//		try
+//		{
+//			con = DatabaseFactory.getInstance().getConnection();
+//			statement = con.prepareStatement("DELETE FROM `character_bookmarks` WHERE char_Id=?");
+//			statement.setInt(1, owner.getObjectId());
+//			statement.execute();
+//
+//			DbUtils.close(statement);
+//			statement = con.prepareStatement("INSERT INTO `character_bookmarks` VALUES(?,?,?,?,?,?,?,?);");
+//			int slotId = 0;
+//			for(BookMark bookmark : elementData)
+//			{
+//				statement.setInt(1, owner.getObjectId());
+//				statement.setInt(2, ++slotId);
+//				statement.setString(3, bookmark.getName());
+//				statement.setString(4, bookmark.getAcronym());
+//				statement.setInt(5, bookmark.getIcon());
+//				statement.setInt(6, bookmark.x);
+//				statement.setInt(7, bookmark.y);
+//				statement.setInt(8, bookmark.z);
+//				statement.execute();
+//			}
+//		}
+//		catch(Exception e)
+//		{
+//			_log.error("", e);
+//		}
+//		finally
+//		{
+//			DbUtils.closeQuietly(con, statement);
+//		}
+	}
+	private void removeBookMarkDB(int slot) {
+
 		Connection con = null;
 		PreparedStatement statement = null;
 		try
 		{
 			con = DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("DELETE FROM `character_bookmarks` WHERE char_Id=?");
-			statement.setInt(1, owner.getObjectId());
+			con.setAutoCommit(false);
+			statement = con.prepareStatement("DELETE FROM `character_bookmarks` WHERE char_Id=? AND idx =?;");
+			statement.setInt(1,owner.getObjectId());
+			statement.setInt(2,slot);
 			statement.execute();
+			// 还要更新 idx
+			statement = con.prepareStatement("UPDATE `character_bookmarks` SET idx=? WHERE char_Id=? AND idx = ?;");
+			while(slot <= elementData.size()){
+				statement.setInt(1,slot);
+				statement.setInt(2,owner.getObjectId());
+				statement.setInt(3,slot+1);
+				statement.addBatch();
+				slot++;
+			}
+			statement.executeBatch();
+			con.commit();
 
-			DbUtils.close(statement);
+		}
+		catch(Exception e)
+		{
+			_log.error("", e);
+			try {
+				con.rollback();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		finally
+		{
+			DbUtils.closeQuietly(con, statement);
+		}
+	}
+	private boolean insertBookMark(BookMark b) {
+		Connection con = null;
+		PreparedStatement statement = null;
+		try
+		{
+			con = DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("INSERT INTO `character_bookmarks` VALUES(?,?,?,?,?,?,?,?);");
 			int slotId = 0;
-			for(BookMark bookmark : elementData)
-			{
-				statement.setInt(1, owner.getObjectId());
-				statement.setInt(2, ++slotId);
-				statement.setString(3, bookmark.getName());
-				statement.setString(4, bookmark.getAcronym());
-				statement.setInt(5, bookmark.getIcon());
-				statement.setInt(6, bookmark.x);
-				statement.setInt(7, bookmark.y);
-				statement.setInt(8, bookmark.z);
-				statement.execute();
+			statement.setInt(1, owner.getObjectId());
+			statement.setInt(2, elementData.size());
+			statement.setString(3, b.getName());
+			statement.setString(4, b.getAcronym());
+			statement.setInt(5, b.getIcon());
+			statement.setInt(6, b.x);
+			statement.setInt(7, b.y);
+			statement.setInt(8, b.z);
+			boolean execute = statement.execute();
+			if (execute) {
+				return true;
 			}
 		}
 		catch(Exception e)
@@ -201,6 +275,7 @@ public class BookMarkList
 		{
 			DbUtils.closeQuietly(con, statement);
 		}
+		return false;
 	}
 
 	public synchronized void restore()
@@ -220,8 +295,10 @@ public class BookMarkList
 			statement = con.createStatement();
 			rs = statement.executeQuery("SELECT * FROM `character_bookmarks` WHERE `char_Id`=" + owner.getObjectId() + " ORDER BY `idx` LIMIT " + getCapacity());
 			elementData.clear();
+			isSaveDB = false;
 			while(rs.next())
 				add(new BookMark(rs.getInt("x"), rs.getInt("y"), rs.getInt("z"), rs.getInt("icon"), rs.getString("name"), rs.getString("acronym")));
+			isSaveDB = true;
 		}
 		catch(final Exception e)
 		{
