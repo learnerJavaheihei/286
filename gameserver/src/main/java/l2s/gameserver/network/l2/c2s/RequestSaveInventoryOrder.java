@@ -11,8 +11,8 @@ public class RequestSaveInventoryOrder extends L2GameClientPacket
 	protected boolean readImpl()
 	{
 		int size = readD();
-		if(size > 125)
-			size = 125;
+//		if(size > 125)
+//			size = 125;
 		if(size * 8 > _buf.remaining() || size < 1)
 		{
 			_items = null;
