@@ -54,7 +54,7 @@ public class ExTimeRestrictFieldList extends L2GameServerPacket
 				}
 				
 				int remainTime = 0;
-				if ((_player.getReflection().getId() <= -1000) && (_player.getReflection().getId() == id))
+				if ((_player.getReflection().getId() <= -1000) && (_player.getReflection().getId() == reflectionId))
 				{
 					remainTime = _player.getTimeRestrictFieldRemainTime();
 				}

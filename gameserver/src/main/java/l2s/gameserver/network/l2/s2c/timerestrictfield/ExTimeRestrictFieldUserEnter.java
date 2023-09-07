@@ -44,13 +44,15 @@ public class ExTimeRestrictFieldUserEnter extends L2GameServerPacket
 		}
 		
 		int remainTime = _player.getVarInt(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId,
-				field.getRemainTimeBase());	
+				field.getRemainTimeBase());
+		int remainTimeRefill = _player.getVarInt(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId
+				+ "_refill", field.getRemainTimeMax() - field.getRemainTimeBase());
 		
 		if (_player.consumeItem(field.getItemId(), field.getItemCount(), true))
 		{
 			_player.setVar(PlayerVariables.RESTRICT_FIELD_TIMESTART + "_" + reflectionId, System.currentTimeMillis());
 			_player.setVar(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId, remainTime);
-			
+			_player.setVar(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId + "_refill", remainTimeRefill);
 			switch (field.getFieldId())
 			{
 				case 2:

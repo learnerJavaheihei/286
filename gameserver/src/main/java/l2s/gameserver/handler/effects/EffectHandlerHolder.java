@@ -153,6 +153,8 @@ public class EffectHandlerHolder extends AbstractHolder
 		registerHandler(i_target_cancel.class);
 		registerHandler(i_target_me.class);
 		registerHandler(i_unsummon_agathion.class);
+		registerHandler(i_restore_time_restrict_field.class);
+
 
 		// Permanent Effects
 		registerHandler(p_attack_trait.class);

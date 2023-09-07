@@ -37,21 +37,30 @@ public class i_restore_time_restrict_field extends i_abstract_effect
 		{
 			return;
 		}
+		int reflectionId = 0;
+		switch (field.getFieldId())
+		{
+			case 2:
+			{
+				reflectionId = -1000;
+				break;
+			}
+		}
 		
-		int remainTimeRefill = player.getVarInt(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + fieldId
+		int remainTimeRefill = player.getVarInt(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId
 				+ "_refill", field.getRemainTimeMax() - field.getRemainTimeBase());
 		if (remainTimeRefill > 0)
 		{
 			boolean isInTimeRestrictField = player.getReflection().getId() < -4 ? true : false;
 			player.stopTimedHuntingZoneTask(false);
 			int newRemainTimeRefill = remainTimeRefill - field.getRemainTimeBase();
-			player.setVar(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + fieldId + "_refill", newRemainTimeRefill);
-			int remainTime = player.getVarInt(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + fieldId,
+			player.setVar(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId + "_refill", newRemainTimeRefill);
+			int remainTime = player.getVarInt(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId,
 					field.getRemainTimeBase());
 			remainTime += field.getRemainTimeBase();
-			player.setVar(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + fieldId, remainTime);
+			player.setVar(PlayerVariables.RESTRICT_FIELD_TIMELEFT + "_" + reflectionId, remainTime);
 			player.sendPacket(new ExTimeRestrictFieldUserChargeResult(fieldId, remainTime,
-					field.getRemainTimeBase() / 60));
+					field.getRemainTimeBase() / 60,newRemainTimeRefill));
 			if (isInTimeRestrictField)
 			{
 				player.startTimeRestrictField();
