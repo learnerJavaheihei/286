@@ -118,11 +118,7 @@ import l2s.gameserver.templates.npc.Faction;
 import l2s.gameserver.templates.npc.MinionData;
 import l2s.gameserver.templates.npc.NpcTemplate;
 import l2s.gameserver.templates.spawn.SpawnRange;
-import l2s.gameserver.utils.HtmlUtils;
-import l2s.gameserver.utils.ItemFunctions;
-import l2s.gameserver.utils.MapUtils;
-import l2s.gameserver.utils.ReflectionUtils;
-import l2s.gameserver.utils.WarehouseFunctions;
+import l2s.gameserver.utils.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -1167,9 +1163,13 @@ public class NpcInstance extends Creature
 	
 			if(!flag && !isDead())
 			{
-				showChatWindow(player, 0, true);
 				if(Config.NPC_DIALOG_PLAYER_DELAY > 0)
 					player.setNpcDialogEndTime((int) (System.currentTimeMillis() / 1000L) + Config.NPC_DIALOG_PLAYER_DELAY);
+				if (getNpcId() == 32478) {
+					DimensionalMerchantUtils.showLimitShopHtml(player, "e_premium_manager001.htm", true);
+					return;
+				}
+				showChatWindow(player, 0, true);
 			}
 		}
 	}

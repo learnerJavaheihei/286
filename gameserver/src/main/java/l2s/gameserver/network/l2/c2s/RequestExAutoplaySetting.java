@@ -1,5 +1,8 @@
 package l2s.gameserver.network.l2.c2s;
 
+import l2s.gameserver.botscript.BotControlPage;
+import l2s.gameserver.core.BotConfig;
+import l2s.gameserver.core.BotEngine;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.actor.instances.player.AutoFarm;
 import l2s.gameserver.network.l2.s2c.ExAutoplaySetting;
@@ -33,17 +36,28 @@ public class RequestExAutoplaySetting extends L2GameClientPacket
 		Player player = getClient().getActiveChar();
 		if (player == null)
 			return;
-
 		AutoFarm autoFarm = player.getAutoFarm();
-		autoFarm.setUnkParam1(_unkParam1);
-		autoFarm.setFarmActivate(_farmActivate);
-		autoFarm.setAutoPickUpItems(_autoPickUpItems);
-		autoFarm.setUnkParam2(_unkParam2);
-		autoFarm.setMeleeAttackMode(_meleeAttackMode);
-		autoFarm.setHealPercent(_healPercent);
-		autoFarm.setPoliteFarm(_politeFarm);
-		autoFarm.doAutoFarm();
+		BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
+		botConfig.setPickUpItem(_autoPickUpItems);
+		botConfig.set_autoAdjustRange(!_meleeAttackMode);
+		BotEngine.getInstance().Adjust(player,botConfig);
+		player.setAutoLoot(_autoPickUpItems);
 
-		player.sendPacket(new ExAutoplaySetting(player));
+		autoFarm.setAutoPickUpItems(_autoPickUpItems);
+		autoFarm.setPoliteFarm(_politeFarm);
+		autoFarm.setHealPercent(_healPercent);
+		autoFarm.setMeleeAttackMode(_meleeAttackMode);
+		if (_farmActivate){
+			BotEngine.getInstance().startBotTask(player);
+			autoFarm.setUnkParam1(_unkParam1);
+			autoFarm.setFarmActivate(_farmActivate);
+			autoFarm.setUnkParam2(_unkParam2);
+			player.sendPacket(new ExAutoplaySetting(player));
+		}
+		else{
+			botConfig.setAbort(true, "");
+		}
+//		autoFarm.doAutoFarm();
+//		player.sendPacket(new ExAutoplaySetting(player));
 	}
 }

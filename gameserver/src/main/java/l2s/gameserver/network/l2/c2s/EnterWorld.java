@@ -2,10 +2,13 @@ package l2s.gameserver.network.l2.c2s;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import l2s.commons.dao.JdbcEntityState;
 import l2s.gameserver.Announcements;
 import l2s.gameserver.Config;
+import l2s.gameserver.botscript.BotHangUpTimeDao;
+import l2s.gameserver.core.BotEngine;
 import l2s.gameserver.dao.MailDAO;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.ResidenceHolder;
@@ -111,6 +114,19 @@ public class EnterWorld extends L2GameClientPacket
 				activeChar.getInventory().store();
 			}
 		}
+		/** 读取内挂剩余时间 */
+		List<Integer> integers = BotHangUpTimeDao.getInstance().selectHangUpTime(activeChar.getObjectId());
+		if(BotEngine.leftTimeMap == null){
+			BotEngine.leftTimeMap = new ConcurrentHashMap<>();
+		}
+		if (integers != null) {
+			int leftTime =integers.get(1);
+			BotEngine.leftTimeMap.put(String.valueOf(activeChar.getObjectId()),String.valueOf(leftTime));
+		}
+		int time = BotHangUpTimeDao.getInstance().selectIsBuyByObjId(activeChar.getObjectId());
+		Player._buyTimesByOBJ.putIfAbsent(activeChar.getObjectId(),time);
+
+
 		boolean first = activeChar.entering;
 
 		activeChar.sendPacket(ExLightingCandleEvent.DISABLED);

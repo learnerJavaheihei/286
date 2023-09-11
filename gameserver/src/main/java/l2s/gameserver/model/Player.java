@@ -136,6 +136,7 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.sql.*;
+import java.util.Date;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.*;
@@ -540,6 +541,27 @@ public final class Player extends Playable implements PlayerGroup
 	private LimitedShopContainer _limitedShop = null;
 	
 	private ScheduledFuture<?> _bowTask = null;
+	/** 固定初始挂机时间 */
+	public static int scriptTime = 36000;
+
+	public int getLeftTime() {
+		return leftTime;
+	}
+
+	public void setLeftTime(int leftTime) {
+		this.leftTime = leftTime;
+	}
+	/** 剩余挂机时间 */
+	private int leftTime;
+
+	private Date renewTime;
+	public boolean _isInPlugIn = false;/*開啟內掛減少收益*/
+
+	// 存储所有玩家的购买两个小时挂机时间的状态
+	public static Map<Integer,Boolean> _isBuyMap = new ConcurrentHashMap<>();
+
+	// 存储所有玩家的购买两个小时挂机时间的次数
+	public static Map<Integer,Integer> _buyTimesByOBJ = new ConcurrentHashMap<>();
 	
 	private final Map<Integer, DroppedItemsHolder> _droppedItemsInfo = new ConcurrentHashMap<>();
 

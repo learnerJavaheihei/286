@@ -330,7 +330,38 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 					return false;
 			}
 		}
-
+		public boolean isOffensive()
+		{
+			switch(this)
+			{
+				case AIEFFECTS:
+				case DEBUFF:
+				case DOT:
+				case DRAIN:
+				case DRAIN_SOUL:
+				case LETHAL_SHOT:
+				case MANADAM:
+				case MDAM:
+				case MDOT:
+				case MUTE:
+				case PARALYZE:
+				case PDAM:
+				case CPDAM:
+				case POISON:
+				case ROOT:
+				case SLEEP:
+				case STUN:
+				case SWEEP:
+				case DELETE_HATE:
+				case DESTROY_SUMMON:
+				case STEAL_BUFF:
+				case DISCORD:
+				case DEBUFF_RENEWAL:
+					return true;
+				default:
+					return false;
+			}
+		}
 		public final boolean isPvpSkill()
 		{
 			switch(this)
@@ -448,6 +479,8 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 	private final boolean _isItemHandler;
 	private final boolean _isDebuff;
 	private final boolean _isPvpSkill;
+	private final boolean _isOffensive;
+
 	private final boolean _isNotUsedByAI;
 	private final boolean _isPvm;
 	private final boolean _isForceUse;
@@ -810,6 +843,7 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 		_clanLeaderOnly = set.getBool("clan_leader_only", false);
 		_isDebuff = set.getBool("debuff", _skillType.isDebuff());
 		_isPvpSkill = set.getBool("isPvpSkill", _skillType.isPvpSkill());
+		_isOffensive = set.getBool("isOffensive", _skillType.isOffensive());
 		_isPvm = set.getBool("isPvm", _skillType.isPvM());
 		_isForceUse = set.getBool("isForceUse", false);
 		_isBehind = set.getBool("behind", false);
@@ -3363,6 +3397,11 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 	public final boolean isPvpSkill()
 	{
 		return _isPvpSkill;
+	}
+
+	public boolean isOffensive()
+	{
+		return _isOffensive;
 	}
 
 	public boolean isTrigger()
