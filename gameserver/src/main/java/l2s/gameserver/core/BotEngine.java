@@ -94,12 +94,13 @@ public class BotEngine
 		/*pvp活动禁用内挂*/
     	if (player.isInPvPEvent())
     	{
-    		player.sendMessage("活动中无法开启内挂..");
+    		player.sendMessage("活动中无法开启自動狩獵..");
     		return;
     	}
         /*内挂剩余时间为0禁用*/
-        if (Integer.parseInt(BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()))) == 0) {
-            player.sendMessage("当前内挂剩余使用时间为0,无法开启内挂..");
+        String s = BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()));
+        if (s==null || Integer.parseInt(s) == 0) {
+            player.sendMessage("当前自動狩獵剩余使用时间为0,无法开启内挂..");
             return;
         }
 

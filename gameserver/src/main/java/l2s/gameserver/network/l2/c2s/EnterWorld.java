@@ -123,6 +123,15 @@ public class EnterWorld extends L2GameClientPacket
 			int leftTime =integers.get(1);
 			BotEngine.leftTimeMap.put(String.valueOf(activeChar.getObjectId()),String.valueOf(leftTime));
 		}
+		String leftTime = BotEngine.leftTimeMap.get(String.valueOf(activeChar.getObjectId()));
+
+		/** 新 或未使用内挂的老用户 */
+		if (leftTime==null ) {
+			/* 给缓存设置初始值 */
+			BotEngine.leftTimeMap.put(String.valueOf(activeChar.getObjectId()),"36000");
+			/* 数据库初始化挂机时间 */
+			BotHangUpTimeDao.getInstance().insertScriptTime(activeChar.getObjectId(),Player.scriptTime,Player.scriptTime,0);
+		}
 		int time = BotHangUpTimeDao.getInstance().selectIsBuyByObjId(activeChar.getObjectId());
 		Player._buyTimesByOBJ.putIfAbsent(activeChar.getObjectId(),time);
 
