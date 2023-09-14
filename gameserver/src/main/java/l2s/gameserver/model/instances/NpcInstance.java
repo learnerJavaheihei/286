@@ -1971,6 +1971,12 @@ public class NpcInstance extends Creature
 		if(HtmCache.getInstance().getIfExists("warehouse/" + filename, player) != null)
 			return "warehouse/";
 
+		if(HtmCache.getInstance().getIfExists("member/" + filename, player) != null)
+			return "member/";
+
+		if(HtmCache.getInstance().getIfExists("special/" + filename, player) != null)
+			return "special/";
+
 		return null;
 	}
 

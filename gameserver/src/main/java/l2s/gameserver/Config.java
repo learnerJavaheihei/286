@@ -104,7 +104,7 @@ public class Config
 	public static String DATABASE_LOGIN;
 	public static String DATABASE_PASSWORD;
 	public static boolean DATABASE_AUTOUPDATE;
-
+	public static boolean enablePremiumAccountPeaceZone;
 	// Database additional options
 	public static boolean AUTOSAVE;
 
@@ -2088,7 +2088,7 @@ public class Config
 		MONSTER_RANDOM_SPAWN = altSettings.getProperty("MonsterRandomSpawn", false);
 		STARTING_LVL = altSettings.getProperty("StartingLvl", 1);
 		STARTING_SP = altSettings.getProperty("StartingSP", 0L);
-
+		enablePremiumAccountPeaceZone = altSettings.getProperty("enablePremiumAccountPeaceZone", true);
 		ALT_ARENA_EXP = altSettings.getProperty("ArenaExp", true);
 		ALT_GAME_DELEVEL = altSettings.getProperty("Delevel", true);
 		ALLOW_DELEVEL_COMMAND = altSettings.getProperty("AllowDelevelCommand", false);

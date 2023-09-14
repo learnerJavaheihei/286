@@ -32,7 +32,7 @@ public final class AccessoryListener implements OnEquipListener
 
 		Player player = actor.getPlayer();
 
-		if(slot == Inventory.PAPERDOLL_AGATHION_MAIN)
+		if(slot == Inventory.PAPERDOLL_AGATHION_MAIN || slot == Inventory.PAPERDOLL_LBRACELET)
 		{
 			AgathionTemplate agathionTemplate = item.getTemplate().getAgathionTemplate();
 			if(agathionTemplate == null)

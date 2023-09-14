@@ -1,8 +1,11 @@
 package l2s.gameserver.model.actor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,8 +22,12 @@ import l2s.gameserver.geometry.Location;
 import l2s.gameserver.listener.actions.OnArrivedAction;
 import l2s.gameserver.model.Creature;
 import l2s.gameserver.model.GameObjectTasks.NotifyAITask;
+import l2s.gameserver.model.base.RestartType;
+import l2s.gameserver.network.l2.c2s.RequestRestartPoint;
 import l2s.gameserver.network.l2.components.SystemMsg;
+import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.utils.Log;
+import l2s.gameserver.utils.MyUtilsFunction;
 import l2s.gameserver.utils.PositionUtils;
 
 import org.slf4j.Logger;
@@ -29,7 +36,7 @@ import org.slf4j.LoggerFactory;
 public class CreatureMovement
 {
 	private static final Logger _log = LoggerFactory.getLogger(CreatureMovement.class);
-
+	private static int first = 0 ;
 	private final Creature _actor;
 
 	private final Lock _moveLock = new ReentrantLock();
@@ -504,7 +511,8 @@ public class CreatureMovement
 			getMoveLock().unlock();
 		}
 	}
-
+	static Map<Integer, ScheduledFuture<?>> restartPointTasks = new HashMap<>();
+	static List<ScheduledFuture<?>> informQueue = new ArrayList<ScheduledFuture<?>>();
 	public boolean updatePosition()
 	{
 		getMoveLock().lock();
@@ -579,6 +587,51 @@ public class CreatureMovement
 					Log.add(bug_text, "geo");
 					stopMove();
 					return false;
+				}
+			}
+			if (Config.enablePremiumAccountPeaceZone && _actor.isPlayer()) {
+				if (!MyUtilsFunction.isPremiumAccountPeaceZone(_actor.getPlayer(),loc)){
+					first += 1;
+					String[] msgs =new String[4];
+					if (first==1) {
+						_actor.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_LEFT_THE_PEACEFUL_ZONE));
+						for (int i = 0; i<=3; i++) {
+							msgs[i] = "非会员不能在你指定的非安全区域中移动,你将在「"+ (3-i) +"」秒后传送回附近的根据地！";
+							int finalI = i;
+							ScheduledFuture<?> schedule = ThreadPoolManager.getInstance().schedule(new Runnable() {
+								@Override
+								public void run() {
+									_actor.getPlayer().sendMessage(msgs[finalI]);
+								}
+							}, 1000L * (i + 1));
+							informQueue.add(schedule);
+						}
+						ScheduledFuture<?> restartPointTask = ThreadPoolManager.getInstance().schedule(new Runnable() {
+							@Override
+							public void run() {
+								RequestRestartPoint.requestRestart(_actor.getPlayer(), RestartType.TO_VILLAGE);
+								first = 0;
+								informQueue.clear();
+							}
+						}, 4000L);
+						restartPointTasks.put(_actor.getObjectId(),restartPointTask);
+						return false;
+					}
+				}else{
+					ScheduledFuture<?> task = restartPointTasks.get(_actor.getObjectId());
+					if (task!=null){
+						_actor.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_ENTERED_A_PEACEFUL_ZONE));
+						first = 0;
+						task.cancel(true);
+						restartPointTasks.remove(_actor.getObjectId());
+					}
+					if (informQueue.size()>0){
+						for (ScheduledFuture<?> scheduledFuture : informQueue) {
+							scheduledFuture.cancel(false);
+						}
+						informQueue.clear();
+					}
+
 				}
 			}
 

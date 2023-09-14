@@ -319,14 +319,14 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 
 			newHtml = newHtml.replace("%monsterName" + i + '%', npc != null ? ("&@" + npc.getId() + ";") : "<br>");
 			newHtml = newHtml.replace("%monsterLevel" + i + '%', npc != null ? String.valueOf(npc.level) : "<br>");
-			newHtml = newHtml.replace("%monsterAggro" + i + '%', npc != null ? String.valueOf(npc.aggroRange > 0) : "<br>");
+			newHtml = newHtml.replace("%monsterAggro" + i + '%', npc != null ? (player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?(npc.aggroRange > 0?"是":"否"):String.valueOf(npc.aggroRange > 0)) : "<br>");
 			newHtml = newHtml.replace("%monsterDrops" + i + '%', npc != null ? String.valueOf(CalculateRewardChances.getDrops(npc, true, false).size()) : "<br>");
 			newHtml = newHtml.replace("%monsterSpoils" + i + '%', npc != null ? String.valueOf(CalculateRewardChances.getDrops(npc, false, true).size()) : "<br>");
-			newHtml = newHtml.replace("%showDetails" + i + '%', npc != null ? "< button value =\"Show Details\" action=\"bypass _dropMonsterDetailsByName_" + npc.getId() + "\" width=120 height=30 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+			newHtml = newHtml.replace("%showDetails" + i + '%', npc != null ? "< button value =\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"查看詳情":"Show Details")+"\" action=\"bypass _dropMonsterDetailsByName_" + npc.getId() + "\" width=120 height=30 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
 		}
 
-		newHtml = newHtml.replace("%previousButton%", page > 1 ? "<button value=\"Previous\" action=\"bypass _dropMonstersByName_ %searchName% _" + (page - 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
-		newHtml = newHtml.replace("%nextButton%", npcTemplates.size() > npcIndex + 1 ? "<button value=\"Next\" action=\"bypass _dropMonstersByName_ %searchName% _" + (page + 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+		newHtml = newHtml.replace("%previousButton%", page > 1 ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"上一頁":"Previous")+"\" action=\"bypass _dropMonstersByName_ %searchName% _" + (page - 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+		newHtml = newHtml.replace("%nextButton%", npcTemplates.size() > npcIndex + 1 ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"下一頁":"Next")+"\" action=\"bypass _dropMonstersByName_ %searchName% _" + (page + 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
 
 		newHtml = newHtml.replace("%searchName%", monsterName);
 		newHtml = newHtml.replace("%page%", String.valueOf(page));
@@ -353,7 +353,7 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 					return;
 
 				player.sendPacket(new RadarControlPacket(2, 2, 0, 0, 0));
-				player.sendPacket(new SayPacket2(player.getObjectId(), ChatType.COMMANDCHANNEL_ALL, 0, "", "Open Map to see Locations"));
+				player.sendPacket(new SayPacket2(player.getObjectId(), ChatType.COMMANDCHANNEL_ALL, 0, "", player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"打開地圖查看地點":"Open Map to see Locations"));
 
 				for (Location loc : locs)
 					player.sendPacket(new RadarControlPacket(0, 1, loc));

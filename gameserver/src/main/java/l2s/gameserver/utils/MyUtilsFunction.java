@@ -1,19 +1,32 @@
 package l2s.gameserver.utils;
 
+import l2s.commons.dbutils.DbUtils;
+import l2s.gameserver.Config;
 import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.botscript.BotControlPage;
 import l2s.gameserver.dao.ConsignmentSalesDao;
 import l2s.gameserver.dao.GoldCoinTransactionRecordDao;
 import l2s.gameserver.dao.ItemsDAO;
 import l2s.gameserver.data.htm.HtmCache;
+import l2s.gameserver.data.xml.holder.ItemHolder;
+import l2s.gameserver.data.xml.holder.ZoneHolder;
+import l2s.gameserver.database.DatabaseFactory;
+import l2s.gameserver.geometry.Location;
 import l2s.gameserver.listener.actor.player.OnAnswerListener;
+import l2s.gameserver.model.Playable;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.World;
+import l2s.gameserver.model.Zone;
 import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.model.mail.Mail;
+import l2s.gameserver.model.pledge.Clan;
+import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.HtmlMessage;
+import l2s.gameserver.network.l2.components.IBroadcastPacket;
 import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.ConfirmDlgPacket;
+import l2s.gameserver.templates.ZoneTemplate;
+import l2s.gameserver.templates.item.ItemTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +34,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,7 +49,13 @@ public class MyUtilsFunction {
     public MyUtilsFunction() {
 
     }
+    private static final int MemberCoins = 29520;//會員幣編號
 
+    static final String[][] ItemId = {
+            // 第一個是幣數量  第二個是物品及數量  第三個是等級限制 第四個是購買次數 輸入999 表示可買999 也等於無限次數了
+            {"120", "29585,1;49518,5;29009,5;34603,20000;34610,10000", "85", "1"}, //這一個是鎖引0
+            {"350", "29595,1;70106,1;90836,1;90885,1;34604,40000;34611,20000", "85", "1"},//這一個是鎖引1
+    };
     /*-------------------------------金币寄售系统 常量-----------------------------start----*/
     // 金币寄售系统 购买金币 每页显示个数
     static int buyPageSize = 12;
@@ -58,13 +80,17 @@ public class MyUtilsFunction {
 
     /*-------------------------------金币寄售系统 常量----------------------------- end ----*/
     public static void onBypassFeedback(Player player, String inputString) {
+        final String[] buypassOptions = inputString.split(" ");
+        String page = "welcome.htm";
+        if (buypassOptions[buypassOptions.length - 1].contains("htm")) {
+            page = buypassOptions[buypassOptions.length - 1];
+        }
         if (inputString.startsWith("intoGoldSellSystem")) {
             String[] split = inputString.split(" ");
             //长页面
             HtmlMessage msg = new HtmlMessage(0);
             msg.setItemId(-1);
 
-//            HtmlMessage msg = new HtmlMessage(5);
             String html = "";
             if (split.length == 4 || split.length == 5) {
                 if ("buy".equals(split[1])) {
@@ -403,6 +429,206 @@ public class MyUtilsFunction {
                 }
             }
         }
+        else if (inputString.startsWith("ShowView_Welcome")) {
+            String html = HtmCache.getInstance().getHtml("welcome.htm", player);
+            html = html.replace("<$content$>", "");
+            HtmlMessage msg = new HtmlMessage(0);
+            msg.setItemId(-1);
+            msg.setHtml(html);
+            player.sendPacket(msg);
+        }
+        else if (inputString.startsWith("BuyItems")) {
+            String html = HtmCache.getInstance().getHtml(page, player);
+            HtmlMessage msg = new HtmlMessage(0);
+            msg.setItemId(-1);
+            msg.setHtml(html);
+            ItemTemplate tmp = ItemHolder.getInstance().getTemplate(MemberCoins);
+
+            int index = Integer.parseInt(buypassOptions[1]);
+            int money = Integer.parseInt(ItemId[index][0]); //取出第一個值 假設為"60"
+            String items = ItemId[index][1];//取出第二個值假設為 "90957,1;49518,1;29010,1;29023,1;29024,1"
+
+            int level = Integer.parseInt(ItemId[index][2]); //取出等級
+            int count = Integer.parseInt(ItemId[index][3]); //取出購買次數
+
+
+            html = html.replace("<$content$>", "");
+            if (player.getLevel() > level)//超過20級  但20級可以買
+            {
+                player.sendMessage("超过" + level + "级不可购买。");
+                player.sendPacket(msg);
+                return;
+            }
+            if (!checkCanBuy(player, index, count)) {
+                player.sendMessage("已买过 限定" + count + "次。");
+                player.sendPacket(msg);
+                return;
+            }
+            if (!ItemFunctions.deleteItem(player, MemberCoins, money)) {
+                player.sendMessage(tmp.getName(player) + "数量不足无法购买。");
+                player.sendPacket(msg);
+                return;
+            }
+
+            if (giveItem(player, items)) {
+                player.sendMessage("购买成功。");
+                insertBuyItem(player, index);
+                html = HtmCache.getInstance().getHtml("welcome1.htm", player);
+            } else {
+                player.sendMessage("购买失败。");
+            }
+            final Clan playerClan = player.getClan();
+            if (playerClan != null)//有盟的處理方式
+            {
+                playerClan.addMembersBuff(player.getName(), 46002, 1, (System.currentTimeMillis() + (24 * 60 * 60 * 1000)) / 1000);
+                playerClan.broadcastSayPacketToOnlineMembers(ChatType.COMMANDCHANNEL_ALL, player.getName(), "购买破冰之礼赠送联盟礼物，请24小时内找致命蔷薇处领取。");
+                //ChatType.COMMANDCHANNEL_ALL 這一句你可以自己換別的類型，就會出現不同的顏色了。
+            }
+            player.sendPacket(msg);
+        }
+        else if (inputString.startsWith("Teleport")) {
+            if (buypassOptions.length == 5) {
+                player.ask((ConfirmDlgPacket) new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("向目的地「" + buypassOptions[4] + "」移動。是否繼續？"), new OnAnswerListener() {
+
+                    @Override
+                    public void sayYes() {
+                        String[] loc = buypassOptions[1].split(",");
+                        int x = Integer.parseInt(loc[0]);
+                        int y = Integer.parseInt(loc[1]);
+                        int z = Integer.parseInt(loc[2]);
+                        Location myloc = new Location(x, y, z);
+                        int money = Integer.parseInt(buypassOptions[2]);
+                        String group = buypassOptions[3];
+                        if (group.equals("group")) {
+                            if (player.isInParty()) {
+                                Player playerLeader = player.getParty().getPartyLeader();
+                                if (player != playerLeader) {
+                                    player.sendMessage("組隊按鍵只能是隊長點擊。");
+                                    return;
+                                }
+                                if (MyUtilsFunction.CheckPartyStatus(playerLeader, money)) {
+                                    for (Player p : player.getParty()) {
+                                        ItemFunctions.deleteItem((Playable) p, 57, (long) money);
+                                        p.teleToLocation(myloc);
+                                    }
+                                }
+                            } else {
+                                MyUtilsFunction.CheckOneStatus(player, money, myloc);
+                            }
+                        } else {
+                            MyUtilsFunction.CheckOneStatus(player, money, myloc);
+                        }
+                    }
+
+                    @Override
+                    public void sayNo() {
+                    }
+                });
+            }
+        }
+        else if (inputString.startsWith("DownLevel"))//bypass -h MyUtils_LevelDown
+        {
+            if (player.getLevel() < 40)//自己新加等級限制
+            {
+                player.sendMessage("您的等級不滿足最低要求的40級，無法抽取經驗。");
+                return;
+            }
+            if (player.getLevel() > 86)//自己新加等級限制
+                return;//自己新加等級限制
+            int itemid = 0;
+            int item57 = 0;
+            long exp57 = 0;
+            if (player.getLevel() >= 40 && player.getLevel() < 50) {
+                itemid = 91290;
+                item57 = 20000;
+                exp57 = 5000000;
+            }
+            if (player.getLevel() >= 50 && player.getLevel() < 60) {
+                itemid = 91291;
+                item57 = 30000;
+                exp57 = 10000000;
+            }
+            if (player.getLevel() >= 60 && player.getLevel() < 70) {
+                itemid = 91292;
+                item57 = 40000;
+                exp57 = 30000000;
+            }
+            if (player.getLevel() >= 70 && player.getLevel() < 80) {
+                itemid = 91293;
+                item57 = 50000;
+                exp57 = 100000000;
+            }
+            if (player.getLevel() >= 80 && player.getLevel() < 85) {
+                itemid = 91294;
+                item57 = 60000;
+                exp57 = 10000000000L;
+            }
+            if (player.getLevel() >= 85) {
+                itemid = 91295;
+                item57 = 70000;
+                exp57 = 50000000000L;
+            }
+            if (!ItemFunctions.deleteItem(player, 57, item57)) {
+                player.sendMessage("金幣不足無法抽取经验");
+                return;
+            }
+            long exp = -exp57;
+            player.addExpAndSp(exp, 0);
+            ItemFunctions.addItem(player, itemid, 1);//自己新加道具給與
+            String html = HtmCache.getInstance().getHtml("member/18057-1.htm", player);
+            HtmlMessage msg = new HtmlMessage(5);
+            msg.setHtml(html);
+            player.sendPacket((IBroadcastPacket) msg);
+			/* IVoicedCommandHandler vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler("cfg");
+			if(vch != null)
+				vch.useVoicedCommand("cfg", player, ""); */
+        }
+        ////bypass -h MyUtils_GetMemberCoin
+        else if (inputString.startsWith("DownSp"))//降SP设定
+        {
+            if (player.getLevel() < 10)//自己新加等級限制
+            {
+                player.sendMessage("您的等級不滿足最低要求的10級，無法抽取SP。");
+                return;
+            }
+            if (player.getSp() < 200000)//自己新加等級限制
+            {
+                player.sendMessage("您的SP不滿足最低要求的20萬，無法抽取SP。");
+                return;
+            }
+            int itemid1 = 0;
+            int item157 = 0;
+            long sp57 = 0;
+            if (player.getSp() >= 200000 && player.getSp() < 3000000) {
+                itemid1 = 91296;
+                item157 = 10000;
+                sp57 = 200000;
+            }
+            if (player.getLevel() >= 3000000 && player.getLevel() < 30000000) {
+                itemid1 = 91297;
+                item157 = 30000;
+                sp57 = 3000000;
+            }
+            if (player.getLevel() >= 30000000) {
+                itemid1 = 91298;
+                item157 = 50000;
+                sp57 = 30000000;
+            }
+            if (!ItemFunctions.deleteItem(player, 57, item157)) {
+                player.sendMessage("金幣不足無法抽取SP");
+                return;
+            }
+            long Sp = -sp57;
+            player.addExpAndSp(0, Sp);
+            ItemFunctions.addItem(player, itemid1, 1);//自己新加道具給與
+            String html = HtmCache.getInstance().getHtml("member/18057-1.htm", player);
+            HtmlMessage msg = new HtmlMessage(5);
+            msg.setHtml(html);
+            player.sendPacket((IBroadcastPacket) msg);
+			/* IVoicedCommandHandler vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler("cfg");
+			if(vch != null)
+				vch.useVoicedCommand("cfg", player, ""); */
+        }//降SP设定
     }
     public static class WriteGoldConsignmentLog implements Runnable {
         String kind;
@@ -628,6 +854,121 @@ public class MyUtilsFunction {
             mail.setUnread(true);
             mail.setExpireTime(720 * 3600 + (int) (System.currentTimeMillis() / 1000L));
             mail.save();
+        }
+    }
+    public static boolean checkCanBuy(Player player, int index, int counts) {
+        Connection con = null;
+        PreparedStatement statement = null;
+        ResultSet rset = null;
+        int times = 0;
+        try {
+            con = DatabaseFactory.getInstance().getConnection();
+            statement = con.prepareStatement("SELECT count(*) as cnt  FROM _player_buy_gift where obj_Id = ? and num = ?");
+            statement.setInt(1, player.getObjectId());
+            statement.setInt(2, index);
+            rset = statement.executeQuery();
+            if (rset.next()) {
+                times = rset.getInt("cnt");
+                ;
+            }
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(con, statement, rset);
+        }
+        return counts > times;
+    }
+    private static boolean giveItem(Player player, String inputString) {
+        String[] suite = inputString.split(";");
+        ItemTemplate item;
+        for (String myId : suite) {
+            String[] obj = myId.split(",");
+            int id = Integer.parseInt(obj[0]);
+            int count = Integer.parseInt(obj[1]);
+            item = ItemHolder.getInstance().getTemplate(Integer.parseInt(obj[0]));
+            if (item != null) {
+                ItemFunctions.addItem(player, id, count, true);
+            } else {
+                _log.warn(player.getName() + "花費會員幣購買物品| " + inputString + "| 有不存在id" + id);
+                return false;
+            }
+        }
+        return true;
+    }
+    private static void insertBuyItem(Player player, int index) {
+        Connection con = null;
+        PreparedStatement statement = null;
+        ResultSet rset = null;
+        try {
+            con = DatabaseFactory.getInstance().getConnection();
+            statement = con.prepareStatement("INSERT INTO _player_buy_gift (obj_Id ,num ,buytime) VALUES(?,?,?)");
+            statement.setInt(1, player.getObjectId());
+            statement.setInt(2, index);
+            statement.setLong(3, System.currentTimeMillis() / 1000);
+            statement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(con, statement, rset);
+        }
+    }
+    private static void CheckOneStatus(Player player, int money, Location loc) {
+        if (player.getKarma() < 0) {
+            player.sendMessage("紅人狀態無法傳送");
+            return;
+        }
+
+        if (Config.enablePremiumAccountPeaceZone && !isPremiumAccountPeaceZone(player, loc)) {
+            String msg = "非会员不能传送到非安全区区域！";
+            player.sendMessage(msg);
+            return;
+        }
+
+        if (money > 0 && !ItemFunctions.deleteItem((Playable) player, 57, (long) money)) {
+            player.sendMessage("金幣不足.");
+            return;
+        }
+        player.teleToLocation(loc);
+    }
+
+    public static boolean isPremiumAccountPeaceZone(Player player, Location loc) {
+        Map<String, ZoneTemplate> zones = ZoneHolder.getInstance().getZones();
+        List<ZoneTemplate> collect = zones.values().stream().filter(obj -> obj.getType() == Zone.ZoneType.peace_zone).collect(Collectors.toList());
+        boolean canTryIntoZone = false;
+        for (ZoneTemplate zoneTemplate : collect) {
+            if (zoneTemplate.getTerritory().isInside(loc.x, loc.y, loc.z)) {
+                canTryIntoZone =true;
+                break;
+            }
+        }
+        if (!canTryIntoZone && !player.hasPremiumAccount())
+            return false;
+        return true;
+    }
+    private static boolean CheckPartyStatus(Player player, int money) {
+        for (Player p : player.getParty()) {
+            if (p.getDistance(player) > 1500) {
+                MyUtilsFunction.sendNotOkMessage(player, "隊伍「" + p.getName() + "」不在隊長身邊，無法傳送");
+                return false;
+            }
+            if (money > 0 && p.getInventory().getCountOf(57) < (long) money) {
+                MyUtilsFunction.sendNotOkMessage(player, "隊伍「" + p.getName() + "」支付費用不足「" + money + "」金幣.");
+                return false;
+            }
+            if (p.isDead()) {
+                MyUtilsFunction.sendNotOkMessage(player, "隊伍中「" + p.getName() + "」已死亡無法傳送.");
+                return false;
+            }
+            if (player.getKarma() >= 0) continue;
+            MyUtilsFunction.sendNotOkMessage(player, "隊伍中「" + p.getName() + "」紅人無法傳送.");
+            return false;
+        }
+        return true;
+    }
+    private static void sendNotOkMessage(Player player, String message) {
+        for (Player p : player.getParty()) {
+            p.sendMessage(message);
         }
     }
 }

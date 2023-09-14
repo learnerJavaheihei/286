@@ -1565,6 +1565,10 @@ public abstract class Creature extends GameObject
 		return _abnormalEffects.toArray(new AbnormalEffect[_abnormalEffects.size()]);
 	}
 
+	public boolean isContainsAbnormalEffect(AbnormalEffect efc) {
+		return this._abnormalEffects.contains(efc);
+	}
+
 	public int getPAccuracy()
 	{
 		return (int) Math.round(getStat().calc(Stats.P_ACCURACY_COMBAT, 0, null, null));

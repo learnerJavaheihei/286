@@ -10,6 +10,7 @@ import java.util.Map;
 import l2s.gameserver.Config;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.htm.HtmTemplates;
+import l2s.gameserver.data.xml.holder.NpcHolder;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.base.Experience;
 import l2s.gameserver.model.instances.NpcInstance;
@@ -73,7 +74,7 @@ public abstract class RewardListInfo
 
 		String html = tpls.get(0);
 		html = html.replace("<?npc_name?>", HtmlUtils.htmlNpcName(npc.getNpcId()));
-		html = html.replace("<?id?>", String.valueOf(npc.getNpcId()));
+//		html = html.replace("<?id?>", String.valueOf(npc.getNpcId()));
 
 		StringBuilder content = new StringBuilder();
 		if(mod <= 0)

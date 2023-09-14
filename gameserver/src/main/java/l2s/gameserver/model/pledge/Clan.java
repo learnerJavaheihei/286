@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import l2s.gameserver.data.htm.HtmCache;
+import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.HtmlMessage;
+import l2s.gameserver.network.l2.s2c.*;
 import l2s.gameserver.skills.SkillEntryType;
 import org.apache.commons.lang3.StringUtils;
 import l2s.commons.collections.JoinedIterator;
@@ -41,22 +43,6 @@ import l2s.gameserver.model.items.ClanWarehouse;
 import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.network.l2.components.IBroadcastPacket;
 import l2s.gameserver.network.l2.components.SystemMsg;
-import l2s.gameserver.network.l2.s2c.ExNeedToChangeName;
-import l2s.gameserver.network.l2.s2c.ExPledgeBonusMarkReset;
-import l2s.gameserver.network.l2.s2c.ExPledgeBonusUpdate;
-import l2s.gameserver.network.l2.s2c.ExPledgeCount;
-import l2s.gameserver.network.l2.s2c.L2GameServerPacket;
-import l2s.gameserver.network.l2.s2c.JoinPledgePacket;
-import l2s.gameserver.network.l2.s2c.PledgeReceiveSubPledgeCreated;
-import l2s.gameserver.network.l2.s2c.PledgeShowInfoUpdatePacket;
-import l2s.gameserver.network.l2.s2c.PledgeShowMemberListAllPacket;
-import l2s.gameserver.network.l2.s2c.PledgeShowMemberListAddPacket;
-import l2s.gameserver.network.l2.s2c.PledgeShowMemberListDeleteAllPacket;
-import l2s.gameserver.network.l2.s2c.PledgeShowMemberListUpdatePacket;
-import l2s.gameserver.network.l2.s2c.PledgeSkillListPacket;
-import l2s.gameserver.network.l2.s2c.PledgeSkillListAddPacket;
-import l2s.gameserver.network.l2.s2c.PledgeStatusChangedPacket;
-import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.tables.ClanTable;
 import l2s.gameserver.utils.Log;
@@ -785,7 +771,76 @@ public class Clan implements Iterable<UnitMember>
 
 		return clan;
 	}
+	public void addMembersBuff(String name, int skillId, int level, long time)
+	{
 
+		List<Integer> values= getAllMember(this.getClanId());
+		for(int member : values)
+		{
+			addClanMemberGiftSkill(member, name, skillId, level, time);
+		}
+	}
+
+	public void broadcastSayPacketToOnlineMembers(ChatType Chat, String who, String inputString)
+	{
+		for(UnitMember member : this)
+			if(member.isOnline())
+				member.getPlayer().sendPacket(new SayPacket2(member.getObjectId(), Chat, who, inputString));
+	}
+	private static List<Integer> getAllMember( int clanid)
+	{
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet rset = null;
+		List<Integer> values = new ArrayList<Integer>();
+		try
+		{
+			con = DatabaseFactory.getInstance().getConnection();
+			statement = con.prepareStatement("SELECT obj_Id FROM characters where clanid = ? ");
+			statement.setInt(1, clanid);
+			rset = statement.executeQuery();
+			while(rset.next())
+			{
+				values.add(rset.getInt("obj_Id"));
+			}
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			DbUtils.closeQuietly(con, statement, rset);
+		}
+		return values;
+	}
+
+	private void addClanMemberGiftSkill(int objid, String Name, int skillId, int skillLevel, long expTime)
+	{
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet rset = null;
+		try
+		{
+			con = DatabaseFactory.getInstance().getConnection();
+			statement = con.prepareStatement("REPLACE INTO _player_give_clan_buff (obj_Id ,name ,skill_id ,skill_level,deletetime) VALUES(?,?,?,?,?)");
+			statement.setInt(1, objid);
+			statement.setString(2, Name);
+			statement.setInt(3, skillId);
+			statement.setInt(4, skillLevel);
+			statement.setLong(5, expTime);
+			statement.execute();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			DbUtils.closeQuietly(con, statement, rset);
+		}
+	}
 	public void broadcastToOnlineMembers(IBroadcastPacket... packets)
 	{
 		for(UnitMember member : this)

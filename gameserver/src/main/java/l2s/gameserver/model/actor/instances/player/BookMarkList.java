@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import l2s.commons.dbutils.DbUtils;
+import l2s.gameserver.Config;
 import l2s.gameserver.database.DatabaseFactory;
 import l2s.gameserver.geometry.Location;
 import l2s.gameserver.model.Player;
@@ -16,6 +17,7 @@ import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.skills.SkillEntryType;
 import l2s.gameserver.utils.ItemFunctions;
 
+import l2s.gameserver.utils.MyUtilsFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,6 +120,11 @@ public class BookMarkList
 
 		owner.bookmarkLocation = new Location(bookmark.x, bookmark.y, bookmark.z);
 
+		if (Config.enablePremiumAccountPeaceZone && !MyUtilsFunction.isPremiumAccountPeaceZone(owner,owner.bookmarkLocation)){
+			String msg = "非会员不能传送到非安全区区域！";
+			owner.sendMessage(msg);
+			return false;
+		}
 		SkillEntry skillEntry = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 2588, 1);
 		if(!skillEntry.checkCondition(owner, owner, false, true, true))
 		{

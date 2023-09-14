@@ -42,6 +42,18 @@ public class SayPacket2 extends NpcStringContainer
 		_sysString = st;
 		_systemMsg = sm;
 	}
+	public SayPacket2(int objectId, ChatType type, String charName, String text)
+	{
+		this(objectId, type, charName, NpcString.NONE, text);
+	}
+	public SayPacket2(int objectId, ChatType type, String charName, NpcString npcString, String... params)
+	{
+		super(npcString, params);
+		_objectId = objectId;
+		_type = type;
+		_charName = charName;
+		_text = params.length > 0 ? params[0] : null;
+	}
 
 	public SayPacket2(int objectId, ChatType type, int isLocSharing, String charName, String text)
 	{

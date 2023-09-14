@@ -67,6 +67,13 @@ public class BBSConfig implements OnLoadScriptListener
 	public static long TELEPORT_SERVICE_BM_COST_ITEM_COUNT;
 	public static boolean TELEPORT_SERVICE_TELEPORT_IF_PK;
 
+	public static int OCCUPATION_SERVICE_COST_ITEM_ID_1;
+	public static long OCCUPATION_SERVICE_COST_ITEM_COUNT_1;
+	public static int OCCUPATION_SERVICE_COST_ITEM_ID_2;
+	public static long OCCUPATION_SERVICE_COST_ITEM_COUNT_2;
+	public static int OCCUPATION_SERVICE_COST_ITEM_ID_3;
+	public static long OCCUPATION_SERVICE_COST_ITEM_COUNT_3;
+
 	public static int HERO_SERVICE_COST_ITEM_ID_PER_1_DAY;
 	public static long HERO_SERVICE_COST_ITEM_COUNT_PER_1_DAY;
 	public static int[] HERO_SERVICE_PERIOD_VARIATIONS;
