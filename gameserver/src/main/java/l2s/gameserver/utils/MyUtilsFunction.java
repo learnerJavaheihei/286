@@ -919,7 +919,7 @@ public class MyUtilsFunction {
             return;
         }
 
-        if (Config.enablePremiumAccountPeaceZone && !isPremiumAccountPeaceZone(player, loc)) {
+        if (Config.enablePremiumAccountPeaceZone && !isPremiumAccountPeaceZone(player, loc)  && player.getLevel() > 10) {
             String msg = "非会员不能传送到非安全区区域！";
             player.sendMessage(msg);
             return;

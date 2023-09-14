@@ -37,6 +37,7 @@ public class RequestExRequestTeleport extends L2GameClientPacket {
 				ChatUtils.sys(activeChar, "Not found teleport info for ID: " + teleportId);
 			return;
 		}
+		activeChar.bookmarkLocation = teleportInfo.getLoc();
 
 		if (!BookMarkList.checkFirstConditions(activeChar) || !BookMarkList.checkTeleportConditions(activeChar)) //TODO: Check conditions.
 			return;
@@ -46,7 +47,6 @@ public class RequestExRequestTeleport extends L2GameClientPacket {
 			return;
 		}
 
-		activeChar.bookmarkLocation = teleportInfo.getLoc();
 
 		SkillEntry skillEntry = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 60018, 1);
 		if (!skillEntry.checkCondition(activeChar, activeChar, false, true, true)) {

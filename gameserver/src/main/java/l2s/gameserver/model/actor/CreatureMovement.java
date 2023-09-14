@@ -589,7 +589,7 @@ public class CreatureMovement
 					return false;
 				}
 			}
-			if (Config.enablePremiumAccountPeaceZone && _actor.isPlayer()) {
+			if (Config.enablePremiumAccountPeaceZone && _actor.isPlayer()  && _actor.getLevel() > 10) {
 				if (!MyUtilsFunction.isPremiumAccountPeaceZone(_actor.getPlayer(),loc)){
 					first += 1;
 					String[] msgs =new String[4];

@@ -120,7 +120,7 @@ public class BookMarkList
 
 		owner.bookmarkLocation = new Location(bookmark.x, bookmark.y, bookmark.z);
 
-		if (Config.enablePremiumAccountPeaceZone && !MyUtilsFunction.isPremiumAccountPeaceZone(owner,owner.bookmarkLocation)){
+		if (Config.enablePremiumAccountPeaceZone && !MyUtilsFunction.isPremiumAccountPeaceZone(owner,owner.bookmarkLocation) && owner.getLevel() > 10){
 			String msg = "非会员不能传送到非安全区区域！";
 			owner.sendMessage(msg);
 			return false;
@@ -376,6 +376,13 @@ public class BookMarkList
 			player.sendPacket(SystemMsg.YOU_CANNOT_USE_MY_TELEPORTS_WHILE_YOU_ARE_DEAD);
 			return false;
 		}
+
+		if (Config.enablePremiumAccountPeaceZone && !MyUtilsFunction.isPremiumAccountPeaceZone(player,player.bookmarkLocation) && player.getLevel() > 10){
+			String msg = "非会员不能传送到非安全区区域！";
+			player.sendMessage(msg);
+			return false;
+		}
+
 		if(player.isInStoreMode() || player.isInTrade())
 		{
 			player.sendPacket(SystemMsg.YOU_CANNOT_SUMMON_DURING_A_TRADE_OR_WHILE_USING_A_PRIVATE_STORE);
