@@ -1,14 +1,19 @@
 package l2s.gameserver.network.l2.c2s;
 
 import l2s.commons.util.Rnd;
+import l2s.gameserver.Announcements;
+import l2s.gameserver.ThreadPoolManager;
+import l2s.gameserver.data.xml.holder.ItemHolder;
 import l2s.gameserver.data.xml.holder.RecipeHolder;
 import l2s.gameserver.model.Creature;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.Skill;
 import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.model.items.ManufactureItem;
+import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.RecipeShopItemInfoPacket;
+import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.network.l2.s2c.StatusUpdatePacket;
 import l2s.gameserver.stats.Formulas;
@@ -16,8 +21,13 @@ import l2s.gameserver.stats.Stats;
 import l2s.gameserver.templates.item.RecipeTemplate;
 import l2s.gameserver.templates.item.data.ChancedItemData;
 import l2s.gameserver.templates.item.data.ItemData;
+import l2s.gameserver.utils.DropSpecialItemAnnounce;
 import l2s.gameserver.utils.ItemFunctions;
+import l2s.gameserver.utils.LogGeneral;
 import l2s.gameserver.utils.TradeHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RequestRecipeShopMakeDo extends L2GameClientPacket
 {
@@ -200,7 +210,18 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 					itemsCount++;
 				}
 				ItemFunctions.addItem(buyer, itemId, itemsCount, true);
-
+				if (DropSpecialItemAnnounce.dropSpecialItems.contains(itemId)) {
+					if (buyer.isGM())
+						return;
+					String word = DropSpecialItemAnnounce.getInstance().getWord();
+					String text = word+"我在制作装备的时候意外获得了「"+ ItemHolder.getInstance().getTemplate(itemId).getName(buyer) +"」"+(itemsCount>1?",并且出现暴击产生了"+itemsCount:itemsCount)+"个";
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+					Announcements.announceToAll(new SystemMessage(14002).addName(buyer).addString(date).addZoneName(buyer.getLoc()).addItemName(itemId).addString(String.valueOf(itemsCount)));
+//					Announcements.shout(buyer,text, ChatType.SYSTEM_MESSAGE);
+					String log_content = date+"["+buyer.getName()+"]系统公告内容："+text+",获得方式:制作装备,角色ID："+buyer.getObjectId()+",道具ID："+itemId;
+					ThreadPoolManager.getInstance().schedule(new LogGeneral("specialItemsAnnounce/create",log_content),1000L);
+				}
 				if(itemsCount > 1)
 				{
 					SystemMessagePacket sm = new SystemMessagePacket(SystemMsg.C1_CREATED_S2_S3_AT_THE_PRICE_OF_S4_ADENA);

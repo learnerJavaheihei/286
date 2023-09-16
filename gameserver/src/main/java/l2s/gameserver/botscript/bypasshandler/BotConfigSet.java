@@ -640,7 +640,7 @@ public class BotConfigSet
 																											{
 																												for(SkillEntry skillEntry : player.getAllSkillsArray())
 																												{
-																													if(!skillEntry.getName().startsWith(skillName))
+																													if(!skillEntry.getName(player).startsWith(skillName))
 																														continue;
 																													config.setSummonSkillId(skillEntry.getId());
 																													break;
@@ -740,7 +740,7 @@ public class BotConfigSet
 																					return;
 																				}
 																				int percent = Integer.parseInt(param[1]);
-																				int potionId = 1539;/*根据152版本修改*/
+																				int potionId = 29031;/*根据286版本修改*/
 																				/*原始
 																				int potionId = param[2].equals("\u4f53\u529b\u6cbb\u6108\u836f\u6c34") ? 1060 : (param[2].equals("\u7ec8\u6781\u6cbb\u6108\u836f\u6c34") ? 1539 : 1061);
 																				*/
@@ -751,7 +751,7 @@ public class BotConfigSet
 																				return;
 																			}
 																			int percentm = Integer.parseInt(param[1]);
-																			int mpotionId = 31501;/*根据152版本修改*/
+																			int mpotionId = 70159;/*根据286版本修改*/
 																			/*原始
 																			int mpotionId = param[2].equals("\u65b0\u624bMP\u6062\u590d\u5242") ? 90310 : (param[2].equals("\u65b0\u624bMP\u6062\u590d\u5242") ? 90415 : 70159);
 																			*/
@@ -767,7 +767,7 @@ public class BotConfigSet
 																			int skillId = 0;
 																			for(SkillEntry entry : player.getAllSkillsArray())
 																			{
-																				if(!entry.getName().equals(param[2]))
+																				if(!entry.getName(player).equals(param[2]))
 																					continue;
 																				skillId = entry.getId();
 																			}
@@ -781,7 +781,7 @@ public class BotConfigSet
 																	int skillId3 = 0;
 																	for(SkillEntry entry : player.getAllSkillsArray())
 																	{
-																		if(!entry.getName().equals(param[2]))
+																		if(!entry.getName(player).equals(param[2]))
 																			continue;
 																		skillId3 = entry.getId();
 																	}
@@ -794,7 +794,7 @@ public class BotConfigSet
 																int skillId1 = 0;
 																for(SkillEntry entry : player.getAllSkillsArray())
 																{
-																	if(!entry.getName().equals(param[2]))
+																	if(!entry.getName(player).equals(param[2]))
 																		continue;
 																	skillId1 = entry.getId();
 																}
@@ -808,7 +808,7 @@ public class BotConfigSet
 															int skillIdG = 0;
 															for(SkillEntry entry : player.getAllSkillsArray())
 															{
-																if(!entry.getName().equals(param[3]))
+																if(!entry.getName(player).equals(param[3]))
 																	continue;
 																skillIdG = entry.getId();
 															}

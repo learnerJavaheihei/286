@@ -1,10 +1,18 @@
 package l2s.gameserver.model.actor.instances.player;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Collectors;
 
 import l2s.gameserver.ThreadPoolManager;
+import l2s.gameserver.botscript.BotConfigImp;
+import l2s.gameserver.core.BotConfig;
+import l2s.gameserver.core.BotEngine;
+import l2s.gameserver.core.BotSkillStrategy;
 import l2s.gameserver.data.xml.holder.SkillHolder;
 import l2s.gameserver.model.Creature;
 import l2s.gameserver.model.Player;
@@ -14,6 +22,7 @@ import l2s.gameserver.model.Skill.SkillType;
 import l2s.gameserver.model.actor.instances.creature.Abnormal;
 import l2s.gameserver.model.actor.instances.player.ShortCut.ShortCutType;
 import l2s.gameserver.model.base.ItemAutouseType;
+import l2s.gameserver.model.instances.PetInstance;
 import l2s.gameserver.model.instances.SummonInstance;
 import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.network.l2.c2s.RequestActionUse.Action;
@@ -101,6 +110,13 @@ public class AutoShortCuts
 				}
 
 				SkillEntry skillEntry = item.getTemplate().getFirstSkill();
+
+				if (!isSettingInAutoFarm_ItemBuffs(item.getTemplate().getItemId(),true)) {
+					_autoBuffItems.remove(itemObjectId);
+					offShortCut(itemObjectId);
+					continue;
+				}
+
 				Skill skill = skillEntry.getTemplate();
 				Creature target = skill.getAimingTarget(_owner, _owner);
 				if(target == null)
@@ -124,6 +140,11 @@ public class AutoShortCuts
 				SkillEntry skillEntry = _owner.getKnownSkill(skillId);
 				if(skillEntry == null) {
 					_autoBuffSkills.remove(skillId);
+					continue;
+				}
+				if (!isSettingInAutoFarm_buffSets(skillEntry,true)) {
+					_autoBuffSkills.remove(skillId);
+					offShortCut(skillId);
 					continue;
 				}
 
@@ -153,7 +174,11 @@ public class AutoShortCuts
 					_autoAttackSkills.remove(skillId);
 					continue;
 				}
-				
+				if (!isSettingInAutoFarm_Strategy(skillEntry,true)) {
+					_autoAttackSkills.remove(skillId);
+					offShortCut(skillId);
+					continue;
+				}
 				Skill skill = skillEntry.getTemplate();
 				Creature target = null;
 				if (_owner.getPlayer().getAutoFarm().isFarmActivate())
@@ -183,6 +208,12 @@ public class AutoShortCuts
 		{
 			loop: for(int skillId : _autoPetSkills)
 			{
+				if (!isSettingInAutoFarm_PetBuff(skillId,true)) {
+					_autoPetSkills.remove(skillId);
+					offShortCut(skillId);
+					continue;
+				}
+
 				SummonInstance summon = _owner.getSummon();
 				if (summon == null || summon.isOutOfControl())
 					return;
@@ -210,6 +241,17 @@ public class AutoShortCuts
 				stopAutoAttackTask();
 			if (!_autoAttackPet)
 				stopAutoAttackPetTask();
+		}
+	}
+
+	private void offShortCut(int itemObjectId) {
+		loop1: for (ShortCut allShortCut : _owner.getAllShortCuts()) {
+			if (allShortCut.getId()== itemObjectId) {
+				int slot = allShortCut.getSlot();
+				int page = allShortCut.getPage();
+				_owner.sendPacket(new ExActivateAutoShortcut(slot, page, false));
+				break loop1;
+			}
 		}
 	}
 
@@ -369,7 +411,7 @@ public class AutoShortCuts
 		if(shortCut == null)
 			return false;
 
-		if(!checkShortCut(shortCut.getSlot(), shortCut.getPage(), shortCut.getType(), shortCut.getId()))
+		if(!checkShortCut(shortCut.getSlot(), shortCut.getPage(), shortCut.getType(), shortCut.getId(),active))
 			return false;
 
 		if(page == ShortCut.PAGE_AUTOCONSUME)
@@ -510,6 +552,66 @@ public class AutoShortCuts
 		}
 		return null;
 	}
+	private boolean checkShortCut(int slot, int page, ShortCut.ShortCutType shortCutType, int id, boolean active)
+	{
+		if(shortCutType == ShortCut.ShortCutType.MACRO)
+		{
+			if(page == ShortCut.PAGE_AUTOPLAY && slot == 0)
+				return true;
+		}
+		else if(shortCutType == ShortCut.ShortCutType.ITEM)
+		{
+			ItemAutouseType autouseType;
+			if(page == ShortCut.PAGE_AUTOPLAY)
+			{
+				if (slot != 1)
+					return false;
+				autouseType = ItemAutouseType.HEAL;
+			}
+			else if(page >= ShortCut.PAGE_NORMAL_0 && page <= ShortCut.PAGE_FLY_TRANSFORM)
+			{
+				autouseType = ItemAutouseType.BUFF;
+			}
+			else
+				return false;
+
+			ItemInstance item = _owner.getInventory().getItemByObjectId(id);
+			if(item == null || item.getTemplate().getAutouseType() != autouseType)
+				return false;
+
+			if (autouseType.equals(ItemAutouseType.BUFF) && !isSettingInAutoFarm_ItemBuffs(item.getTemplate().getItemId(),active)) {
+				return false;
+			}
+
+			return true;
+		}
+		else if(shortCutType == ShortCut.ShortCutType.SKILL)
+		{
+			if(page >= ShortCut.PAGE_NORMAL_0 && page <= ShortCut.PAGE_FLY_TRANSFORM)
+			{
+				SkillEntry skillEntry = _owner.getKnownSkill(id);
+				if(skillEntry != null && (skillEntry.getTemplate().getAutoUseType() == Skill.SkillAutoUseType.BUFF //
+						|| skillEntry.getTemplate().getAutoUseType() == Skill.SkillAutoUseType.APPEARANCE//
+						|| skillEntry.getTemplate().getAutoUseType() == Skill.SkillAutoUseType.ATTACK)){
+					return isSettingInAutoFarm_Strategy(skillEntry, active) &&
+							isSettingInAutoFarm_buffSets(skillEntry,active);
+				}
+			}
+		}
+		else if (shortCutType == ShortCut.ShortCutType.ACTION)
+		{
+			SummonInstance summon = _owner.getSummon();
+			if (summon !=null) {
+				SkillEntry skillEntry = summon.getKnownSkill(id);
+				if (skillEntry!= null && !isSettingInAutoFarm_PetBuff(skillEntry.getId(),active)) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+		return false;
+	}
 
 	private boolean checkShortCut(int slot, int page, ShortCut.ShortCutType shortCutType, int id)
 	{
@@ -557,7 +659,85 @@ public class AutoShortCuts
 		}
 		return false;
 	}
-	
+
+	private boolean isSettingInAutoFarm_Strategy(SkillEntry skillEntry, boolean active) {
+		if (!active)
+			return true;
+
+		if (!_owner.getAutoFarm().isFarmActivate())
+			return true;
+		BotConfig botConfig = BotEngine.getInstance().getBotConfig(_owner);
+		int id = skillEntry.getId();
+		// 技能策略
+		LinkedList<BotSkillStrategy> attackStrategy = botConfig.getAttackStrategy();
+		if (!attackStrategy.isEmpty()) {
+			for (BotSkillStrategy botSkillStrategy : attackStrategy) {
+				if (botSkillStrategy.getSkillId() == id) {
+					_owner.sendMessage("該技能已經在自動狩獵中設置,不能在快捷欄開啟了.");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	private boolean isSettingInAutoFarm_PetBuff(int petSkillId, boolean active) {
+		if (!active)
+			return true;
+
+		if (!_owner.getAutoFarm().isFarmActivate())
+			return true;
+		BotConfig botConfig = BotEngine.getInstance().getBotConfig(_owner);
+
+		// 寵物技能
+		Set<Integer> petBuffs = botConfig.getPetBuffs();
+		if (petBuffs.stream().anyMatch(integer -> integer == petSkillId)){
+			_owner.sendMessage("該技能已經在自動狩獵中設置,不能在快捷欄開啟了.");
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isSettingInAutoFarm_buffSets(SkillEntry skillEntry, boolean active) {
+		if (!active)
+			return true;
+
+		if (!_owner.getAutoFarm().isFarmActivate())
+			return true;
+		BotConfig botConfig = BotEngine.getInstance().getBotConfig(_owner);
+		int id = skillEntry.getId();
+		// 狀態魔法
+		BotConfigImp imp = (BotConfigImp) botConfig;
+		Map<String, Set<Integer>> buffSets = imp.getBuffSets();
+		Collection<Set<Integer>> values = buffSets.values();
+		if (!values.isEmpty()) {
+			for (Set<Integer> buffs : values) {
+				for (Integer buff : buffs) {
+					if (buff == id) {
+						_owner.sendMessage("該技能已經在自動狩獵中設置,不能在快捷欄開啟了.");
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean isSettingInAutoFarm_ItemBuffs(int itemId, boolean active) {
+		if (!active)
+			return true;
+
+		if (!_owner.getAutoFarm().isFarmActivate())
+			return true;
+		BotConfig botConfig = BotEngine.getInstance().getBotConfig(_owner);
+		// 道具 BUFF
+		if (botConfig.getAutoItemBuffs().contains(itemId)){
+			_owner.sendMessage("該道具使用已經在自動狩獵中設置,不能在快捷欄開啟了.");
+			return false;
+		}
+
+		return true;
+	}
 	private boolean servitorUseSkill(Player player, Servitor servitor, int skillId, int actionId)
 	{
 		if(servitor == null)

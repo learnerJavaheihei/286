@@ -25,12 +25,9 @@ import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.ExShowVariationCancelWindow;
 import l2s.gameserver.network.l2.s2c.ExShowVariationMakeWindow;
 import l2s.gameserver.network.l2.s2c.PackageToListPacket;
+import l2s.gameserver.utils.*;
 import l2s.gameserver.utils.BypassStorage.ValidBypass;
 import l2s.gameserver.utils.BypassStorage.BypassType;
-import l2s.gameserver.utils.MulticlassUtils;
-import l2s.gameserver.utils.MyUtilsFunction;
-import l2s.gameserver.utils.NpcUtils;
-import l2s.gameserver.utils.WarehouseFunctions;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -166,6 +163,12 @@ public class RequestBypassToServer extends L2GameClientPacket
 			{
 				String input = bp.bypass.replace("MyUtils_", "");
 				MyUtilsFunction.onBypassFeedback(activeChar,input);
+			}
+			else if(bp.bypass.startsWith("DropCalculator"))
+			{
+				//傳來的指令會是bypass -h MyUtils_xxx 要取出後面_xxx的文字
+				String _command = bp.bypass.substring(14).trim();
+				MyUtilsDropCalculator.onBypassFeedback(activeChar, _command);
 			}
 			else if(bp.bypass.startsWith("item?"))
 			{

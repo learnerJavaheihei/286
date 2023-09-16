@@ -124,7 +124,7 @@ public class BotControlPage
 			{
 				public void sayYes()
 				{
-					if (time < BotConfig.maxBuyTimes) {
+					if (time < BotConfig.maxBuyTimes && player.getInventory().getCountOf(29520)>=count) {
 						Player._buyTimesByOBJ.put(player.getObjectId(),time+1);
 					}
 
@@ -152,6 +152,8 @@ public class BotControlPage
 				}
 				public void sayNo()
 				{
+					mainPage(player);
+					return;
 				}
 			});
 		}
@@ -450,7 +452,7 @@ public class BotControlPage
 		}
 		if(config.getPartyHealSkillId() != 0)
 		{
-			builder.append("<tr>").append("<td width=250>[\u7fa4]").append(String.valueOf(config.getPartyHealSize()) + "\u4ebaHP" + config.getPartyHealPercent()).append("%\u65f6\u4f7f\u7528:").append(SkillHolder.getInstance().getSkill(config.getPartyHealSkillId(), 1).getName()).append("</td>").append("<td>").append("<button value=\" \" action=\"bypass -h htmbypass_bot.configSet gprotect 0% 0% 0\" width=16 height=16 back=\"L2UI_CT1.Button_DF_Delete_Down\" fore=\"L2UI_CT1.Button_DF_Delete\">").append("</td>").append("</tr>");
+			builder.append("<tr>").append("<td width=250>[\u7fa4]").append(String.valueOf(config.getPartyHealSize()) + "\u4ebaHP" + config.getPartyHealPercent()).append("%\u65f6\u4f7f\u7528:").append(SkillHolder.getInstance().getSkill(config.getPartyHealSkillId(), 1).getName(player)).append("</td>").append("<td>").append("<button value=\" \" action=\"bypass -h htmbypass_bot.configSet gprotect 0% 0% 0\" width=16 height=16 back=\"L2UI_CT1.Button_DF_Delete_Down\" fore=\"L2UI_CT1.Button_DF_Delete\">").append("</td>").append("</tr>");
 			/*\u7fa4 群	\u4ebaHP 人HP:	\u65f6\u4f7f\u7528: 时使用:*/
 		}
 		if(config.getPetHpHeal() != 0)

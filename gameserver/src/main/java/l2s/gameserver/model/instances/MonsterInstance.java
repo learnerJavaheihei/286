@@ -1,18 +1,18 @@
 package l2s.gameserver.model.instances;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import l2s.commons.collections.MultiValueSet;
 import l2s.commons.math.SafeMath;
 import l2s.commons.util.Rnd;
+import l2s.gameserver.Announcements;
 import l2s.gameserver.Config;
+import l2s.gameserver.ThreadPoolManager;
+import l2s.gameserver.data.xml.holder.ItemHolder;
+import l2s.gameserver.data.xml.holder.NpcHolder;
 import l2s.gameserver.model.AggroList.HateInfo;
 import l2s.gameserver.model.CommandChannel;
 import l2s.gameserver.model.Creature;
@@ -30,9 +30,11 @@ import l2s.gameserver.model.quest.Quest;
 import l2s.gameserver.model.quest.QuestEventType;
 import l2s.gameserver.model.quest.QuestState;
 import l2s.gameserver.model.reward.*;
+import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.ExMagicAttackInfo;
 import l2s.gameserver.network.l2.s2c.SocialActionPacket;
+import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.skills.SkillEntryType;
@@ -40,7 +42,9 @@ import l2s.gameserver.stats.Formulas;
 import l2s.gameserver.templates.item.data.RewardItemData;
 import l2s.gameserver.templates.npc.Faction;
 import l2s.gameserver.templates.npc.NpcTemplate;
+import l2s.gameserver.utils.DropSpecialItemAnnounce;
 import l2s.gameserver.utils.ItemFunctions;
+import l2s.gameserver.utils.LogGeneral;
 
 /**
  * This class manages all Monsters.
@@ -680,6 +684,7 @@ public class MonsterInstance extends NpcInstance
 							return;
 					}
 					dropItem(activePlayer, drop.itemId, drop.count);
+					dropAnnounce(activeChar, activePlayer, drop.itemId, (int)drop.count);
 					rewards.add(drop.itemId);
 				}				
 				break;
@@ -702,7 +707,7 @@ public class MonsterInstance extends NpcInstance
 					int count = (int) map.get("count");
 					if (count == activePlayer.get_finishTaskCount()) {
 						dropItem(activePlayer, reward, 1);
-//						dropAnnounce(activeChar, activePlayer, reward,1);
+						dropAnnounce(activeChar, activePlayer, reward,1);
 						activePlayer.set_finishTaskCount(0);
 						activePlayer.getTemporaryTask().clear();
 					}
@@ -710,7 +715,21 @@ public class MonsterInstance extends NpcInstance
 			}
 		}
 	}
+	private void dropAnnounce(Creature activeChar, Player activePlayer, int itemId,int count) {
+		if (activePlayer.isGM())
+			return;
 
+		if (DropSpecialItemAnnounce.dropSpecialItems.contains(itemId)) {
+			String word = DropSpecialItemAnnounce.getInstance().getWord();
+			String text = word+"我在击杀「"+ NpcHolder.getInstance().getTemplate(getNpcId()).getName(activePlayer) +"」的时候掉落了「"+ ItemHolder.getInstance().getTemplate(itemId).getName(activePlayer) +"("+count+"個)」";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+			Announcements.announceToAll(new SystemMessage(14000).addName(activeChar).addString(date).addZoneName(activeChar.getLoc()).addNpcName(getNpcId()).addItemName(itemId).addString(String.valueOf(count)));
+//			Announcements.shout(activePlayer,text, ChatType.WORLD);
+			String log_content = date+"["+ activePlayer.getName()+"]系统公告内容："+text+",获得方式:怪物掉落,角色ID："+ activeChar.getObjectId()+",NPC ID："+getNpcId()+",道具ID："+ itemId;
+			ThreadPoolManager.getInstance().schedule(new LogGeneral("specialItemsAnnounce/drop",log_content),1000L);
+		}
+	}
 	private double[] calculateExpAndSp(int level, double damage, double totalDamage)
 	{
 		/* TODO:

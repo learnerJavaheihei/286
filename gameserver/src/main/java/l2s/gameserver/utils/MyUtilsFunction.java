@@ -9,14 +9,14 @@ import l2s.gameserver.dao.GoldCoinTransactionRecordDao;
 import l2s.gameserver.dao.ItemsDAO;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.ItemHolder;
+import l2s.gameserver.data.xml.holder.NpcHolder;
 import l2s.gameserver.data.xml.holder.ZoneHolder;
 import l2s.gameserver.database.DatabaseFactory;
 import l2s.gameserver.geometry.Location;
+import l2s.gameserver.instancemanager.RaidBossSpawnManager;
 import l2s.gameserver.listener.actor.player.OnAnswerListener;
-import l2s.gameserver.model.Playable;
-import l2s.gameserver.model.Player;
-import l2s.gameserver.model.World;
-import l2s.gameserver.model.Zone;
+import l2s.gameserver.model.*;
+import l2s.gameserver.model.instances.NpcInstance;
 import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.model.mail.Mail;
 import l2s.gameserver.model.pledge.Clan;
@@ -27,6 +27,7 @@ import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.ConfirmDlgPacket;
 import l2s.gameserver.templates.ZoneTemplate;
 import l2s.gameserver.templates.item.ItemTemplate;
+import l2s.gameserver.templates.npc.NpcTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -56,6 +58,14 @@ public class MyUtilsFunction {
             {"120", "29585,1;49518,5;29009,5;34603,20000;34610,10000", "85", "1"}, //這一個是鎖引0
             {"350", "29595,1;70106,1;90836,1;90885,1;34604,40000;34611,20000", "85", "1"},//這一個是鎖引1
     };
+    private static int[] Boss20 = new int[]{25146, 25357, 25366, 25001, 25127, 25019, 25076, 25149, 25166, 25369, 25365, 25038, 25272, 25095};
+    private static int[] Boss30 = new int[]{25004, 25079, 25112, 25169, 25352, 25392, 25401, 25128, 25391, 25020, 25023, 25041, 25063, 25098, 25118, 25152, 25223, 25354, 25388, 25398, 25385, 25170, 25082};
+    private static int[] Boss40 = new int[]{25064, 25134, 25155, 25410, 25415, 25007, 25088, 25192, 25085, 25431, 25438, 25057, 25102, 25173, 25260, 25395, 25437, 25441, 25498, 25044, 25412, 25158, 25026, 25047, 25456};
+    private static int[] Boss50 = new int[]{25013, 25119, 25131, 25217, 25050, 25460, 25067, 25473, 25159, 25010, 25070, 25103, 25137, 25744, 25176, 25241, 25434, 25475, 25745, 25122, 25099, 25463, 25230, 25418, 25420, 25089};
+    private static int[] Boss60 = new int[]{25234, 25407, 25106, 25256, 25746, 25747, 25748, 25749, 25750, 25751, 25423, 25226, 25125, 25051, 25255, 25478, 25754, 25755, 25756, 25757, 25758, 25759, 25760, 25761, 25762, 25763, 25263};
+    private static int[] Boss70 = new int[]{25035, 25163, 25252, 25453, 25766, 25767, 25768, 25769, 25770, 25772, 25773, 25774, 25775, 25776, 25777, 25738, 25779, 25780, 25781, 25782, 25783, 25784, 25739, 25742, 25743};
+    private static int[] Boss80 = new int[]{25140, 25162, 25467, 25470, 25073, 25109, 25054, 25092, 25126, 25143, 25220, 25444, 25447, 25450};
+    static DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm");
     /*-------------------------------金币寄售系统 常量-----------------------------start----*/
     // 金币寄售系统 购买金币 每页显示个数
     static int buyPageSize = 12;
@@ -629,6 +639,42 @@ public class MyUtilsFunction {
 			if(vch != null)
 				vch.useVoicedCommand("cfg", player, ""); */
         }//降SP设定
+        else if (inputString.startsWith("ShowRaidBoss")) {
+            int index = Integer.parseInt(buypassOptions[1]);
+            switch (index) {
+                case 20: {
+                    MyUtilsFunction.showBossHtml(player, Boss20, 10000);
+                    break;
+                }
+                case 30: {
+                    MyUtilsFunction.showBossHtml(player, Boss30, 30000);
+                    break;
+                }
+                case 40: {
+                    MyUtilsFunction.showBossHtml(player, Boss40, 50000);
+                    break;
+                }
+                case 50: {
+                    MyUtilsFunction.showBossHtml(player, Boss50, 100000);
+                    break;
+                }
+                case 60: {
+                    MyUtilsFunction.showBossHtml(player, Boss60, 200000);
+                    break;
+                }
+                case 70: {
+                    MyUtilsFunction.showBossHtml(player, Boss70, 400000);
+                    break;
+                }
+                case 80: {
+                    MyUtilsFunction.showBossHtml(player, Boss80, 600000);
+                }
+            }
+        }
+//        else if (inputString.startsWith("bot_main")) {
+//            BotControlPage.mainPage(player);
+//        }
+
     }
     public static class WriteGoldConsignmentLog implements Runnable {
         String kind;
@@ -970,5 +1016,44 @@ public class MyUtilsFunction {
         for (Player p : player.getParty()) {
             p.sendMessage(message);
         }
+    }
+    public static void showBossHtml(Player player, int[] Boss, int money) {
+        String html = HtmCache.getInstance().getHtml("teleporter/30146-RaidBoss.htm", player);
+        StringBuilder content = new StringBuilder();
+        for (int i = 0; i < Boss.length; ++i) {
+            NpcInstance npc = RaidBossSpawnManager.getInstance().getRaidBossId(Boss[i]);
+            if (npc != null) {
+                content.append("<tr>");
+                Creature mostHated = npc.getAggroList().getMostHated(-1);
+                if (mostHated != null) {
+                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player) + "<br1><font color=0000FF>" + NpcHolder.getInstance().getTemplate(mostHated.getNpcId()).getName(player) + " \u6311\u6230\u4e2d</font></td>");
+                } else if (npc.isAttackingNow()) {
+                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player)  + "<br1><font color=0000FF>\u8207\u73a9\u5bb6 \u6230\u9b25\u4e2d</font></td>");
+                } else {
+                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player)  + "<br1><font color=00FF00>\u53ef\u6311\u6230</font></td>");
+                }
+                content.append("<td fixwidth=50>");
+                content.append("<button value=\"\u50b3\u9001\" action=\"bypass -h MyUtils_Teleport " + npc.getX() + "," + npc.getY() + "," + npc.getZ() + " " + money + " one " + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player).replace(" ", "") + "\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
+                content.append("<button value=\"\u968a\u50b3\" action=\"bypass -h MyUtils_Teleport " + npc.getX() + "," + npc.getY() + "," + npc.getZ() + " " + money + " group " + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player).replace(" ", "") + "\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
+                content.append("</td></tr>");
+                continue;
+            }
+            NpcTemplate tmp = NpcHolder.getInstance().getTemplate(Boss[i]);
+            long time = RaidBossSpawnManager.getRaidBossReborn(Boss[i]);
+            String times = "\u7121\u8a0a\u606f";
+            if (time > 0L) {
+                times = dateFormat.format(time * 1000L);
+            }
+            content.append("<tr>");
+            content.append("<td fixwidth=35>" + tmp.level + "</td><td fixwidth=215>" + tmp.getName(player) + "<br1><font color=FF0000>" + times + "</font></td>");
+            content.append("<td fixwidth=50>");
+            content.append("<button value=\"\u5f85\u751f\" action=\"\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
+            content.append("<button value=\"情報\" action=\"bypass -h DropCalculator _dropMonsterDetailsByName_" + Boss[i] + "\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
+            content.append("</td></tr>");
+        }
+        html = html.replace("<$content$>", content.toString());
+        HtmlMessage msg = new HtmlMessage(5);
+        msg.setHtml(html);
+        player.sendPacket((IBroadcastPacket) msg);
     }
 }

@@ -234,7 +234,7 @@ public class BotBuffManager
 	{
 		StringBuilder builder = new StringBuilder();
 		Set<Integer> ids = config.getBuffSets().get(name);
-		builder.append("<html noscrollbar><body><center><table width=280 cellpadding=1 cellspacing=0>");
+		builder.append("<html noscrollbar><body><center><table width=300 cellpadding=1 cellspacing=0>");
 		ArrayList<SkillEntry> buffskills = new ArrayList<SkillEntry>();
 		for(SkillEntry entry : player.getAllSkillsArray())
 		{
@@ -253,7 +253,7 @@ public class BotBuffManager
 		{
 			boolean contains = ids.contains((buffskills.get(i)).getId());
 			builder.append("<tr>");
-			builder.append("<td>").append("<img src=" + (buffskills.get(i)).getTemplate().getIcon() + " width=32 height=32>").append("</td>").append("<td align=center width=150>").append((buffskills.get(i)).getName()).append("</td>").append("<td align=center>").append(!contains ? "<font color=00FF00>" + HtmlUtils.htmlButton("\u6dfb\u52a0", new StringBuilder("bypass -h htmbypass_bot.buff add ").append(name).append(" ").append((buffskills.get(i)).getId()).append(" ").append(page).toString(), 60, 25) + "</font>" : "<font color=FF0000>" + HtmlUtils.htmlButton("\u79fb\u9664", new StringBuilder("bypass -h htmbypass_bot.buff remove ").append(name).append(" ").append((buffskills.get(i)).getId()).append(" ").append(page).toString(),60, 25) + "</font>").append("</td>");
+			builder.append("<td>").append("<img src=" + (buffskills.get(i)).getTemplate().getIcon() + " width=32 height=32>").append("</td>").append("<td align=center width=150>").append((buffskills.get(i)).getName(player)).append("</td>").append("<td align=center>").append(!contains ? "<font color=00FF00>" + HtmlUtils.htmlButton("\u6dfb\u52a0", new StringBuilder("bypass -h htmbypass_bot.buff add ").append(name).append(" ").append((buffskills.get(i)).getId()).append(" ").append(page).toString(), 60, 25) + "</font>" : "<font color=FF0000>" + HtmlUtils.htmlButton("\u79fb\u9664", new StringBuilder("bypass -h htmbypass_bot.buff remove ").append(name).append(" ").append((buffskills.get(i)).getId()).append(" ").append(page).toString(),60, 25) + "</font>").append("</td>");
 			/*\u6dfb\u52a0 添加	\u79fb\u9664 移除*/
 			builder.append("</tr>");
 		}
@@ -319,7 +319,7 @@ public class BotBuffManager
 		{
 			StringBuilder builder = new StringBuilder();
 			int currentIndex = 0;
-			builder.append("<table width=280>");
+			builder.append("<table width=300>");
 			for(int id : buffs)
 			{
 				if(currentIndex == 0)

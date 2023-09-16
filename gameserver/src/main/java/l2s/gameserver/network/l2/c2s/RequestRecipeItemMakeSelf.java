@@ -1,15 +1,19 @@
 package l2s.gameserver.network.l2.c2s;
 
 import l2s.commons.util.Rnd;
+import l2s.gameserver.Announcements;
 import l2s.gameserver.Config;
+import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.data.xml.holder.ItemHolder;
 import l2s.gameserver.data.xml.holder.RecipeHolder;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.Skill;
 import l2s.gameserver.model.items.ItemInstance;
+import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.ActionFailPacket;
 import l2s.gameserver.network.l2.s2c.RecipeItemMakeInfoPacket;
+import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.stats.Formulas;
 import l2s.gameserver.stats.Stats;
@@ -17,7 +21,12 @@ import l2s.gameserver.templates.item.EtcItemTemplate.EtcItemType;
 import l2s.gameserver.templates.item.RecipeTemplate;
 import l2s.gameserver.templates.item.data.ChancedItemData;
 import l2s.gameserver.templates.item.data.ItemData;
+import l2s.gameserver.utils.DropSpecialItemAnnounce;
 import l2s.gameserver.utils.ItemFunctions;
+import l2s.gameserver.utils.LogGeneral;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RequestRecipeItemMakeSelf extends L2GameClientPacket
 {
@@ -163,6 +172,7 @@ public class RequestRecipeItemMakeSelf extends L2GameClientPacket
 
 			if(Rnd.chance(rate))
 			{
+				int count = 1;
 				if(Rnd.chance(activeChar.getStat().calc(Stats.CRIT_CRAFT_CHANCE, 0)))
 				{
 					//TODO maybe msg?
@@ -171,6 +181,19 @@ public class RequestRecipeItemMakeSelf extends L2GameClientPacket
 				//TODO [G1ta0] добавить проверку на перевес
 				ItemFunctions.addItem(activeChar, itemId, itemsCount, true);
 				success = 1;
+				if (DropSpecialItemAnnounce.dropSpecialItems.contains(itemId)) {
+					if (activeChar.isGM())
+						return;
+
+					String word = DropSpecialItemAnnounce.getInstance().getWord();
+					String text = word+"我在制作装备的时候意外获得了「"+ ItemHolder.getInstance().getTemplate(itemId).getName(activeChar) +"」"+(count>1?",并且出现暴击产生了"+count:count)+"个";
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+					Announcements.announceToAll(new SystemMessage(14002).addName(activeChar).addString(date).addZoneName(activeChar.getLoc()).addItemName(itemId).addString(String.valueOf(count)));
+//					Announcements.shout(activeChar,text, ChatType.SYSTEM_MESSAGE);
+					String log_content = date+"["+activeChar.getName()+"]系统公告内容："+text+",获得方式:制作装备,角色ID："+activeChar.getObjectId()+",道具ID："+itemId;
+					ThreadPoolManager.getInstance().schedule(new LogGeneral("specialItemsAnnounce/create",log_content),1000L);
+				}
 			}
 			else
 				activeChar.sendPacket(new SystemMessagePacket(SystemMsg.YOU_FAILED_TO_MANUFACTURE_S1).addItemName(itemId));

@@ -1,19 +1,28 @@
 package l2s.gameserver.skills.skillclasses;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import l2s.gameserver.Announcements;
+import l2s.gameserver.ThreadPoolManager;
+import l2s.gameserver.data.xml.holder.ItemHolder;
 import l2s.gameserver.model.Creature;
 import l2s.gameserver.model.Playable;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.Skill;
+import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.SystemMsg;
+import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.templates.StatsSet;
 import l2s.gameserver.templates.skill.restoration.RestorationInfo;
 import l2s.gameserver.templates.skill.restoration.RestorationItem;
+import l2s.gameserver.utils.DropSpecialItemAnnounce;
 import l2s.gameserver.utils.ItemFunctions;
 
+import l2s.gameserver.utils.LogGeneral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,8 +104,23 @@ public class Restoration extends Skill
 		{
 			if(target != null)
 			{
-				for(RestorationItem item : restorationItems)
-					ItemFunctions.addItem(playable, item.getId(), item.getRandomCount(), item.getEnchantLevel(), true);
+				for(RestorationItem item : restorationItems){
+					int randomCount = item.getRandomCount();
+					ItemFunctions.addItem(playable, item.getId(), randomCount, item.getEnchantLevel(), true);
+					if (DropSpecialItemAnnounce.dropSpecialItems.contains(item.getId())) {
+						if (playable.getPlayer().isGM())
+							return;
+
+						String word = DropSpecialItemAnnounce.getInstance().getWord();
+						String text = word+"我在鉴定装备的时候意外获得了「"+ ItemHolder.getInstance().getTemplate(item.getId()).getName((Player) activeChar) +"」"+randomCount+"个";
+						SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						String date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+						Announcements.announceToAll(new SystemMessage(14001).addName(activeChar).addString(date).addZoneName(activeChar.getLoc()).addItemName(item.getId()).addString(String.valueOf(randomCount)));
+//						Announcements.shout((Player) activeChar,text, ChatType.SYSTEM_MESSAGE);
+						String log_content = date+"["+target.getName()+"]系统公告内容："+text+",获得方式:鉴定装备,角色ID："+activeChar.getObjectId()+",道具ID："+item.getId();
+						ThreadPoolManager.getInstance().schedule(new LogGeneral("specialItemsAnnounce/create",log_content),1000L);
+					}
+				}
 			}
 		}
 	}

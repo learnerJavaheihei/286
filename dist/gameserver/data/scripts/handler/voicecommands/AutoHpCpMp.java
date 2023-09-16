@@ -420,6 +420,10 @@ public class AutoHpCpMp extends ScriptVoiceCommandHandler
 			if(!Config.ALLOW_AUTOHEAL_COMMANDS)
 				return;
 
+			boolean acp_enabled = player.getVarBoolean("acp_enabled", true);
+			if (!acp_enabled) {
+				return;
+			}
 			int percent = player.getVarInt("autocp", 0);
 			if(percent > 0)
 			{

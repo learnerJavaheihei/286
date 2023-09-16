@@ -2,6 +2,7 @@ package l2s.gameserver.network.l2.c2s;
 
 import l2s.commons.dao.JdbcEntityState;
 import l2s.commons.util.Rnd;
+import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.data.xml.holder.EnchantItemHolder;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.items.ItemInstance;
@@ -20,10 +21,15 @@ import l2s.gameserver.templates.item.support.EnchantStone;
 import l2s.gameserver.templates.item.support.EnchantVariation;
 import l2s.gameserver.templates.item.support.EnchantVariation.EnchantLevel;
 import l2s.gameserver.templates.item.support.FailResultType;
+import l2s.gameserver.utils.DropSpecialItemAnnounce;
 import l2s.gameserver.utils.ItemFunctions;
 import l2s.gameserver.utils.Log;
+import l2s.gameserver.utils.LogGeneral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RequestEnchantItem extends L2GameClientPacket
 {
@@ -190,7 +196,7 @@ public class RequestEnchantItem extends L2GameClientPacket
 				minEnchantSteep = Math.max(minEnchantSteep, enchantStone.getMinEnchantStep());
 				maxEnchantSteep = Math.max(maxEnchantSteep, enchantStone.getMaxEnchantStep());
 			}
-
+			int oldEnchantLevel =item.getEnchantLevel();
 			int newEnchantLvl = item.getEnchantLevel() + Rnd.get(minEnchantSteep, maxEnchantSteep);
 			newEnchantLvl = Math.min(newEnchantLvl, enchantScroll.getMaxEnchant());
 			if(newEnchantLvl < item.getEnchantLevel()) //  А вдруг?
@@ -235,7 +241,7 @@ public class RequestEnchantItem extends L2GameClientPacket
 				chance *= player.getEnchantChanceModifier();
 
 			chance = Math.min(100, chance);
-
+			boolean success =true;
 			if(Rnd.chance(chance))
 			{
 				item.setEnchantLevel(newEnchantLvl);
@@ -261,6 +267,7 @@ public class RequestEnchantItem extends L2GameClientPacket
 			}
 			else
 			{
+				success=false;
 				FailResultType resultType = enchantScroll.getResultType();
 				if(enchantStone != null && enchantStone.getResultType().ordinal() > resultType.ordinal())
 					resultType = enchantStone.getResultType();
@@ -317,6 +324,13 @@ public class RequestEnchantItem extends L2GameClientPacket
 						break;
 				}
 				player.getListeners().onEnchantItem(item, false);
+			}
+
+			if (DropSpecialItemAnnounce.dropSpecialItems.contains(item.getItemId())) {
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+				String log_content = date+"["+player.getName()+"]强化道具["+item.getName(player)+"]"+(success?"成功":"失败")+",原有强化等级："+oldEnchantLevel+"强化后等级："+item.getEnchantLevel()+",角色ID："+player.getObjectId()+",道具ID："+item.getItemId();
+				ThreadPoolManager.getInstance().schedule(new LogGeneral("specialItemsAnnounce/enchant",log_content),1000L);
 			}
 		}
 		finally

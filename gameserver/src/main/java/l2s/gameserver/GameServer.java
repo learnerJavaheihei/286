@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import l2s.gameserver.utils.AutoCancelConsignmentGold;
+import l2s.gameserver.utils.*;
 import net.sf.ehcache.CacheManager;
 
 import l2s.commons.lang.StatsUtils;
@@ -74,9 +74,6 @@ import l2s.gameserver.tables.FakePlayersTable;
 import l2s.gameserver.tables.SubClassTable;
 import l2s.gameserver.taskmanager.AutomaticTasks;
 import l2s.gameserver.taskmanager.ItemsAutoDestroy;
-import l2s.gameserver.utils.OnlineTxtGenerator;
-import l2s.gameserver.utils.Strings;
-import l2s.gameserver.utils.TradeHelper;
 import l2s.gameserver.utils.velocity.VelocityUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -258,6 +255,9 @@ public class GameServer
 		CharacterDAO.getInstance();
 
 		ClanTable.getInstance();
+
+		// 掉落公告初始化
+		DropSpecialItemAnnounce.getInstance();
 
 		SubClassTable.getInstance();
 

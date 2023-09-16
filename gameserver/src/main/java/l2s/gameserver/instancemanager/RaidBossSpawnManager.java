@@ -247,6 +247,48 @@ public class RaidBossSpawnManager
 		NpcInstance npc = spawner.getFirstSpawned();
 		return npc == null || !npc.isVisible() || npc.isDead() ? Status.DEAD : Status.ALIVE;
 	}
+	public NpcInstance getRaidBossId(int bossId) {
+		if (!this._aliveRaidBosses.contains(bossId)) {
+			return null;
+		}
+		Spawner spawner = (Spawner)_spawntable.get(bossId);
+		if (spawner == null) {
+			return null;
+		}
+		NpcInstance npc = spawner.getFirstSpawned();
+		return npc == null ? null : npc;
+	}
+	public static int getRaidBossReborn(int npcid) {
+		int value;
+		PreparedStatement statement;
+		Connection con;
+		block4: {
+			con = null;
+			statement = null;
+			ResultSet rset = null;
+			value = 0;
+			try {
+				con = DatabaseFactory.getInstance().getConnection();
+				statement = con.prepareStatement("Select respawn_delay from `raidboss_status` where id = ?");
+				statement.setInt(1, npcid);
+				rset = statement.executeQuery();
+				if (!rset.next()) break block4;
+				value = rset.getInt("respawn_delay");
+			}
+			catch (SQLException e) {
+				try {
+					_log.warn("RaidBossSpawnManager: Couldnt update raidboss_status table");
+				}
+				catch (Throwable throwable) {
+					DbUtils.closeQuietly((Connection)con, statement);
+					throw throwable;
+				}
+				DbUtils.closeQuietly((Connection)con, (Statement)statement);
+			}
+		}
+		DbUtils.closeQuietly((Connection)con, (Statement)statement);
+		return value;
+	}
 
 	public boolean isDefined(int bossId)
 	{
