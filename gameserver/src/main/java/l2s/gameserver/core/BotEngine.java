@@ -100,7 +100,7 @@ public class BotEngine
         /*内挂剩余时间为0禁用*/
         String s = BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()));
         if (s==null || Integer.parseInt(s) == 0) {
-            player.sendMessage("当前自動狩獵剩余使用时间为0,无法开启内挂..");
+            player.sendMessage("当前剩余使用时间为0,无法开启自動狩獵..");
             return;
         }
 

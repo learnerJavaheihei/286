@@ -48,11 +48,16 @@ public class RequestExAutoplaySetting extends L2GameClientPacket
 		autoFarm.setHealPercent(_healPercent);
 		autoFarm.setMeleeAttackMode(_meleeAttackMode);
 		if (_farmActivate){
-			BotEngine.getInstance().startBotTask(player);
-			autoFarm.setUnkParam1(_unkParam1);
-			autoFarm.setFarmActivate(_farmActivate);
-			autoFarm.setUnkParam2(_unkParam2);
-			player.sendPacket(new ExAutoplaySetting(player));
+			if (botConfig.isAbort()) {
+				BotEngine.getInstance().startBotTask(player);
+			}
+			// 狩猎 启动 后检查
+			if (!botConfig.isAbort()) {
+				autoFarm.setUnkParam1(_unkParam1);
+				autoFarm.setFarmActivate(_farmActivate);
+				autoFarm.setUnkParam2(_unkParam2);
+				player.sendPacket(new ExAutoplaySetting(player));
+			}
 		}
 		else{
 			botConfig.setAbort(true, "");

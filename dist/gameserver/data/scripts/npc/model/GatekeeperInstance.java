@@ -78,6 +78,8 @@ public class GatekeeperInstance extends MerchantInstance {
 				}
 			}
 		}
+		else
+			super.onBypassFeedback(player, command);
 	}
 	private void teleportToCharacter(Player activeChar, GameObject target)
 	{

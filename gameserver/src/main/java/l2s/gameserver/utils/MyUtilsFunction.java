@@ -157,7 +157,7 @@ public class MyUtilsFunction {
                     }
                     html = html.replace("%ownerMemberGold%", String.valueOf(countOf));
                     html = html.replace("%page%", String.valueOf(pageIndex));
-                    html = html.replace("%pages%", maps == null ? "1" : String.valueOf(pages));
+                    html = html.replace("%pages%", (maps == null || maps.size()<=0) ? "1" : String.valueOf(pages));
 //                    msg.setFile(html);
                     msg.setHtml(html);
                     player.sendPacket(msg);
@@ -203,7 +203,7 @@ public class MyUtilsFunction {
                     html = html.replace("%ownerSimplyGold%", goldCountOf >= 10000 ? goldCountOf / 10000 + "万" : String.valueOf(goldCountOf));
                     html = html.replace("%ownerMemberGold%", String.valueOf(memberGoldCountOf));
                     html = html.replace("%page%", String.valueOf(pageIndex));
-                    html = html.replace("%pages%", maps == null ? "1" : String.valueOf(pages));
+                    html = html.replace("%pages%", (maps == null || maps.size()<=0) ? "1" : String.valueOf(pages));
 //                    msg.setFile(html);
                     msg.setHtml(html);
                     player.sendPacket(msg);
