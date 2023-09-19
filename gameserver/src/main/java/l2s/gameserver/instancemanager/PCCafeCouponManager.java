@@ -34,6 +34,7 @@ public class PCCafeCouponManager
 
 	private static final String SELECT_PCCAFE_CODE = "SELECT type, value, used_by FROM pccafe_coupons WHERE serial_code=?";
 	private static final String UPDATE_PCCAFE_CODE = "UPDATE pccafe_coupons SET used_by=? WHERE serial_code=?";
+	private static final String UPDATE_PCCAFE_CODE_TYPE3 = "UPDATE pccafe_coupons SET used_by=? , login = ?  WHERE serial_code=?";//修復CDK限定每個帳號領取1次
 	private static final String INSERT_PCCAFE_CODE = "INSERT INTO pccafe_coupons (serial_code, type, value, used_by) VALUES (?,?,?,?)";
 
 	private static final String CODE_CHARACTERS_STRING = "abcdefghijklmnopqrstuvwxyz1234567890";
@@ -200,9 +201,22 @@ public class PCCafeCouponManager
 			try
 			{
 				con = DatabaseFactory.getInstance().getConnection();
-				statement = con.prepareStatement(UPDATE_PCCAFE_CODE);
-				statement.setInt(1, player.getObjectId());
-				statement.setString(2, couponCode);
+				//CDK限定每個帳號領取1次--
+				if (type > 2) //類型大於2的我都設置成為一次性物品。 所以 3 4 5 6 7都會鎖住成一次性，或許如果有活動就要新增一個類型了。
+				{
+					//"UPDATE pccafe_coupons SET used_by=? , login = ?  WHERE serial_code=?"
+					statement = con.prepareStatement(UPDATE_PCCAFE_CODE_TYPE3);
+					statement.setInt(1, player.getObjectId());
+					statement.setString(2, player.getAccountName());
+					statement.setString(3, couponCode);
+				}
+				else // 1 , 2
+				{
+				//--CDK限定每個帳號領取1次
+					statement = con.prepareStatement(UPDATE_PCCAFE_CODE);//原始
+					statement.setInt(1, player.getObjectId());//原始
+					statement.setString(2, couponCode);//原始
+				}//CDK限定每個帳號領取1次
 				statement.execute();
 
 				player.unsetVar(PC_CODE_ATTEMPS_VAR);

@@ -596,7 +596,7 @@ public class CreatureMovement
 					if (first==1) {
 						_actor.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_LEFT_THE_PEACEFUL_ZONE));
 						for (int i = 0; i<=3; i++) {
-							msgs[i] = "非会员不能在你指定的非安全区域中移动,你将在「"+ (3-i) +"」秒后传送回附近的根据地！";
+							msgs[i] = "角色等级超过10级的非会员将不能在非安全区移动,你将在「"+ (3-i) +"」秒后传送回附近的城镇！";
 							int finalI = i;
 							ScheduledFuture<?> schedule = ThreadPoolManager.getInstance().schedule(new Runnable() {
 								@Override

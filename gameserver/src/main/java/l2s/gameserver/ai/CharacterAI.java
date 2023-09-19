@@ -16,6 +16,7 @@ import l2s.gameserver.model.World;
 import l2s.gameserver.model.instances.NpcInstance;
 import l2s.gameserver.network.l2.s2c.DiePacket;
 import l2s.gameserver.network.l2.s2c.ExDieInfo;
+//import l2s.gameserver.network.l2.s2c.noname.ExItemsToRestore;
 import l2s.gameserver.skills.SkillEntry;
 import org.napile.primitive.maps.IntObjectMap;
 import org.napile.primitive.maps.impl.CHashIntObjectMap;
@@ -150,6 +151,8 @@ public class CharacterAI extends AbstractAI
 		if (actor.isPlayer())
 		{
 			actor.broadcastPacket(new ExDieInfo(actor.getPlayer()));
+			//actor.sendPacket(new ExItemsToRestore(actor.getPlayer()));
+			//不知道修复的什么
 		}
 
 		setIntention(CtrlIntention.AI_INTENTION_IDLE);

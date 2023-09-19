@@ -1,7 +1,7 @@
 package l2s.gameserver.utils;
 
 import com.spreada.utils.chinese.ZHConverter;
-import handler.onshiftaction.commons.RewardListInfo;
+import l2s.gameserver.handler.onshiftaction.commons.RewardListInfo;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.NpcHolder;
 import l2s.gameserver.geometry.Location;

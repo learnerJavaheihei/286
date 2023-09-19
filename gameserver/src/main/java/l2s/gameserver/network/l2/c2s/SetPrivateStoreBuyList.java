@@ -69,6 +69,9 @@ public class SetPrivateStoreBuyList extends L2GameClientPacket
 			for(int s = 0; s < saCount; s++)
 				readD(); // TODO[UNDERGROUND]: SA 2 Abnormal
 
+			readD();//修復私人商店
+			readC();//修復私人商店
+
 			_items.add(item);
 		}
 		return true;

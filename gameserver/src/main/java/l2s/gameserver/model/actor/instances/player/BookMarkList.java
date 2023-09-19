@@ -121,7 +121,7 @@ public class BookMarkList
 		owner.bookmarkLocation = new Location(bookmark.x, bookmark.y, bookmark.z);
 
 		if (Config.enablePremiumAccountPeaceZone && !MyUtilsFunction.isPremiumAccountPeaceZone(owner,owner.bookmarkLocation) && owner.getLevel() > 10){
-			String msg = "非会员不能传送到非安全区区域！";
+			String msg = "等级大于10级的非会员角色不能传送到非安全区区域！";
 			owner.sendMessage(msg);
 			return false;
 		}
@@ -378,7 +378,7 @@ public class BookMarkList
 		}
 
 		if (Config.enablePremiumAccountPeaceZone && !MyUtilsFunction.isPremiumAccountPeaceZone(player,player.bookmarkLocation) && player.getLevel() > 10){
-			String msg = "非会员不能传送到非安全区区域！";
+			String msg = "等级大于10级的非会员角色不能传送到非安全区区域！";
 			player.sendMessage(msg);
 			return false;
 		}

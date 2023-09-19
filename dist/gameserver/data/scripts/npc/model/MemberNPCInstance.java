@@ -175,7 +175,7 @@ public class MemberNPCInstance extends NpcInstance
 		}
 		else if(buypassOptions[0].equals("UpgradeLoad"))
 		{
-			final int feeItemId = 39508;
+			final int feeItemId = 29520;
 			final long feeItemCount = 1000;
 			final String[] availableColors = BBSConfig.COLOR_TITLE_SERVICE_COLORS;
 			if(feeItemId == 0 || availableColors.length == 0)
@@ -273,7 +273,7 @@ public class MemberNPCInstance extends NpcInstance
 				}
 				if(UpdateMemberConis(player , -getCoins))
 				{
-					ItemFunctions.addItem(player, 39508, getCoins, true);
+					ItemFunctions.addItem(player, 29520, getCoins, true);
 				}
 				memberCoins = memberCoins - getCoins;
 			}
@@ -1387,7 +1387,7 @@ public class MemberNPCInstance extends NpcInstance
 		}else if(buypassOptions[0].equals("ChangeMyClassId"))
 		{
 			int myClassId = Integer.parseInt(buypassOptions[1]);
-			if(myClassId > (ClassId.VALUES.length - 1))
+			if (myClassId > (ClassId.VALUES.length - 1) && myClassId != 192 && myClassId != 125 && myClassId != 193 && myClassId != 126 && myClassId != 127 && myClassId != 194 && myClassId != 130 && myClassId != 131 && myClassId != 195 && myClassId != 134)
 			{
 				player.sendMessage("輸入的參數錯誤");// There are no classes over 136 id.
 				return;
@@ -1399,7 +1399,7 @@ public class MemberNPCInstance extends NpcInstance
 				return;
 			}
 			int money = GetLevelMoney(player);
-			if(player.getInventory().getCountOf(39508) < money)
+			if(player.getInventory().getCountOf(29520) < money)
 			{
 				player.sendMessage("支付費用不足 " + money + " 個裸鑽.");// There are no classes over 136 id.
 				return;
@@ -1441,7 +1441,7 @@ public class MemberNPCInstance extends NpcInstance
 			}
 
 			//player.sendSkillList();
-			ItemFunctions.deleteItem(player, 39508, money, true); //这样子删除物品有讯息出来
+			ItemFunctions.deleteItem(player, 29520, money, true); //这样子删除物品有讯息出来
 			int oldId = player.getActiveClassId();
 			String name = "「" + player.getName() + "」通過新魔力服管理員轉換了自己的職業為: " + player.getClassId().getName(player) + " -> ";
 			player.setClassId(myClassId, true);
@@ -1520,7 +1520,7 @@ public class MemberNPCInstance extends NpcInstance
 				player.sendMessage("已購購買,不可重複買.");
 				return ;
 			}
-			if(player.getInventory().getCountOf(39508) < 250)
+			if(player.getInventory().getCountOf(29520) < 250)
 			{
 				player.sendMessage("支付費用不足 250 裸鑽.");
 				return ;
@@ -1529,12 +1529,12 @@ public class MemberNPCInstance extends NpcInstance
 			{
 				public void sayYes()
 				{
-					if(player.getInventory().getCountOf(39508) < 250) //再次判断 金币 100个
+					if(player.getInventory().getCountOf(29520) < 250) //再次判断 金币 100个
 					{
 						player.sendMessage("支付費用不足 250 裸鑽.");
 						return;
 					}
-					ItemFunctions.deleteItem(player, 39508, 250, true);
+					ItemFunctions.deleteItem(player, 29520, 250, true);
 					InsertIntoCharacterSuite(player, buypassOptions[1]);
 				}
 
@@ -1604,7 +1604,7 @@ public class MemberNPCInstance extends NpcInstance
 				player.sendMessage("請裝備相同武器類型再來購買。");
 				return;
 			}
-			if(player.getInventory().getCountOf(39508) < 250)
+			if(player.getInventory().getCountOf(29520) < 250)
 			{
 				player.sendMessage("支付費用不足 250 裸鑽.");
 				return ;
@@ -1631,7 +1631,7 @@ public class MemberNPCInstance extends NpcInstance
 						player.sendMessage("請裝備相同武器類型再來購買。");
 						return;
 					}
-					if(player.getInventory().getCountOf(39508) < 250)
+					if(player.getInventory().getCountOf(29520) < 250)
 					{
 						player.sendMessage("支付費用不足 250 裸鑽.");
 						return ;
@@ -1646,7 +1646,7 @@ public class MemberNPCInstance extends NpcInstance
 						item.setVisualId(0);
 						player.resetWeaponVisualId(item.getObjectId());
 					}
-					ItemFunctions.deleteItem(player, 39508, 250, true);
+					ItemFunctions.deleteItem(player, 29520, 250, true);
 					InsertIntoCharacterWeapon(player.getObjectId(), item.getObjectId(), VisualId);
 					item.setVisualId(VisualId);
 					player.getInventory().sendModifyItem(item);
@@ -1857,6 +1857,8 @@ public class MemberNPCInstance extends NpcInstance
 			money = 540 + (level - 71) * 20;
 		else if(level <= 85)
 			money = 750 + (level - 81) * 50;
+		else if(level <= 90)
+			money = 1000 + (level - 86) * 75;
 		else
 			money = 9999;//这一个区域应该不存在写一个超大值(如果超过85级才会出现的区域)
 		return money;

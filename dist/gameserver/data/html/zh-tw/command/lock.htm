@@ -1,36 +1,15 @@
-<html>
- <title>
-  锁
- </title>
- <head>
-  <font color="LEVEL">
-   您可以锁定或解锁当前ip地址的帐户。
-锁定时间可以用来避免帐户丢失。如果在选定的时间内没有登录，锁将被禁用。最长锁定时间为14天。默认为7天。
-CIDR表示法可用于指定子网。如果字段留空，将使用当前ip。
-  </font>
-  <br>
-     您當前的IP地址：%IP%
-  <br>
-  <br>
-  <center>
-      IP/CIDR地址：
-   <edit height="15" var="IP" width="80">
-   </edit>
-  </center>
-  <center>
-      鎖定時間（天）：
-   <edit height="15" var="time" width="80">
-   </edit>
-  </center>
-  <center>
-   <button action="bypass -h user_lock on $time $IP" back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF" height="20" value="開啟" width="100">
-   </button>
-  </center>
-  <center>
-   <button action="bypass -h user_lock off" back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF" height="20" value="關閉" width="100">
-   </button>
-  </center>
-  <br>
-  <br>
- </head>
-</html>
+<html><title>鎖定</title><head>
+<font color="LEVEL">
+您可以鎖定或解鎖您當前IP地址的帳戶。
+鎖定時間可用於避免帳戶損失。 如果在選定時間內沒有登錄，將禁用"鎖定"。 最大鎖定時間為14天。 默認為7天。
+CIDR表示法可用於指定子網。 如果字段為空白電流ip，將被使用.
+
+</font>
+<br>
+您當前的IP地址: %IP%
+<br><br>
+<center>IP /CIDR地址: <edit var="IP" width=80 height=15 /></center>
+<center>鎖定時間（天）: <edit var="time" width=80 height=15 /></center>
+<center><button value="ON" action="bypass -h user_lock on $time $IP" width=100 height=20 back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF" /></center>
+<center><button value="OFF" action="bypass -h user_lock off" width=100 height=20 back="L2UI_CT1.Button_DF_Down" fore="L2UI_CT1.Button_DF" /></center><br><br>
+</head></html>

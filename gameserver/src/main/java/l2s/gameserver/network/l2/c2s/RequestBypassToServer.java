@@ -28,6 +28,10 @@ import l2s.gameserver.network.l2.s2c.PackageToListPacket;
 import l2s.gameserver.utils.*;
 import l2s.gameserver.utils.BypassStorage.ValidBypass;
 import l2s.gameserver.utils.BypassStorage.BypassType;
+import l2s.gameserver.network.l2.s2c.ExEnSoulExtractionShow;//修复过的自己加的古文
+import l2s.gameserver.network.l2.s2c.ExShowEnsoulWindow;//修复过的自己加的古文
+import l2s.gameserver.network.l2.s2c.ExShowUpgradeSystem;//修复过的自己加的装备升级
+import l2s.gameserver.network.l2.s2c.ExShowUpgradeSystemNormal;//修复过的自己加的装备升级
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -81,6 +85,17 @@ public class RequestBypassToServer extends L2GameClientPacket
 						activeChar.sendPacket(SystemMsg.SELECT_THE_ITEM_TO_BE_AUGMENTED, ExShowVariationMakeWindow.STATIC);
 					else if(cmdChoice == 2)
 						activeChar.sendPacket(SystemMsg.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION, ExShowVariationCancelWindow.STATIC);
+					else if(cmdChoice == 3)//修复自己加的古文镶嵌效果
+						activeChar.sendPacket(ExShowEnsoulWindow.STATIC);
+					else if(cmdChoice == 4)//修复自己加的古文镶嵌效果
+						activeChar.sendPacket(ExEnSoulExtractionShow.STATIC);
+					else if(cmdChoice == 5)//付费升级
+						activeChar.sendPacket(new ExShowUpgradeSystem(1));
+					else if(cmdChoice == 6)//一般升级D-A
+						activeChar.sendPacket(new ExShowUpgradeSystemNormal(1));
+					else if(cmdChoice == 7)//一般升级S
+						activeChar.sendPacket(new ExShowUpgradeSystemNormal(2));
+					
 				}
 			}
 			else if(bp.bypass.startsWith("pcbang?"))
