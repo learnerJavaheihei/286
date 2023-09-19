@@ -122,6 +122,11 @@ public abstract class Creature extends GameObject
 	public static final double HEADINGS_IN_PI = 10430.378350470452724949566316381;
 	public static final int INTERACTION_DISTANCE = 200;
 
+	private double barrier = 0.;
+	public void setBarrier(double barrier) {
+
+		this.barrier = barrier;
+	}
 	private Future<?> _stanceTask;
 	private Runnable _stanceTaskRunnable;
 	private long _stanceEndTime;
@@ -2572,7 +2577,16 @@ public abstract class Creature extends GameObject
 			return;
 
 		if(canReflectAndAbsorb) // TODO: Сверить с оффом и переделать.
-			damage = Math.max(0, damage - getStat().calc(Stats.DAMAGE_BLOCK_COUNT));
+//			damage = Math.max(0, damage - getStat().calc(Stats.DAMAGE_BLOCK_COUNT));
+			if (damage >= this.barrier){
+				damage = damage - this.barrier;
+				if (this.barrier!= 0)
+					setBarrier(0);
+			}
+			else{
+				setBarrier(this.barrier-damage);
+				damage = 0;
+			}
 
 		boolean damaged = true;
 		if(miss || damage <= 0)

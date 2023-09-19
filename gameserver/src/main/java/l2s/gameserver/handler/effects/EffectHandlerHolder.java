@@ -183,6 +183,8 @@ public class EffectHandlerHolder extends AbstractHolder
 		// Tick Effects
 		registerHandler(t_hp.class);
 		registerHandler(t_hp_magic.class);
+
+		registerHandler(damage_block_count.class);
 	}
 
 	public void registerHandler(Class<? extends EffectHandler> handlerClass)
