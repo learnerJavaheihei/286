@@ -16,6 +16,7 @@ import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.skills.AbnormalType;
 import l2s.gameserver.skills.EffectUseType;
 import l2s.gameserver.skills.SkillEntry;
+import l2s.gameserver.stats.Stats;
 import l2s.gameserver.templates.cubic.CubicTemplate;
 import l2s.gameserver.templates.skill.EffectTemplate;
 import l2s.gameserver.utils.ItemFunctions;
@@ -109,6 +110,11 @@ public class BotSupport implements IBotActionHandler
 						CubicTemplate template = null;
 						for (EffectTemplate effectTemplate : skillEntry.getTemplate().getEffectTemplates(EffectUseType.NORMAL_INSTANT)) {
 							if ("i_summon_cubic".equals(effectTemplate.getParams().get("name"))) {
+								int size = (int) player.getStat().calc(Stats.CUBICS_LIMIT, 1);
+								if(cubics.size() >= size){
+									useCubic = false;
+									break;
+								}
 								String id1 = (String) effectTemplate.getParams().get("id");
 								String level1 = (String) effectTemplate.getParams().get("level");
 								int cubicId = Integer.parseInt(id1);
@@ -116,7 +122,7 @@ public class BotSupport implements IBotActionHandler
 								template = CubicHolder.getInstance().getTemplate(cubicId, level);
 							}
 						}
-						for (Cubic cubic : player.getCubics()) {
+						for (Cubic cubic : cubics) {
 							if (cubic.getTemplate() == template) {
 								useCubic = false;
 								break;

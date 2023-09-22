@@ -27,8 +27,8 @@ public class RestartServerHangUpTime {
     public RestartServerHangUpTime(){
         Calendar calendar = Calendar.getInstance();
         /*** 定制每日2:00执行方法 ***/
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 52);
+        calendar.set(Calendar.HOUR_OF_DAY, 6);
+        calendar.set(Calendar.MINUTE, 30);
         calendar.set(Calendar.SECOND, 0);
         updateTime = calendar.getTime(); //第一次执行定时任务的时间
     }
@@ -44,7 +44,7 @@ public class RestartServerHangUpTime {
         if(allPlayer!=null && (date.compareTo(updateTime) == 1 ||date.compareTo(updateTime) == 0)){
             for (Map<String, Object> player : allPlayer) {
                 // 如果玩家的剩余时间小于10小时 等于10小时不重置  购买过的人也要更新
-                if ((Integer)player.get("left_time") != 36000 || (Integer)player.get("is_buy") == 1) {
+                if ((Integer)player.get("left_time") != 36000 || (Integer)player.get("is_buy") > 0) {
                     if(player.get("renew_time") == null){
                         objIdList.add((Integer) player.get("obj_id"));
                         continue;
@@ -72,7 +72,7 @@ public class RestartServerHangUpTime {
             // 如果缓存没有数据也就是玩家没在线 更新数据库
             _log.info("=====update"+objIdList.size());
             long start = System.currentTimeMillis();
-            BotHangUpTimeDao.getInstance().updateHangUpRenewTime(objIdList,date);
+            BotHangUpTimeDao.getInstance().updateHangUpRenewTime(objIdList,new java.sql.Date(date.getTime()+8*60*60*1000L));
             long end = System.currentTimeMillis();
             _log.info("updateTime====="+String.valueOf(end-start)+"ms");
         }

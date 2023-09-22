@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import l2s.gameserver.core.RestartServerHangUpTime;
+import l2s.gameserver.core.TimerManager;
 import l2s.gameserver.utils.*;
 import net.sf.ehcache.CacheManager;
 
@@ -216,6 +218,17 @@ public class GameServer
 			_log.error("Could not read object IDs from DB. Please Check Your Data.");
 			throw new Exception("Could not initialize the ID factory");
 		}
+		/** 检查是否更新了挂机时间 */
+		RestartServerHangUpTime.getInstance().checkIsRenewHangUpTime();
+
+		/** 开启定时更新挂机时间任务 */
+		TimerManager.getInstance().statImplement();
+
+		// 掉落公告初始化
+		DropSpecialItemAnnounce.getInstance();
+
+		// 重启自动检查
+		AutoCancelConsignmentGold.getInstance().checkConsignmentGold();
 
 		CacheManager.getInstance();
 
@@ -256,8 +269,6 @@ public class GameServer
 
 		ClanTable.getInstance();
 
-		// 掉落公告初始化
-		DropSpecialItemAnnounce.getInstance();
 
 		SubClassTable.getInstance();
 
@@ -279,8 +290,6 @@ public class GameServer
 
 		PlayerMessageStack.getInstance();
 
-		// 重启自动检查
-		AutoCancelConsignmentGold.getInstance().checkConsignmentGold();
 
 		if(Config.AUTODESTROY_ITEM_AFTER > 0)
 			ItemsAutoDestroy.getInstance();

@@ -2,17 +2,28 @@ package l2s.gameserver.botscript.actionhandler;
 
 import l2s.gameserver.botscript.BotConfigImp;
 import l2s.gameserver.botscript.MonsterSelectUtil;
-import l2s.gameserver.core.*;
+import l2s.gameserver.core.BotConfig;
+import l2s.gameserver.core.BotEngine;
+import l2s.gameserver.core.BotProperties;
+import l2s.gameserver.core.BotThinkTask;
+import l2s.gameserver.core.IBotActionHandler;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import l2s.gameserver.model.*;
+import l2s.gameserver.model.actor.instances.creature.AbnormalList;
+import l2s.gameserver.model.instances.ChairInstance;
 import l2s.gameserver.model.instances.MonsterInstance;
 import l2s.gameserver.model.instances.SummonInstance;
 import l2s.gameserver.model.items.ItemInstance;
+import l2s.gameserver.model.items.PcInventory;
 import l2s.gameserver.skills.AbnormalType;
 import l2s.gameserver.skills.SkillEntry;
+import l2s.gameserver.templates.item.ItemTemplate;
 import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.Collections;
-import java.util.List;
 
 public class BotRest implements IBotActionHandler
 {
@@ -132,7 +143,8 @@ public class BotRest implements IBotActionHandler
 		}
 		BotConfig config = BotEngine.getInstance().getBotConfig(actor);
 		double selfPercent = actor.getCurrentHpPercents();
-		if(config.getSelfHpHeal() != 0 && selfPercent <= (double) config.getSelfHpHeal() && config.getHealSkill1() != 0 && !actor.isSkillDisabled((entry = actor.getKnownSkill(config.getHealSkill1())).getTemplate()) && entry != null && BotThinkTask.checkSkillMpCost(actor, entry) && entry.checkCondition((Creature) actor, (Creature) actor, false, false, true, false, false))
+		entry = actor.getKnownSkill(config.getHealSkill1());
+		if(config.getSelfHpHeal() != 0 && selfPercent <= (double) config.getSelfHpHeal() && config.getHealSkill1() != 0 && entry != null && !actor.isSkillDisabled(entry.getTemplate()) &&  BotThinkTask.checkSkillMpCost(actor, entry) && entry.checkCondition((Creature) actor, (Creature) actor, false, false, true, false, false))
 		{
 			return true;
 		}
@@ -140,7 +152,7 @@ public class BotRest implements IBotActionHandler
 		{
 			entry = actor.getKnownSkill(config.getHealSkill3());
 			SummonInstance pet = actor.getSummon();
-			if(pet != null && !pet.isDead() && pet.getCurrentHpPercents() <= (double) config.getPetHpHeal() && !actor.isSkillDisabled(entry.getTemplate()) && entry != null && BotThinkTask.checkSkillMpCost(actor, entry) && entry.checkCondition((Creature) actor, (Creature) pet, false, false, true, false, false))
+			if(pet != null && !pet.isDead() && pet.getCurrentHpPercents() <= (double) config.getPetHpHeal() && entry != null &&!actor.isSkillDisabled(entry.getTemplate()) &&  BotThinkTask.checkSkillMpCost(actor, entry) && entry.checkCondition((Creature) actor, (Creature) pet, false, false, true, false, false))
 			{
 				return true;
 			}
@@ -170,7 +182,7 @@ public class BotRest implements IBotActionHandler
 			}
 		}
 		if(config.isPartyAntidote() && (entry = actor.getKnownSkill(1012)) != null && party != null)
-		/*技能ID1012 療毒術*/
+			/*技能ID1012 療毒術*/
 		{
 			for(Player member : party)
 			{
@@ -180,7 +192,7 @@ public class BotRest implements IBotActionHandler
 			}
 		}
 		if(config.isPartyBondage() && (entry = actor.getKnownSkill(1018)) != null && party != null)
-		/*技能ID1018 淨化*/
+			/*技能ID1018 淨化*/
 		{
 			for(Player member : party)
 			{
@@ -190,7 +202,7 @@ public class BotRest implements IBotActionHandler
 			}
 		}
 		if(config.isPartyParalysis() && (entry = actor.getKnownSkill(1018)) != null && party != null)
-		/*技能ID1018 淨化*/
+			/*技能ID1018 淨化*/
 		{
 			for(Player member : party)
 			{

@@ -41,7 +41,7 @@ public class HangUpRenewTimerTask extends TimerTask {
             RestartServerHangUpTime.getInstance().checkIsRenewHangUpTime();
 
             long start = System.currentTimeMillis();
-            BotHangUpTimeDao.getInstance().updateHangUpRenewTime(renewTimeList,date);
+            BotHangUpTimeDao.getInstance().updateHangUpRenewTime(renewTimeList,new java.sql.Date(date.getTime()+8*60*60*1000L));
             // 将缓存中所有人的购买状态都清空
             Player._isBuyMap.clear();
             Player._buyTimesByOBJ.clear();

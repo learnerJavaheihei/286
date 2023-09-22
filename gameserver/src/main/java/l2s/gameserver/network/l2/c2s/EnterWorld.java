@@ -282,8 +282,9 @@ public class EnterWorld extends L2GameClientPacket
 		if(Config.SHOW_HTML_WELCOME)
 		{
 			String html = HtmCache.getInstance().getHtml("welcome.htm", activeChar);
-			HtmlMessage msg = new HtmlMessage(5);
-			msg.setHtml(HtmlUtils.bbParse(html));
+			HtmlMessage msg = new HtmlMessage(0);
+			msg.setItemId(-1);
+			msg.setHtml(html);
 			activeChar.sendPacket(msg);
 		}
 
