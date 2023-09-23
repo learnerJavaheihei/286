@@ -176,12 +176,12 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 			newHtml = newHtml.replace("%itemGrade" + i + '%', item != null ? getItemGradeIcon(item) : "<br>");
 			newHtml = newHtml.replace("%dropLists" + i + '%', item != null ? String.valueOf(CalculateRewardChances.getDroplistsCountByItemId(item.getItemId(), true)) : "<br>");
 			newHtml = newHtml.replace("%spoilLists" + i + '%', item != null ? String.valueOf(CalculateRewardChances.getDroplistsCountByItemId(item.getItemId(), false)) : "<br>");
-			newHtml = newHtml.replace("%showMonsters" + i + '%', item != null ? "<button value=\"Show Monsters\" action=\"bypass _dropMonstersByItem_%itemChosenId" + i + "%\" width=120 height=32 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+			newHtml = newHtml.replace("%showMonsters" + i + '%', item != null ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"查看詳情":"Show Details")+"\" action=\"bypass _dropMonstersByItem_%itemChosenId" + i + "%\" width=120 height=32 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
 			newHtml = newHtml.replace("%itemChosenId" + i + '%', item != null ? String.valueOf(item.getItemId()) : "<br>");
 		}
 
-		newHtml = newHtml.replace("%previousButton%", page > 1 ? "<button value=\"Previous\" action=\"bypass _dropItemsByName_" + itemName + "_" + (page - 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
-		newHtml = newHtml.replace("%nextButton%", itemsByName.size() > itemIndex + 1 ? "<button value=\"Next\" action=\"bypass _dropItemsByName_" + itemName + "_" + (page + 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+		newHtml = newHtml.replace("%previousButton%", page > 1 ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"上一頁":"Previous")+"\" action=\"bypass _dropItemsByName_" + itemName + "_" + (page - 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+		newHtml = newHtml.replace("%nextButton%", itemsByName.size() > itemIndex + 1 ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"下一頁":"Next")+"\" action=\"bypass _dropItemsByName_" + itemName + "_" + (page + 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
 
 		newHtml = newHtml.replace("%searchItem%", itemName);
 		newHtml = newHtml.replace("%page%", String.valueOf(page));
@@ -226,12 +226,12 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 				newHtml = newHtml.replace("%monsterCount" + i + '%', "<br>");
 				newHtml = newHtml.replace("%monsterChance" + i + '%', "<br>");
 			}
-			newHtml = newHtml.replace("%showDetails" + i + '%', npc != null ? "<button value=\"Show Details\" action=\"bypass _dropMonsterDetailsByItem_%monsterId" + i + "%\" width=120 height=32 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+			newHtml = newHtml.replace("%showDetails" + i + '%', npc != null ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"查看詳情":"Show Details")+"\" action=\"bypass _dropMonsterDetailsByItem_%monsterId" + i + "%\" width=120 height=32 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
 			newHtml = newHtml.replace("%monsterId" + i + '%', npc != null ? String.valueOf(npc.getId()) : "<br>");
 		}
 
-		newHtml = newHtml.replace("%previousButton%", page > 1 ? "<button value=\"Previous\" action=\"bypass _dropMonstersByItem_%itemChosenId%_" + (page - 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
-		newHtml = newHtml.replace("%nextButton%", templates.size() > npcIndex + 1 ? "<button value=\"Next\" action=\"bypass _dropMonstersByItem_%itemChosenId%_" + (page + 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+		newHtml = newHtml.replace("%previousButton%", page > 1 ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"上一頁":"Previous")+"\" action=\"bypass _dropMonstersByItem_%itemChosenId%_" + (page - 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
+		newHtml = newHtml.replace("%nextButton%", templates.size() > npcIndex + 1 ? "<button value=\""+(player.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"下一頁":"Next")+"\" action=\"bypass _dropMonstersByItem_%itemChosenId%_" + (page + 1) + "\" width=100 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_ct1.Button_DF\">" : "<br>");
 
 		newHtml = newHtml.replace("%searchItem%", getQuickVarS(player, "DCItemName"));
 		newHtml = newHtml.replace("%searchItemPage%", String.valueOf(getQuickVarI(player, "DCItemsPage")));
@@ -406,7 +406,8 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 //	}
 
 	private static CharSequence getItemIcon(ItemTemplate template) {
-		return "<img src=\"" + template.getIcon() + "\" width=32 height=32>";
+		return "<button width=32 height=32 itemtooltip=" + template.getItemId() + "></button>";
+//		return "<img src=\"" + template.getIcon() + "\" width=32 height=32>";
 	}
 
 	private static CharSequence getItemGradeIcon(ItemTemplate template) {
