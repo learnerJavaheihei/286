@@ -375,7 +375,8 @@ public enum Stats
 	ATTACK_TRAIT_CHANGEBODY("attack_trait_changebody", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
 	DEFENCE_TRAIT_CHANGEBODY("defence_trait_changebody", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
 	ATTACK_TRAIT_TWOHANDCROSSBOW("attack_trait_twohandcrossbow", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
-	DEFENCE_TRAIT_TWOHANDCROSSBOW("defence_trait_twohandcrossbow", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+	DEFENCE_TRAIT_TWOHANDCROSSBOW("defence_trait_twohandcrossbow", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
+	P_DAMAGE_ATTACK_MUL("p_damage_attack_mul",1.0,Double.NEGATIVE_INFINITY,1.0);
 
 	public static final Stats[] VALUES = values();
 	public static final int NUM_STATS = VALUES.length;
