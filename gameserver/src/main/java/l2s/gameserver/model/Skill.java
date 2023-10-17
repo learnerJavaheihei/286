@@ -208,7 +208,6 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 
 	public static enum SkillType
 	{
-		PDAM_PATTACK_MUL(PDAM_PATTACK_MUL.class),
 		AIEFFECTS(Continuous.class),
 		BALANCE(Balance.class),
 		BUFF(Continuous.class),
@@ -358,7 +357,6 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 				case STEAL_BUFF:
 				case DISCORD:
 				case DEBUFF_RENEWAL:
-				case PDAM_PATTACK_MUL:
 					return true;
 				default:
 					return false;
@@ -412,7 +410,6 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 				case STEAL_BUFF:
 				case DISCORD:
 				case DEBUFF_RENEWAL:
-				case  PDAM_PATTACK_MUL:
 					return true;
 				default:
 					return false;
