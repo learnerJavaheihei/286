@@ -5,6 +5,7 @@ import l2s.gameserver.Config;
 
 public enum Stats
 {
+	P_DAMAGE_ATTACK_MUL("p_damage_attack_mul",1.0,Double.NEGATIVE_INFINITY,1.0),
 	MAX_HP("maxHp", 0., Double.POSITIVE_INFINITY, 1.),
 	MAX_MP("maxMp", 0., Double.POSITIVE_INFINITY, 1.),
 	MAX_CP("maxCp", 0., Double.POSITIVE_INFINITY, 1.),
