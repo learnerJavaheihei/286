@@ -39,7 +39,7 @@ public final class BaiumGatekeeperInstance extends NpcInstance
 			{
 				if(BaiumManager.consumeRequiredItems(talker))
 				{
-					talker.setVar(BaiumManager.BAIUM_PERMISSION_VAR, true, -1);
+//					talker.setVar(BaiumManager.BAIUM_PERMISSION_VAR, true, -1);
 					talker.teleToLocation(TELEPORT_POSITION);
 				}
 				else

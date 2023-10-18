@@ -27,15 +27,16 @@ public final class BaiumStoneInstance extends NpcInstance
 			{
 				if(!isBusy())
 				{
-					if(player.getVarBoolean(BaiumManager.BAIUM_PERMISSION_VAR))
+					if(BaiumManager.getState() == State.NOTSPAWN)
 					{
-						if(BaiumManager.getState() == State.NOTSPAWN)
-						{
-							setBusy(true);
-							if(!BaiumManager.spawnBaium(this, player))
-								setBusy(false);
-						}
+						setBusy(true);
+						if(!BaiumManager.spawnBaium(this, player))
+							setBusy(false);
 					}
+//					if(player.getVarBoolean(BaiumManager.BAIUM_PERMISSION_VAR))
+//					{
+//
+//					}
 				}
 			}
 		}

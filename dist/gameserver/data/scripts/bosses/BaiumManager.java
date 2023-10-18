@@ -305,11 +305,11 @@ public class BaiumManager implements OnInitScriptListener
 			_raidFinishTask = null;
 		}
 
-		for(Player player : GameObjectsStorage.getPlayers(false, true)) {
-			player.unsetVar(BAIUM_PERMISSION_VAR);
-		}
-
-		CharacterVariablesDAO.getInstance().delete(BAIUM_PERMISSION_VAR);
+//		for(Player player : GameObjectsStorage.getPlayers(false, true)) {
+//			player.unsetVar(BAIUM_PERMISSION_VAR);
+//		}
+//
+//		CharacterVariablesDAO.getInstance().delete(BAIUM_PERMISSION_VAR);
 	}
 
 	// Baium sleeps if not attacked for 30 minutes.
