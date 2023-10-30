@@ -3626,6 +3626,11 @@ public final class Player extends Playable implements PlayerGroup {
         return isProcessingRequest() || isOutOfControl() || isInOlympiadMode() || getTeam() != TeamType.NONE || isInStoreMode() || isInDuel() || getMessageRefusal() || isBlockAll() || isInvisible(null);
     }
 
+    public boolean getBlockBuffs() {
+        return this.getVar("useBlockBuffs@")!=null ?this.getVar("useBlockBuffs@").equals("1"):false;
+    }
+
+
     public boolean isProcessingRequest() {
         if (_request == null)
             return false;
@@ -4561,6 +4566,10 @@ public final class Player extends Playable implements PlayerGroup {
 
                 if (player.getVar("titlecolor") != null)
                     player.setTitleColor(Integer.decode("0x" + player.getVar("titlecolor")));
+
+                // 设置一个 blockBuff·
+                if(player.getVar("useBlockBuffs@") == null)
+                    player.setVar("useBlockBuffs@","0");
 
                 if (player.getVar("namecolor") == null)
                     if (player.isGM())

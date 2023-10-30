@@ -53,6 +53,18 @@ public class Cfg extends ScriptVoiceCommandHandler
 							activeChar.unsetVar(Player.NO_TRADERS_VAR);
 						}
 
+					if(param[0].equalsIgnoreCase("useBlockBuffs@"))
+						if(param[1].equalsIgnoreCase("1"))
+						{
+							activeChar.setVar("useBlockBuffs@", 0);
+						}
+						else if(param[1].equalsIgnoreCase("0"))
+						{
+							activeChar.setVar("useBlockBuffs@",1,-1);
+						}else {
+							activeChar.setVar("useBlockBuffs@",0);
+						}
+
 					if(param[0].equalsIgnoreCase(Player.NO_ANIMATION_OF_CAST_VAR))
 						if(param[1].equalsIgnoreCase("on"))
 						{
@@ -235,6 +247,21 @@ public class Cfg extends ScriptVoiceCommandHandler
 		{
 			dialog = dialog.replace("<?value_translit?>", "of");
 			dialog = dialog.replace("<?value_name_translit?>", disableMessage_result);
+		}
+		String useBlockBuffs = activeChar.getVar("useBlockBuffs@");
+		if (useBlockBuffs != null && useBlockBuffs.equals("1")) {
+			dialog = dialog.replace("<?value_blockBuff?>", "1");
+			dialog = dialog.replace("<?value_name_blockBuff?>", "关闭");
+		}else if (useBlockBuffs == null || useBlockBuffs.length() == 0){
+			activeChar.setVar("useBlockBuff@",0);
+			dialog = dialog.replace("<?value_blockBuff?>", "0");
+			dialog = dialog.replace("<?value_name_blockBuff?>", "开启");
+		}else if (useBlockBuffs != null && useBlockBuffs.equals("0")) {
+			dialog = dialog.replace("<?value_blockBuff?>", "0");
+			dialog = dialog.replace("<?value_name_blockBuff?>", "开启");
+		}
+		else {
+			dialog = dialog.replace("<?value_name_blockBuff?>", "关闭");
 		}
 
 		Functions.show(dialog, activeChar);

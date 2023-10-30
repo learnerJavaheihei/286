@@ -3246,6 +3246,16 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 			if(applyEffectPoint(activeChar, target))
 				startAttackStance = true;
 
+			// 判定是否是同血盟 队友 团队
+			if (this.getSkillType().equals(SkillType.BUFF)) {
+				Player tPlayer = target.getPlayer();
+				if (tPlayer!=null && tPlayer.getBlockBuffs() && target.isPlayable() && activeChar.isPlayable()) {
+					if (tPlayer.getBlockBuffs() && !tPlayer.isInOlympiadMode() && !Skill.getBlockBuffConditions(activeChar, tPlayer)) {
+						continue;
+					}
+				}
+			}
+
 			final boolean reflected = target.checkReflectSkill(activeChar, this);
 			final boolean successEffect = hasEffects(EffectUseType.NORMAL) && calcEffectsSuccess(activeChar, target, true);
 
@@ -3272,6 +3282,60 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 			activeChar.doDie(null);
 		else if(startAttackStance)
 			activeChar.startAttackStanceTask();
+	}
+
+	public static boolean getBlockBuffConditions(Creature activeChar, Creature aimingTarget)
+	{
+		if (activeChar.isPlayable() && activeChar.getPlayer() != null)
+		{
+			if (aimingTarget.isMonster())
+			{
+				return false;
+			}
+
+			final Player player = activeChar.getPlayer();
+			if (aimingTarget.isPlayable() && aimingTarget.getPlayer() != null)
+			{
+				final Player target = aimingTarget.getPlayer();
+
+				if (player.getParty() != null && target.getParty() != null && player.getParty() == target.getParty())
+				{
+					return true;
+				}
+				if (player.getClan() != null && target.getClan() != null)
+				{
+					if (player.getClan().getClanId() == target.getClan().getClanId() && !player.isInOlympiadMode())
+					{
+						return true;
+					}
+					if (player.getAllyId() > 0 && target.getAllyId() > 0 && player.getAllyId() == target.getAllyId() && !player.isInOlympiadMode())
+					{
+						return true;
+					}
+				}
+				if (player.isInOlympiadMode() && player.getOlympiadSide() == target.getOlympiadSide())
+				{
+					return true;
+				}
+				if (player.getPlayerGroup() == target.getPlayerGroup())
+				{
+					return true;
+				}
+				if (player.isInSiegeZone())
+				{
+					return false;
+				}
+				if (player.isInZoneBattle())
+				{
+					return false;
+				}
+				if (target.getKarma() > 0)
+				{
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 
 	public void onFinishCast(Creature aimingTarget, Creature activeChar, Set<Creature> targets)
