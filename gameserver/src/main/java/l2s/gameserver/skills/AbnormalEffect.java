@@ -258,7 +258,7 @@ public enum AbnormalEffect
 	/*249*/TRUE_VANGUARD,
 	/*250*/SHIELD_WALL,
 	/*251*/UNK_251, // Летает Дракон желтый
-	/*252*/UNK_252, // Летает Дракон желтый
+	/*252*/DRAGON_BARRIER,				//龍之屏障
 	/*253*/WHITE_CAT_SUIT, // Переодевает в костюм кошечки
 	/*254*/UNK_254,
 	/*255*/UNK_255,

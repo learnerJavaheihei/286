@@ -1043,7 +1043,8 @@ public class CommunityServices extends CustomCommunityHandler
 					}
 
 					// TODO: Вынести конфиг в конфиги коммунити.
-					if(Config.SERVICES_EXPAND_INVENTORY_MAX >= player.getExpandInventory())
+					//if(Config.SERVICES_EXPAND_INVENTORY_MAX >= player.getExpandInventory())
+					if(Config.SERVICES_EXPAND_INVENTORY_MAX <= player.getExpandInventory())//修復擴充問題
 					{
 						player.sendMessage(player.isLangRus() ? "Вы уже увеличили инвентарь до максимума! Сервис Вам больше не доступен." : "You have increased the inventory to the maximum! Service is no longer available to you.");
 						player.sendPacket(ShowBoardPacket.CLOSE);

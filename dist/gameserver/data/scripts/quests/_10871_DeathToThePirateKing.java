@@ -35,7 +35,7 @@ public class _10871_DeathToThePirateKing extends Quest
 		}
 		else if(event.equalsIgnoreCase("finish_now.htm"))
 		{
-			st.addExpAndSp(900000, 27000);
+			st.addExpAndSp(90000, 2700);
 			st.giveItems(21713, 1);	//cloak
 			st.takeItems(ZAKEN_BLOOD, -1);
 			st.finishQuest();

@@ -100,7 +100,7 @@ public class _664_QuarrelsTime extends Quest
 		else if(event.equalsIgnoreCase("end.htm"))
 		{
 						 			
-				st.addExpAndSp(450000, 13500);
+				st.addExpAndSp(45000, 1350);
 				st.giveItems(49670, 1);
 				if(st.getPlayer().getQuestState(10868) != null) //why make a series of quests if they don't work O_O
 					st.giveItems(90747, 1); //maybe more at once?

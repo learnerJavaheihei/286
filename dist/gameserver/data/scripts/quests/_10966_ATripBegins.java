@@ -65,7 +65,7 @@ public class _10966_ATripBegins extends Quest
 			}
 			case "bathis_q10966_05.htm":
 			{
-				st.addExpAndSp(500_000, 12_500);
+				st.addExpAndSp(50_000, 1_500);
 				st.giveItems(IMPROVED_SOE, 10);
 				st.giveItems(TALISMAN_OF_ADEN, 1);
 				st.giveItems(SCROLL_ENCHANT_TALISMAN_ADEN, 1);

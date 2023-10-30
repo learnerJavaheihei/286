@@ -4,6 +4,7 @@ import l2s.gameserver.model.Player;
 import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.utils.ItemFunctions;
+import l2s.gameserver.Config;/*PK自动关监狱*/
 
 //By Evil_dnk
 
@@ -57,11 +58,26 @@ public class PkDecrease extends SimpleItemHandler
 	{
 		if(player.getPkKills() > 0)
 		{
+			boolean jal = Config.PK_MAX_JAILAIl == -1 ? false : (player.isInJail());/*PK自动关监狱*/
 			if (player.getPkKills() - count < 0)
 				player.setPkKills(0);
 			else
 				player.setPkKills(player.getPkKills() - count);
 			ItemFunctions.deleteItem(player, item, 1);
+			/*PK自动关监狱--*/
+			if(jal)
+			{
+				if(player.getPkKills() < Config.PK_MIN_JAILAIl)
+				{
+					player.fromJail();
+					//Announcements.announceToAll("屠夫「" + player.getName() + "」已從監獄釋放。");
+				}
+				else
+				{
+					player.sendMessage("PK值低於 " + Config.PK_MIN_JAILAIl + " 點,自動出獄.");
+				}
+			}
+		/*--PK自动关监狱*/
 			player.broadcastCharInfo();
 		}
 		else

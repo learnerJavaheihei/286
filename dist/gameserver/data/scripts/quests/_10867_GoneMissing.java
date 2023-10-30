@@ -98,7 +98,7 @@ public class _10867_GoneMissing extends Quest
 		{
 			if(st.getCond() == 4)
 			{			 			
-				st.addExpAndSp(300000, 9000);
+				st.addExpAndSp(30000, 1500);
 				st.giveItems(57, 30000);			
 				
 				st.takeItems(CHEREP, -1);

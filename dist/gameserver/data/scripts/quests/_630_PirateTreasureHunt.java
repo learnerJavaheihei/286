@@ -72,7 +72,7 @@ public class _630_PirateTreasureHunt extends Quest
 			}
 		else if(event.equalsIgnoreCase("SUND2.htm"))
 		{				
-				st.addExpAndSp(300000, 9000);
+				st.addExpAndSp(30000, 1000);
 				st.giveItems(90762, 1);				
 				st.takeItems(KEY, 1);				
 				st.finishQuest();						

@@ -5,6 +5,8 @@ import l2s.gameserver.listener.CharListener;
 import l2s.gameserver.listener.actor.OnKillListener;
 import l2s.gameserver.model.Creature;
 import l2s.gameserver.model.Player;
+import l2s.gameserver.model.Party;//修复组队文件
+import l2s.gameserver.utils.MapUtils;//修复组队文件
 
 /**
  * @author L2-scripts.com - (SanyaDC) 25794
@@ -16,15 +18,66 @@ public class ClanArenaWeek extends ProgressDailyMissionHandler {
 	private static final SchedulingPattern REUSE_PATTERN = new SchedulingPattern("30 6 * * 1");
 	private class HandlerListeners implements OnKillListener {
 		@Override
-		public void onKill(Creature actor, Creature victim) {
+		public void onKill(Creature actor, Creature victim) 
+		{
 			Player player = actor.getPlayer();
-			if (player != null) {
+			if (player.isInParty())
+			{
+				if(player.isInParty() && player.getParty().getCommandChannel() != null)
+				{
+					Player playerLeader = player.getPlayerGroup().getGroupLeader();
+					for(Player p : player.getPlayerGroup())
+					{
+						if(p.getDistance(player) <= 1500)
+						{
+							if (player != null) 
+							{
+								for (int mob : MONSTER_IDS)
+								{
+									if(victim.getNpcId()== mob) 
+									{
+										progressMission(p, 1, true, victim.getLevel());
+									}
+								}
+							}
+							
+						}
+					}
+				}
+				else
+				{
+					Player playerLeader = player.getParty().getPartyLeader();
+					for(Player p : player.getParty())
+					{
+						if(p.getDistance(player) <= 1500)
+						{
+							if (player != null) 
+							{
+								for (int mob : MONSTER_IDS)
+								{
+									if(victim.getNpcId()== mob) 
+									{
+										progressMission(p, 1, true, victim.getLevel());
+									}
+								}
+							}
+							
+						}
+					}
+				}
+			}
+			else
+			{
+				if (player != null) 
+				{
 					for (int mob : MONSTER_IDS)
 					{
-						if(victim.getNpcId()== mob) {
+						if(victim.getNpcId()== mob) 
+						{
 							progressMission(player, 1, true, victim.getLevel());
 						}
 					}
+				}
 			}
 		}
 

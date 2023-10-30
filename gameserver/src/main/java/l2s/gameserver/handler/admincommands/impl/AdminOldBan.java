@@ -207,8 +207,8 @@ public class AdminOldBan implements IAdminCommandHandler
 
 						if(target.isInJail())
 						{
-							if(activeChar.fromJail())
-								activeChar.sendMessage("You unjailed " + player + ".");
+							if(target.fromJail())
+								target.sendMessage("You unjailed " + player + ".");
 							else
 								activeChar.sendMessage("Cannot unjailed " + player + ".");
 						}

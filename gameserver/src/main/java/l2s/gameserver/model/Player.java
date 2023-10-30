@@ -13,6 +13,7 @@ import l2s.commons.lang.reference.HardReferences;
 import l2s.commons.time.cron.SchedulingPattern;
 import l2s.commons.util.Rnd;
 import l2s.commons.util.concurrent.atomic.AtomicState;
+import l2s.gameserver.model.GameObjectTasks.UnJailTask;//自动监狱使用
 import l2s.gameserver.*;
 import l2s.gameserver.ai.CtrlEvent;
 import l2s.gameserver.ai.CtrlIntention;
@@ -3200,10 +3201,17 @@ public final class Player extends Playable implements PlayerGroup {
         return false;
     }
 
-    public final void doPurePk(final Player killer) {
+    public final void doPurePk(final Player killer)
+	{
         // Check if the attacker has a PK counter greater than 0
         final int pkCountMulti = (int) Math.max(killer.getPkKills() * Config.KARMA_PENALTY_DURATION_INCREASE, 1);
-
+		/*PK自动关监狱*/
+		if (killer.getPkKills() > Config.PK_MAX_JAILAIl) 
+		{ 
+			killer.toJail(Config.PK_JAILAIl_TIME); 
+			Announcements.announceToAll("玩家："+ killer.getName() + "PK值超過了：" + killer.getPkKills() + " 點，已被監禁，請大家遵紀守法！");
+		}
+		/*PK自动关监狱*/
         // Calculate the level difference Multiplier between attacker and killed L2Player
         //final int lvlDiffMulti = Math.max(killer.getLevel() / _level, 1);
 
@@ -4598,7 +4606,8 @@ public final class Player extends Playable implements PlayerGroup {
                     if (!player.isInZone("[gm_prison]"))
                         player.setLoc(Location.findPointToStay(player, AdminFunctions.JAIL_SPAWN, 50, 200));
                     player.setIsInJail(true);
-                    player.startUnjailTask(player, (int) (jailExpireTime - System.currentTimeMillis() / 60000));
+                    //player.startUnjailTask(player, (int) (jailExpireTime - System.currentTimeMillis() / 60000));
+					player.startUnjailTask(player, jailExpireTime - System.currentTimeMillis());
                 } else {
                     String ref = player.getVar("reflection");
                     if (ref != null) {
@@ -4988,8 +4997,8 @@ public final class Player extends Playable implements PlayerGroup {
             if (_clan != null)
                 _clan.addSkillsQuietly(this);
 
-            if (Config.UNSTUCK_SKILL && getSkillLevel(1050) < 0)
-                addSkill(SkillEntry.makeSkillEntry(SkillEntryType.NONE, 2099, 1));
+            if (Config.UNSTUCK_SKILL && getSkillLevel(1050) < 3)//修改出生回歸技能
+                addSkill(SkillEntry.makeSkillEntry(SkillEntryType.NONE, 2213, 2));//修改出生回歸技能
 
             for (OptionDataTemplate optionData : _options.valueCollection()) {
                 for (SkillEntry skillEntry : optionData.getSkills())
@@ -6448,8 +6457,10 @@ public final class Player extends Playable implements PlayerGroup {
             return false;
 
         setIsInJail(true);
-        setVar(JAILED_VAR, true, System.currentTimeMillis() + (time * 60000));
-        startUnjailTask(this, time);
+        /* setVar(JAILED_VAR, true, System.currentTimeMillis() + (time * 60000));
+        startUnjailTask(this, time); */
+		setVar(JAILED_VAR, true, System.currentTimeMillis() + ((long)time * 60000L));
+		startUnjailTask(this, (long)time * 60000L);
 
         if (getReflection().isMain())
             setVar("backCoords", getLoc().toXYZString(), -1);
@@ -7702,11 +7713,17 @@ public final class Player extends Playable implements PlayerGroup {
         _pcCafePointsTask = null;
     }
 
-    public void startUnjailTask(Player player, int time) {
+    /* public void startUnjailTask(Player player, int time) {
         if (_unjailTask != null)
             _unjailTask.cancel(false);
         _unjailTask = ThreadPoolManager.getInstance().schedule(new UnJailTask(player), time * 60000);
-    }
+    } */
+	public void startUnjailTask(Player player, long time)
+	{
+		if(_unjailTask != null)
+			_unjailTask.cancel(false);
+		_unjailTask = ThreadPoolManager.getInstance().schedule(new UnJailTask(player), time);
+	}
 
     public void stopUnjailTask() {
         if (_unjailTask != null)

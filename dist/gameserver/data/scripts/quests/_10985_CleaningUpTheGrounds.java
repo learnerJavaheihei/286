@@ -59,7 +59,7 @@ public class _10985_CleaningUpTheGrounds extends Quest
 			}
 			case "vollodos_q10985_02.htm":
 			{
-				st.addExpAndSp(260_000, 6_000);
+				st.addExpAndSp(26_000, 1_000);
 				st.giveItems(SOE_NOVICE, 10);
 				st.giveItems(NOVICE_NECKLACE, 1);
 				st.giveItems(NOVICE_EARRING, 2);

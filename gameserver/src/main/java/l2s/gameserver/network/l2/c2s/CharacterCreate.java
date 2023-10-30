@@ -156,9 +156,13 @@ public class CharacterCreate extends L2GameClientPacket
 					newChar.getInventory().equipItem(item);
 			}
 		}
+		ItemInstance item = ItemFunctions.createItem(5249);//?????????--
+		newChar.getInventory().addItem(item);//--?????????
 
 		for(ListenerHook hook : ListenerHook.getGlobalListenerHooks(ListenerHookType.PLAYER_CREATE))
 			hook.onPlayerCreate(newChar);
+		
+		newChar.registerShortCut(new ShortCut(11, 0, ShortCut.ShortCutType.ITEM, item.getObjectId(), -1, 1));//?????????
 
 		newChar.rewardSkills(false, false, false, true);
 

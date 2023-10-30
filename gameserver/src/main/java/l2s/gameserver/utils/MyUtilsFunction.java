@@ -6,6 +6,7 @@ import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.botscript.BotControlPage;
 import l2s.gameserver.dao.ConsignmentSalesDao;
 import l2s.gameserver.dao.GoldCoinTransactionRecordDao;
+import l2s.gameserver.data.htm.HtmTemplates;
 import l2s.gameserver.dao.ItemsDAO;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.ItemHolder;
@@ -51,7 +52,7 @@ public class MyUtilsFunction {
     public MyUtilsFunction() {
 
     }
-    private static final int MemberCoins = 29520;//會員幣編號
+    private static final int MemberCoins = 29984;//會員幣編號
 
     static final String[][] ItemId = {
             // 第一個是幣數量  第二個是物品及數量  第三個是等級限制 第四個是購買次數 輸入999 表示可買999 也等於無限次數了
@@ -72,7 +73,7 @@ public class MyUtilsFunction {
     // 金币寄售系统 金币上架 每页显示个数
     static int sellPageSize = 8;
     // 赞助币
-    static int memberGoldId = 39508;
+    static int memberGoldId = 29984;
     // 金币
     static int _GOLD = 57;
     // 单个玩家寄售限制数量
@@ -535,6 +536,39 @@ public class MyUtilsFunction {
                     }
                 });
             }
+        }
+		else if (inputString.startsWith("GetMemberCoin")) 
+		{
+            //bypass -h MyUtils_GetMemberCoin
+            int memberCoins = CheckMemberHaveConis(player);
+            HtmTemplates tpls = HtmCache.getInstance().getTemplates("member/GetMemberCoin.htm", player);
+            String html = tpls.get(0);
+
+            if (buypassOptions.length == 2) {
+                int getCoins = Integer.parseInt(buypassOptions[1]);
+                ;
+                if (getCoins > memberCoins) {
+                    String tmp = tpls.get(3);
+                    html = html.replace("<?content?>", tmp);
+                    sendHtmlMessage(player, html);
+                    return;
+                } //CheckMemberHaveConis
+                if (UpdateMemberConis(player, -getCoins)) {
+                    ItemFunctions.addItem(player, 29984, getCoins, true);
+                }
+                memberCoins = memberCoins - getCoins;
+            }
+
+            if (memberCoins == 0) {
+                String tmp = tpls.get(2);
+                html = html.replace("<?content?>", tmp);
+                sendHtmlMessage(player, html);
+                return;
+            }
+            String tmp = tpls.get(4);
+            tmp = tmp.replace("<$memberCoins$>", memberCoins + "");
+            html = html.replace("<?content?>", tmp);
+            sendHtmlMessage(player, html);
         }
         else if (inputString.startsWith("DownLevel"))//bypass -h MyUtils_LevelDown
         {
@@ -1055,5 +1089,54 @@ public class MyUtilsFunction {
         HtmlMessage msg = new HtmlMessage(5);
         msg.setHtml(html);
         player.sendPacket((IBroadcastPacket) msg);
+    }
+	public static int CheckMemberHaveConis(Player player)
+	{
+        Connection con = null;
+        PreparedStatement statement = null;
+        ResultSet rset = null;
+        int Counts = 0;
+        try {
+            con = DatabaseFactory.getInstance().getConnection();
+            statement = con.prepareStatement("SELECT sum(point) as pt FROM _game_acc where account = ?");
+            statement.setString(1, player.getAccountName());
+            rset = statement.executeQuery();
+            if (rset.next()) {
+                Counts = rset.getInt("pt");
+            }
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(con, statement, rset);
+        }
+        return Counts;
+    }
+
+    public static boolean UpdateMemberConis(Player player, int Counts)
+	{
+        Connection con = null;
+        PreparedStatement statement = null;
+        try {
+            con = DatabaseFactory.getInstance().getConnection();
+
+            statement = con.prepareStatement("INSERT INTO _game_acc (point, account ,createtime) VALUES (?,?, unix_timestamp(now()))");
+            statement.setInt(1, Counts);
+            statement.setString(2, player.getAccountName());
+            statement.execute();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DbUtils.closeQuietly(con, statement);
+        }
+        return true;
+    }
+	private static void sendHtmlMessage(Player player, String html) {
+        HtmlMessage msg = new HtmlMessage(5);
+        msg.setHtml(html);
+        player.sendPacket(msg);
+        player.sendActionFailed();
     }
 }

@@ -66,7 +66,7 @@ public class _933_ExploringTheWestWingOfTheDungeonOfAbyss extends Quest
 		else if(event.equalsIgnoreCase("end.htm"))
 		{
 						 			
-				st.addExpAndSp(250000, 7700);
+				st.addExpAndSp(25000, 1700);
 				st.giveItems(POD, 1);				
 				st.takeItems(OSKZLA, -1);
 				st.finishQuest();

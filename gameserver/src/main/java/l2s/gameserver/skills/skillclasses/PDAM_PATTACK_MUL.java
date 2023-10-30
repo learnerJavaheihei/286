@@ -38,7 +38,7 @@ public class PDAM_PATTACK_MUL extends Skill {
         }
         _value = Math.max(_value, Stats.P_DAMAGE_ATTACK_MUL.getInit());
         final Creature realTarget = reflected ? activeChar : target;
-
+        
         int damage = 0;
         boolean shld = false;
         boolean crit = false;

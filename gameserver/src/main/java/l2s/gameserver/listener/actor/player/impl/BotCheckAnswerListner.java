@@ -73,7 +73,7 @@ public class BotCheckAnswerListner implements OnAnswerListener
 			if(isLangRus)
 				player.sendMessage("Вы ответили не правильно! В случае и вы ответите не верно несколько раз подряд, то вы будете помещены в тюрьму.");
 			else
-				player.sendMessage("Your answer is incorrect! In case you will answer several time incorectly, you will be placed in jail for botting");
+				player.sendMessage("你的回答不正确！如果你几次回答都不正确，你会因为搞砸而被关进监狱");
 		}
 	}
 }

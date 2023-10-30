@@ -84,7 +84,7 @@ public class _662_AGameOfCards extends Quest
 
 			if(Rnd.chance(0.025))	// Каре
 			{
-				st.giveItems(adena, 200000);
+				st.giveItems(adena, 20000);
 				st.giveItems(en_arm_d, 3);
 				st.giveItems(en_weap_d, 1);
 				return "4.htm";
@@ -92,7 +92,7 @@ public class _662_AGameOfCards extends Quest
 
 			if(Rnd.chance(0.25))	// Три и пара
 			{
-				st.giveItems(adena, 1000000);
+				st.giveItems(adena, 50000);
 				st.giveItems(en_arm_d, 3);
 				st.giveItems(en_weap_d, 1);
 				return "32.htm";

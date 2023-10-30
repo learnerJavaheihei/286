@@ -50,7 +50,7 @@ public class _10964_SecretGarden extends Quest
 			}
 			case "raymond_q10964_05.htm":
 			{
-				st.addExpAndSp(2_500_000, 62_500);
+				st.addExpAndSp(250_000, 6_500);
 				st.finishQuest();
 				break;
 			}

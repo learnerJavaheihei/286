@@ -50,7 +50,7 @@ public class _10963_ExploringTheAntNest extends Quest
 			}
 			case "raymond_q10963_05.htm":
 			{
-				st.addExpAndSp(3_000_000, 75_000);
+				st.addExpAndSp(300_000, 7_000);
 				st.finishQuest();
 				break;
 			}

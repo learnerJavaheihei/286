@@ -760,6 +760,10 @@ public class Config
 	public static int MIN_PK_TO_ITEMS_DROP;
 	public static boolean DROP_ITEMS_ON_DIE;
 	public static boolean DROP_ITEMS_AUGMENTED;
+	
+	public static int PK_MAX_JAILAIl;
+	public static int PK_MIN_JAILAIl;
+	public static int PK_JAILAIl_TIME;
 
 	public static List<Integer> KARMA_LIST_NONDROPPABLE_ITEMS = new ArrayList<Integer>();
 	public static List<RaidGlobalDrop> RAID_GLOBAL_DROP = new ArrayList<RaidGlobalDrop>();	
@@ -2598,6 +2602,9 @@ public class Config
 
 		/* KARMA SYSTEM */
 		KARMA_MIN_KARMA = pvpSettings.getProperty("MinKarma", 720);
+		PK_MAX_JAILAIl = pvpSettings.getProperty("PkMaxJail", -1);
+		PK_MIN_JAILAIl = pvpSettings.getProperty("PkMinJail", -1);
+		PK_JAILAIl_TIME = pvpSettings.getProperty("PkJailTime", 0);
 		KARMA_RATE_KARMA_LOST = pvpSettings.getProperty("RateKarmaLost", -1);
 		KARMA_LOST_BASE = pvpSettings.getProperty("BaseKarmaLost", 1200);
 

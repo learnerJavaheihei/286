@@ -39,7 +39,7 @@ public class LcoinDrop implements OnInitScriptListener
 
 		}
 	}
-	private static final int LCOIN = 91663; // Монета L
+	private static final int LCOIN = 91663; // L币掉落（会员币）概率
 	private static final double CHANCE = 1;
 
 	@Override

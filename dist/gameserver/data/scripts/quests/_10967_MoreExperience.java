@@ -48,7 +48,7 @@ public class _10967_MoreExperience extends Quest
 			}
 			case "bathis_q10967_05.htm":
 			{
-				st.addExpAndSp(2_000_000, 50_000);
+				st.addExpAndSp(200_000, 5_000);
 				st.giveItems(ADVENTURER_BROOCH, 1);
 				st.giveItems(JEWEL_OF_ADVENTURER_FRAGMENT, 1);
 				st.finishQuest();

@@ -56,7 +56,7 @@ import l2s.gameserver.model.base.ClassType;
 		else if(event.equalsIgnoreCase("nikia2.htm"))
 		{
 					 			
-				st.addExpAndSp(150000, 4500);
+				st.addExpAndSp(15000, 1000);
 				st.giveItems(57, 13616);								
 				st.finishQuest();				
 		}		

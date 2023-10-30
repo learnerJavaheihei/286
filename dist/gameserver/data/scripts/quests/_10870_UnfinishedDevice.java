@@ -96,7 +96,7 @@ public class _10870_UnfinishedDevice extends Quest
 		else if(event.equalsIgnoreCase("AIN4.htm"))
 		{
 				
-				st.addExpAndSp(450000, 13500);
+				st.addExpAndSp(45000, 1350);
 				st.giveItems(6845, 1);				
 				st.takeItems(TOTEM, -1);
 				st.takeItems(KROV, -1);				

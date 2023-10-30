@@ -329,7 +329,7 @@ public class ClanArena extends Reflection
 
 		ItemFunctions.addItem(player, battleBoxItemId, _currentStage > 20 ? 2 : 1);
 
-		int rnd = Rnd.get(100);
+		int rnd = Rnd.get(100);//血盟狩猎奖励设置
 		if(rnd < 50)
 			ItemFunctions.addItem(player, 90945, Rnd.get(1, 3));
 		else if(rnd < 70)

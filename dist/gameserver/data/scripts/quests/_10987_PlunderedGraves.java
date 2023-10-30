@@ -60,7 +60,7 @@ public class _10987_PlunderedGraves extends Quest
 			}
 			case "uska_q10987_02.htm":
 			{
-				st.addExpAndSp(260_000, 6_000);
+				st.addExpAndSp(2_600, 1_000);
 				st.giveItems(SOE_NOVICE, 10);
 				st.giveItems(NOVICE_NECKLACE, 1);
 				st.giveItems(NOVICE_EARRING, 2);

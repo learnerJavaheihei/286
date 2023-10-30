@@ -7,12 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="lib" level="project" />
-    <orderEntry type="library" exported="" name="lib1" level="project" />
-    <orderEntry type="library" exported="" name="lib2" level="project" />
-    <orderEntry type="module" module-name="commons" exported="" />
-    <orderEntry type="module" module-name="dist" exported="" />
-    <orderEntry type="module" module-name="authserver" exported="" />
-    <orderEntry type="library" name="ZHConverter" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="lib2" level="project" />
+    <orderEntry type="module" module-name="commons" />
   </component>
 </module>

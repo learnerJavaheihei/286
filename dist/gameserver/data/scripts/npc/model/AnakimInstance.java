@@ -36,7 +36,7 @@ public final class AnakimInstance extends NpcInstance
 		
 		if(cmd.equals("requestboss"))
 		{
-			if (player.getParty() == null || player.getParty().getCommandChannel() == null|| player.getParty().getCommandChannel().getMemberCount() < 90)
+			if (player.getParty() == null || player.getParty().getCommandChannel() == null|| player.getParty().getCommandChannel().getMemberCount() < 27)//修复，进入人数
 			{
 				showChatWindow(player, "default/" + getNpcId() + "-noplayers.htm", false);
 				return;

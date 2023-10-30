@@ -51,7 +51,7 @@ public class _10965_DeathMysteries extends Quest
 			}
 			case "maximilian_q10965_05.htm":
 			{
-				st.addExpAndSp(3_200_000, 80_000);
+				st.addExpAndSp(300_000, 8_000);
 				st.finishQuest();
 				break;
 			}

@@ -94,7 +94,7 @@ public class _10868_TheDarkSideOfPower extends Quest {
             st.setCond(7);
         } else if (event.equalsIgnoreCase("GAROM6.htm") && st.getQuestItemsCount(RELIKORIG) >= 10) {
 
-            st.addExpAndSp(4200000, 126000);
+            st.addExpAndSp(420000, 12600);
             st.giveItems(57, 100000);
             st.giveItems(90766, 5);
 

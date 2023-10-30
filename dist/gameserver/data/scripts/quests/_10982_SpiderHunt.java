@@ -31,7 +31,7 @@ public class _10982_SpiderHunt extends Quest
 	private static final int SOE_RUINS_OF_AGONY = 70051;
 	private static final int HP_POTION = 91912;
 	private static final int ESCAPE_BATHIS = 91651;
-	// Moon heavy set
+	/* // Moon heavy set
 	private static final int MOON_HELMET = 7850;
 	private static final int MOON_ARMOR = 7851;
 	private static final int MOON_GAUNTLETS = 7852;
@@ -43,7 +43,7 @@ public class _10982_SpiderHunt extends Quest
 	// Moon robe
 	private static final int MOON_CAPE = 7857;
 	private static final int MOON_SILK_GLOVES = 7858;
-	private static final int MOON_SANDALS = 7859;
+	private static final int MOON_SANDALS = 7859; */
 	
 	// Etc
 	private static final String A_LIST = "A_LIST";
@@ -75,7 +75,7 @@ public class _10982_SpiderHunt extends Quest
 			}
 			case "bathis_q10982_02.htm":
 			{
-				st.addExpAndSp(600_000, 13_500);
+				st.addExpAndSp(60_000, 1_350);
 				st.giveItems(SPIRIT_ORE, 50);
 				st.giveItems(SOE_NOVICE, 10);
 				st.giveItems(RICE_CAKE, 1);
@@ -83,16 +83,16 @@ public class _10982_SpiderHunt extends Quest
 				st.giveItems(SOE_WINDMILL_HILL, 3);
 				st.giveItems(SOE_RUINS_OF_AGONY, 3);
 				st.giveItems(HP_POTION, 50);
-				st.giveItems(MOON_HELMET, 1);
+				/* st.giveItems(MOON_HELMET, 1);
 				st.giveItems(MOON_ARMOR, 1);
 				st.giveItems(MOON_GAUNTLETS, 1);
-				st.giveItems(MOON_BOOTS, 1);
+				st.giveItems(MOON_BOOTS, 1); */
 				st.finishQuest();
 				break;
 			}
 			case "bathis_q10982_03.htm":
 			{
-				st.addExpAndSp(600_000, 13_500);
+				st.addExpAndSp(60_000, 1_350);
 				st.giveItems(SPIRIT_ORE, 50);
 				st.giveItems(SOE_NOVICE, 10);
 				st.giveItems(RICE_CAKE, 1);
@@ -100,16 +100,16 @@ public class _10982_SpiderHunt extends Quest
 				st.giveItems(SOE_WINDMILL_HILL, 3);
 				st.giveItems(SOE_RUINS_OF_AGONY, 3);
 				st.giveItems(HP_POTION, 50);
-				st.giveItems(MOON_HELMET, 1);
+				/* st.giveItems(MOON_HELMET, 1);
 				st.giveItems(MOON_SHELL, 1);
 				st.giveItems(MOON_LEATHER_GLOVES, 1);
-				st.giveItems(MOON_SHOES, 1);
+				st.giveItems(MOON_SHOES, 1); */
 				st.finishQuest();
 				break;
 			}
 			case "bathis_q10982_04.htm":
 			{
-				st.addExpAndSp(600_000, 13_500);
+				st.addExpAndSp(60_000, 1_350);
 				st.giveItems(SPIRIT_ORE, 50);
 				st.giveItems(SOE_NOVICE, 10);
 				st.giveItems(RICE_CAKE, 1);
@@ -117,10 +117,10 @@ public class _10982_SpiderHunt extends Quest
 				st.giveItems(SOE_WINDMILL_HILL, 3);
 				st.giveItems(SOE_RUINS_OF_AGONY, 3);
 				st.giveItems(HP_POTION, 50);
-				st.giveItems(MOON_HELMET, 1);
+				/* st.giveItems(MOON_HELMET, 1);
 				st.giveItems(MOON_CAPE, 1);
 				st.giveItems(MOON_SILK_GLOVES, 1);
-				st.giveItems(MOON_SANDALS, 1);
+				st.giveItems(MOON_SANDALS, 1); */
 				st.finishQuest();
 				break;
 			}

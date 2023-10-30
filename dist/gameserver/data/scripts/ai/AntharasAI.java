@@ -56,7 +56,7 @@ public final class AntharasAI extends AbstractAntharasAI
 			{
 				if(player.getDistance(actor) <= MOVIE_MAX_DISTANCE)
 				{
-					player.enterMovieMode();
+					//player.enterMovieMode();//20200525修復打死卡頓player.enterMovieMode();
 					player.specialCamera(actor, 1200, 20, -10, 0, 13000, 0, 0, 0, 0);
 				}
 				else
