@@ -109,6 +109,23 @@ public final class CommunityBoard extends ScriptsCommunityHandler
 			String[] b = bypass.split(":");
 			String page = b[1];
 			html = HtmCache.getInstance().getHtml("scripts/handler/bbs/pages/" + page + ".htm", player);
+			if ("index".equalsIgnoreCase(page)) {
+				StringBuilder builder = new StringBuilder(html);
+				int indexOf1 = builder.indexOf("<$disable$>");
+				int lastIndexOf = builder.lastIndexOf("<$disable$>");
+				int indexOf = builder.indexOf("<$interval$>");
+				if (Config.ENABLE_AUTO_GAME_PROGRESS_SCHEDULE) {
+					builder.replace(indexOf,lastIndexOf,"");
+					html = builder.toString();
+					html = html.replace("<$disable$>","");
+					html = html.replace("<$interval$>","");
+				}else {
+					builder.replace(indexOf1,indexOf,"");
+					html = builder.toString();
+					html = html.replace("<$disable$>","");
+					html = html.replace("<$interval$>","");
+				}
+			}
 		}
 		else if(bypass.startsWith("_bbsmultisell"))
 		{

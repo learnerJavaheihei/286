@@ -170,6 +170,10 @@ public class GameServer
 		// Initialize config
 		ConfigParsers.parseAllOnLoad();
 		Config.load();
+		/* 启动自动开启阶段 */
+		if (Config.ENABLE_AUTO_GAME_PROGRESS_SCHEDULE) {
+			AutoUpdateGameProgress.getInstance().start();
+		}
 		FloodProtectorConfigs.load();
 		VelocityUtils.init();
 

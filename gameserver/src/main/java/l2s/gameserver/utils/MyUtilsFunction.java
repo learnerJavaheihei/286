@@ -866,6 +866,14 @@ public class MyUtilsFunction {
             });
             onBypassFeedback(player,"findRedMan");
         }
+        else if (inputString.startsWith("gameProgress")) {
+            String html = HtmCache.getInstance().getHtml("scripts/handler/bbs/pages/gameProgress.htm", player);
+            html = html.replace("%progress%",AutoUpdateGameProgress.percent+"%");
+            html = html.replace("%schedule%",AutoUpdateGameProgress.Schedule+"");
+            HtmlMessage msg = new HtmlMessage(5);
+            msg.setHtml(html);
+            player.sendPacket(msg);
+        }
 
     }
     public static class WriteGoldConsignmentLog implements Runnable {

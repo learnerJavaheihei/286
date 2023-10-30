@@ -218,6 +218,9 @@ public class MonsterInstance extends NpcInstance
 
 	public void calculateRewards(Creature lastAttacker)
 	{
+		if (getLevel() > Config.CHAO_DROP_ITEM_COUNT40)
+			return;
+
 		Creature topDamager = getAggroList().getTopDamager(lastAttacker);
 		if(lastAttacker == null || !lastAttacker.isPlayable())
 			lastAttacker = topDamager;
@@ -573,6 +576,11 @@ public class MonsterInstance extends NpcInstance
 
 			for(RewardItem item : _sweepItems)
 			{
+				if(getLevel() > Config.CHAO_DROP_ITEM_COUNT40)
+				{
+					item.count *= 0;
+					break;
+				}
 				final ItemInstance sweep = ItemFunctions.createItem(item.itemId);
 				sweep.setCount(item.count);
 
@@ -682,6 +690,11 @@ public class MonsterInstance extends NpcInstance
 					{
 						if(!(Config.INCLUDE_RAID_DROP && isRaid()))
 							return;
+					}
+					if(getLevel() > Config.CHAO_DROP_ITEM_COUNT40)
+					{
+						drop.count *= 0;
+						break;
 					}
 					dropItem(activePlayer, drop.itemId, drop.count);
 					dropAnnounce(activeChar, activePlayer, drop.itemId, (int)drop.count);
@@ -931,6 +944,12 @@ public class MonsterInstance extends NpcInstance
 
 		xp = Math.max(0., xp);
 		sp = Math.max(0., sp);
+
+		if(getLevel() > Config.CHAO_DROP_ITEM_COUNT40)
+		{
+			xp *= 0;
+			sp *= 0;
+		}
 
 		return new double[] { xp, sp };
 	}

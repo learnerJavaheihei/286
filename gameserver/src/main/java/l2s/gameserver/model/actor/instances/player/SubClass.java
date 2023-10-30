@@ -178,7 +178,7 @@ public class SubClass
 
 	public int getMaxLevel()
 	{
-		return _maxLvl;
+		return _maxLvl = Experience.getMaxLevel();
 	}
 
 	public void setIndex(int i)

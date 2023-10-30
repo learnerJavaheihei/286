@@ -20,6 +20,7 @@ import java.util.regex.Matcher;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import l2s.gameserver.utils.AutoUpdateGameProgress;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -1415,6 +1416,30 @@ public class Config
 	public static int SHARED_TELEPORTS_PER_DAY;
 	public static boolean MONSTER_RANDOM_SPAWN;
 
+	public static int CHAO_DROP_ITEM_COUNT40;
+	public static boolean ENABLE_AUTO_GAME_PROGRESS_SCHEDULE;
+	public static int START_SCHEDULE;
+	public static int FIRST_SCHEDULE;
+	public static double START_PERCENT;
+	public static int SECOND_SCHEDULE;
+	public static int THIRD_SCHEDULE;
+	public static int FOURTH_SCHEDULE;
+	public static int FIFTH_SCHEDULE;
+	public static String FIRST_SCHEDULE_ENDTIME;
+	public static String SECOND_SCHEDULE_ENDTIME;
+	public static String THIRD_SCHEDULE_ENDTIME;
+	public static String FOURTH_SCHEDULE_ENDTIME;
+	public static String FIFTH_SCHEDULE_ENDTIME;
+	public static int FIRST_SCHEDULE_MAX_LEVEL;
+	public static int SECOND_SCHEDULE_MAX_LEVEL;
+	public static int THIRD_SCHEDULE_MAX_LEVEL;
+	public static int FOURTH_SCHEDULE_MAX_LEVEL;
+	public static int FIFTH_SCHEDULE_MAX_LEVEL;
+	public static int ADD_SLIDING_SCALES;
+	public static int AUTO_UPDATE_PROGRESS_INTERVAL;
+	public static int MAX_SCHEDULE;
+	public static boolean IS_OUTTIME_ON_ALT_MAX_LEVEL;
+
 	public static void loadServerConfig()
 	{
 		ExProperties serverSettings = load(CONFIGURATION_FILE);
@@ -2089,6 +2114,7 @@ public class Config
 	public static void loadAltSettings()
 	{
 		ExProperties altSettings = load(ALT_SETTINGS_FILE);
+		CHAO_DROP_ITEM_COUNT40 =  altSettings.getProperty("CHAODROPITEMCOUNT40", 40) ;//超過40級不掉落東西
 		MONSTER_RANDOM_SPAWN = altSettings.getProperty("MonsterRandomSpawn", false);
 		STARTING_LVL = altSettings.getProperty("StartingLvl", 1);
 		STARTING_SP = altSettings.getProperty("StartingSP", 0L);
@@ -2106,7 +2132,30 @@ public class Config
 		AUTO_LOOT_INDIVIDUAL = altSettings.getProperty("AutoLootIndividual", false);
 		AUTO_LOOT_FROM_RAIDS = altSettings.getProperty("AutoLootFromRaids", false);
 
-		
+		ENABLE_AUTO_GAME_PROGRESS_SCHEDULE = altSettings.getProperty("enableAutoGameProgressSchedule", false);
+		IS_OUTTIME_ON_ALT_MAX_LEVEL = altSettings.getProperty("isOutTimeOnAltMaxLevel", false);
+		START_SCHEDULE = altSettings.getProperty("startSchedule", 0);
+		MAX_SCHEDULE = altSettings.getProperty("maxSchedule", 0);
+		START_PERCENT = altSettings.getProperty("startPercent", 0.);
+		FIRST_SCHEDULE = altSettings.getProperty("firstSchedule", 1);
+		SECOND_SCHEDULE = altSettings.getProperty("secondSchedule", 2);
+		THIRD_SCHEDULE = altSettings.getProperty("thirdSchedule", 3);
+		FOURTH_SCHEDULE = altSettings.getProperty("fourthSchedule", 4);
+		FIFTH_SCHEDULE = altSettings.getProperty("fifthSchedule", 5);
+		FIRST_SCHEDULE_ENDTIME = altSettings.getProperty("firstScheduleEndTime", "");
+		SECOND_SCHEDULE_ENDTIME = altSettings.getProperty("secondScheduleEndTime", "");
+		THIRD_SCHEDULE_ENDTIME = altSettings.getProperty("thirdScheduleEndTime", "");
+		FOURTH_SCHEDULE_ENDTIME = altSettings.getProperty("fourthScheduleEndTime", "");
+		FIFTH_SCHEDULE_ENDTIME = altSettings.getProperty("fifthScheduleEndTime", "");
+		FIRST_SCHEDULE_MAX_LEVEL = altSettings.getProperty("firstScheduleMaxLevel", 40);
+		SECOND_SCHEDULE_MAX_LEVEL = altSettings.getProperty("secondScheduleMaxLevel", 56);
+		THIRD_SCHEDULE_MAX_LEVEL = altSettings.getProperty("thirdScheduleMaxLevel", 64);
+		FOURTH_SCHEDULE_MAX_LEVEL = altSettings.getProperty("fourthScheduleMaxLevel", 73);
+		FIFTH_SCHEDULE_MAX_LEVEL = altSettings.getProperty("fifthScheduleMaxLevel", 82);
+		ADD_SLIDING_SCALES = altSettings.getProperty("addSlidingScales", 0);
+		AUTO_UPDATE_PROGRESS_INTERVAL = altSettings.getProperty("AutoUpdateProgressInterval", 60);
+
+
 		String[] autoLootItemIdList = altSettings.getProperty("AutoLootItemIdList", "-1").split(";");
 		for(String item : autoLootItemIdList)
 		{
@@ -2459,6 +2508,14 @@ public class Config
 		
 		SHARE_POSITION_COST = altSettings.getProperty("SharePositionCost", 50);
 		SHARED_TELEPORTS_PER_DAY = altSettings.getProperty("SharedTeleportsPerDay", 5);
+
+		if (Config.ENABLE_AUTO_GAME_PROGRESS_SCHEDULE){
+			AutoUpdateGameProgress.getInstance().load();
+			AutoUpdateGameProgress.getInstance().start();
+		}
+		else
+			AutoUpdateGameProgress.getInstance().shutDown();
+
 	}
 
 	public static void loadServicesSettings()
