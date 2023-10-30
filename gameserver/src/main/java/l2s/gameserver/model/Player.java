@@ -579,6 +579,16 @@ public final class Player extends Playable implements PlayerGroup {
 
     private int _finishTaskCount = 0;
 
+    private boolean showVileList = true;
+
+    public boolean isShowVileList() {
+        return showVileList;
+    }
+
+    public void setShowVileList(boolean showVile_list) {
+        this.showVileList = showVile_list;
+    }
+
     private static final List<AbnormalEffect> listAbnormalEffect = new ArrayList();
 
     public AbnormalEffect _testEffect;
@@ -1559,6 +1569,12 @@ public final class Player extends Playable implements PlayerGroup {
             return;
 
         _karma = Math.min(0, karma);
+
+        // 性向为 0 时 打开 允许展示到恶人名单
+        if (_karma == 0){
+            setShowVileList(true);
+            MyUtilsFunction.vilePlayers.remove(this);
+        }
 
         sendChanges();
 

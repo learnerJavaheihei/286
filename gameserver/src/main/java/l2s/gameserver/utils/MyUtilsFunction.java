@@ -26,6 +26,7 @@ import l2s.gameserver.network.l2.components.HtmlMessage;
 import l2s.gameserver.network.l2.components.IBroadcastPacket;
 import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.s2c.ConfirmDlgPacket;
+import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.templates.ZoneTemplate;
 import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.templates.npc.NpcTemplate;
@@ -90,6 +91,11 @@ public class MyUtilsFunction {
     public static long outTime = 72 * 60 * 60 * 1000L;
 
     /*-------------------------------金币寄售系统 常量----------------------------- end ----*/
+
+    public static Map<Player,Integer> vilePlayers = new HashMap<>();
+
+    public static String colorfulFont = "当前服务器暂无红名玩家";
+
     public static void onBypassFeedback(Player player, String inputString) {
         final String[] buypassOptions = inputString.split(" ");
         String page = "welcome.htm";
@@ -157,9 +163,8 @@ public class MyUtilsFunction {
                         html = html.replace("%sell_table_data%", builder.toString());
                     }
                     html = html.replace("%ownerMemberGold%", String.valueOf(countOf));
-                    html = html.replace("%page%", String.valueOf(pageIndex));
-                    html = html.replace("%pages%", (maps == null || maps.size()<=0) ? "1" : String.valueOf(pages));
-//                    msg.setFile(html);
+                    html = html.replace("%page%", String.valueOf(Math.max(pageIndex,1)));
+                    html = html.replace("%pages%", maps == null || maps.isEmpty() ? "1" : String.valueOf(Math.max(pages,1)));
                     msg.setHtml(html);
                     player.sendPacket(msg);
                 } else if ("consignment".equals(split[1])) {
@@ -203,9 +208,8 @@ public class MyUtilsFunction {
                     long goldCountOf = player.getInventory().getCountOf(_GOLD);
                     html = html.replace("%ownerSimplyGold%", goldCountOf >= 10000 ? goldCountOf / 10000 + "万" : String.valueOf(goldCountOf));
                     html = html.replace("%ownerMemberGold%", String.valueOf(memberGoldCountOf));
-                    html = html.replace("%page%", String.valueOf(pageIndex));
-                    html = html.replace("%pages%", (maps == null || maps.size()<=0) ? "1" : String.valueOf(pages));
-//                    msg.setFile(html);
+                    html = html.replace("%page%", String.valueOf(Math.max(pageIndex,1)));
+                    html = html.replace("%pages%", maps == null || maps.isEmpty() ? "1" : String.valueOf(Math.max(pages,1)));
                     msg.setHtml(html);
                     player.sendPacket(msg);
                 } else if (split[1].startsWith("cancel")) {
@@ -705,9 +709,163 @@ public class MyUtilsFunction {
                 }
             }
         }
-//        else if (inputString.startsWith("bot_main")) {
-//            BotControlPage.mainPage(player);
-//        }
+        else if (inputString.startsWith("findRedMan")) {
+            // 展示当前 红名玩家 名称 等级 职业 位置
+            String html = HtmCache.getInstance().getHtml("scripts/handler/bbs/pages/findRedMan.htm", player);
+            Collection<Player> players = GameObjectsStorage.getPlayers(false, false);
+
+            players.forEach(man -> {
+                if (man.getKarma() < 0
+                        && !man.isInJail()
+                        && !vilePlayers.containsKey(man)
+                        && !man.isInZoneBattle()
+                        && (man.getActiveReflection() == null || man.getActiveReflection().getInstancedZoneId() == -1)
+                        && man.getZones().stream().noneMatch(zone -> "[baium_epic]".equals(zone.getName()))
+                        && man.getZones().stream().noneMatch(zone -> "[antharas_epic]".equals(zone.getName()))
+                ){
+                    vilePlayers.put(man,0);
+                }
+            });
+            vilePlayers.keySet().removeIf(vile -> {
+                return vile.getKarma() >= 0
+                        || vile.isInJail()
+                        || vile.isInZoneBattle()
+                        || (vile.getActiveReflection()!=null && vile.getActiveReflection().getInstancedZoneId() != -1)
+                        || vile.getZones().stream().anyMatch(zone -> "[baium_epic]".equals(zone.getName()))
+                        || vile.getZones().stream().anyMatch(zone -> "[antharas_epic]".equals(zone.getName()))
+                        || !vile.isOnline()
+                        ;
+            });
+
+            String content="";
+            StringBuilder builder = new StringBuilder();
+            if (!vilePlayers.isEmpty()) {
+                List<Player> keys = new ArrayList<>(vilePlayers.keySet());
+                for (int i = 0; i < keys.size(); i++) {
+                    Player vilePlayer = keys.get(i);
+                    if (!vilePlayer.isShowVileList())
+                        continue;
+
+                    builder.append("<table height=\"30\" width=270>");
+                    builder.append("<tr><td width=95 align=\"center\">")
+                            .append(player.getObjectId()==vilePlayer.getObjectId() ? "<font color=\"LEVEL\">" : "<font>")
+                            .append(vilePlayer.getName().substring(0,Math.min(vilePlayer.getName().length(),8)))
+                            .append("</font>")
+                            .append("</td><td width=40 align=\"center\">")
+                            .append(String.valueOf(vilePlayer.getLevel()))
+                            .append("</td><td width=60 align=\"center\">")
+                            .append(vilePlayer.getClassId().getName(vilePlayer))
+                            .append("</td>");
+                    if (vilePlayer.isInPeaceZone()) {
+                        // 显示在安全区
+                        builder.append("<td width=130 align=\"center\">安全区</td></tr></table>");
+                    }else {
+                        String point_btn = "<font color=\"DDD3B6\"><button value=\"位置\" action=\"bypass -h MyUtils_point_findRedMan "+vilePlayer.getObjectId()+"\" width=50 height=30 back=\"Button_DF_Down\" fore=\"Button_DF\"></font>";
+                        String teleport_btn =player.getObjectId()==vilePlayer.getObjectId() ? "<font color=\"LEVEL\">我</font>" : "<font color=\"FF0000\"><button value=\"追踪\" action=\"bypass -h MyUtils_teleport_findRedMan "+vilePlayer.getObjectId()+"\" width=50 height=30 back=\"Button_DF_Down\" fore=\"Button_DF\"></font>";
+                        builder.append("<td width=50 align=\"center\" valign=\"center\">"+point_btn)
+                                .append("</td><td width=50 align=\"center\" valign=\"center\">")
+                                .append(teleport_btn)
+                                .append("</td></tr></table>");
+                    }
+                }
+                content = builder.toString();
+            }
+            if (builder.length()==0 || vilePlayers.isEmpty()) {
+                content = "<table height=\"310\"><tr><td align=\"center\" width=270>>> "+colorfulFont+" <<</td></tr></table>";
+            }
+
+            html = html.replace("<?content?>",content);
+            HtmlMessage msg = new HtmlMessage(5);
+            msg.setHtml(html);
+            player.sendPacket(msg);
+        }
+        else if (inputString.startsWith("point_findRedMan")) {
+            String[] split = inputString.split(" ");
+            String vileId = split[1];
+            Player vilePlayer = GameObjectsStorage.getPlayer(Integer.parseInt(vileId));
+            if (vilePlayer==null || !vilePlayer.isOnline()) {
+                player.sendMessage("目标不在线!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+            SystemMessage smg = new SystemMessage(14010).addZoneName(vilePlayer.getLoc());
+            player.sendPacket(smg);
+            onBypassFeedback(player,"findRedMan");
+            return;
+        }
+        else if (inputString.startsWith("teleport_findRedMan")) {
+            String[] split = inputString.split(" ");
+            String vileId = split[1];
+            if (player.isInCombat()) {
+                player.sendMessage("战斗中无法传送!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+            if (player.getPvpFlag()>0) {
+                player.sendMessage("紫名状态无法传送!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+            if (player.getKarma()<0) {
+                player.sendMessage("红名状态无法传送!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+            if (player.isInJail()) {
+                player.sendMessage("监狱中无法传送!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+            if (player.isInZoneBattle()) {
+                player.sendMessage("战场中无法传送!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+            if (player.getActiveReflection()!=null && player.getActiveReflection().getInstancedZoneId() != -1) {
+                player.sendMessage("即时地区中无法传送!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+            Player vilePlayer = GameObjectsStorage.getPlayer(Integer.parseInt(vileId));
+            if (vilePlayer == null || !vilePlayer.isOnline()) {
+                player.sendMessage("目标不在线!");
+                onBypassFeedback(player,"findRedMan");
+                return;
+            }
+
+            if (!vilePlayer.isShowVileList()) {
+                player.sendMessage("已经有太多的玩家追踪此恶人了!");
+                onBypassFeedback(player, "findRedMan");
+                return;
+            }
+
+
+            long count = 1L;
+            player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("确定要追踪至[" + vilePlayer.getName() + "]所在地点吗?,将花费["+count+"]个会员币."), new OnAnswerListener() {
+                @Override
+                public void sayYes() {
+
+                    if (!player.getInventory().destroyItemByItemId(MemberCoins,count)) {
+                        player.sendMessage("会员币不足!");
+                        onBypassFeedback(player,"findRedMan");
+                        return;
+                    }
+                    player.sendMessage("追踪恶人,花费["+count+"]个会员币!");
+                    player.teleToLocation(vilePlayer.getX(),vilePlayer.getY(),vilePlayer.getZ());
+                    int vileValue = vilePlayers.get(vilePlayer) == null ? 0 : vilePlayers.get(vilePlayer);
+                    if (vileValue < 5)
+                        vilePlayers.put(vilePlayer,vileValue+1);
+                    if (vilePlayers.get(vilePlayer)==5) {
+                        vilePlayer.setShowVileList(false);
+                    }
+                }
+                @Override
+                public void sayNo() {
+                    onBypassFeedback(player,"findRedMan");
+                }
+            });
+            onBypassFeedback(player,"findRedMan");
+        }
 
     }
     public static class WriteGoldConsignmentLog implements Runnable {
