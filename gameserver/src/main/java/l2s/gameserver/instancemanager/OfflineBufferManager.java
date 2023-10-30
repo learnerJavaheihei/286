@@ -418,7 +418,13 @@ public class OfflineBufferManager
 			}
 
 			// Clan Members of the buffer dont have to pay anything
-			final long buffPrice = player.getClanId() == caster.getClanId() && player.getClanId() != 0 ? 0 : buffer.getBuffPrice();
+			long buffPrice = player.getClanId() == caster.getClanId() && player.getClanId() != 0 ? 0 : buffer.getBuffPrice();
+			if (player.getClan()!=null && caster.getClan()!=null && caster.getAlliance() != null && player.getAlliance() != null) {
+				if(player.getAlliance().isMember(caster.getClanId())){
+					buffPrice = 1;
+				}
+			}
+
 
 			// Check if the player has enough adena to purchase this buff
 			if(buffPrice > 0 && (player.getAdena() < buffPrice || !player.reduceAdena(buffPrice, true)))
