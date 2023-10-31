@@ -107,7 +107,7 @@ public class AdminClientSupport extends ScriptAdminCommand
 							ItemInstance item = ItemFunctions.createItem(id);
 							item.setCount(count);
 
-							target.getPlayer().getInventory().addItem(item);
+							player.getInventory().addItem(item);
 //							target.getPlayer().sendPacket(SystemMessagePacket.obtainItems(item));
 							player.sendPacket(SystemMessagePacket.obtainItems(id, count, item.getEnchantLevel()));//ALT+G創造物品的修復
 						}
@@ -117,7 +117,7 @@ public class AdminClientSupport extends ScriptAdminCommand
 							{
 								ItemInstance item = ItemFunctions.createItem(id);
 
-								target.getPlayer().getInventory().addItem(item);
+								player.getInventory().addItem(item);
 //								target.getPlayer().sendPacket(SystemMessagePacket.obtainItems(item));
 								player.sendPacket(SystemMessagePacket.obtainItems(id, 1, item.getEnchantLevel()));//ALT+G創造物品的修復
 							}
