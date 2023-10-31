@@ -18,6 +18,7 @@ import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.stats.Formulas;
 import l2s.gameserver.stats.Stats;
 import l2s.gameserver.templates.item.EtcItemTemplate.EtcItemType;
+import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.templates.item.RecipeTemplate;
 import l2s.gameserver.templates.item.data.ChancedItemData;
 import l2s.gameserver.templates.item.data.ItemData;
@@ -179,7 +180,18 @@ public class RequestRecipeItemMakeSelf extends L2GameClientPacket
 					itemsCount++;
 				}
 				//TODO [G1ta0] добавить проверку на перевес
-				ItemFunctions.addItem(activeChar, itemId, itemsCount, true);
+				/*製作裝備隨機強化--*/
+				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
+				if(item.isWeapon() || item.isArmor() || item.isAccessory())//武器 装备 饰品
+				{
+					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
+				}
+				else
+				{
+					ItemFunctions.addItem(activeChar, itemId, itemsCount, true);
+				}
+				/*--製作裝備隨機強化*/
+				/*原始ItemFunctions.addItem(activeChar, itemId, itemsCount, true);*/
 				success = 1;
 				if (DropSpecialItemAnnounce.dropSpecialItems.contains(itemId)) {
 					if (activeChar.isGM())

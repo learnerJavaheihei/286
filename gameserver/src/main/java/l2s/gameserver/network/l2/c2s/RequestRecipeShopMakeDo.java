@@ -18,6 +18,7 @@ import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.network.l2.s2c.StatusUpdatePacket;
 import l2s.gameserver.stats.Formulas;
 import l2s.gameserver.stats.Stats;
+import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.templates.item.RecipeTemplate;
 import l2s.gameserver.templates.item.data.ChancedItemData;
 import l2s.gameserver.templates.item.data.ItemData;
@@ -209,7 +210,18 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 					//TODO maybe msg?
 					itemsCount++;
 				}
-				ItemFunctions.addItem(buyer, itemId, itemsCount, true);
+				/*製作裝備隨機強化--*/
+				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
+				if(item.isWeapon() || item.isArmor() || item.isAccessory())//武器 装备 饰品
+				{
+					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
+				}
+				else
+				{
+					ItemFunctions.addItem(buyer, itemId, itemsCount, true);
+				}
+				/*--製作裝備隨機強化*/
+//				ItemFunctions.addItem(buyer, itemId, itemsCount, true);
 				if (DropSpecialItemAnnounce.dropSpecialItems.contains(itemId)) {
 					if (buyer.isGM())
 						return;
@@ -218,7 +230,6 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
 					Announcements.announceToAll(new SystemMessage(14002).addName(buyer).addString(date).addZoneName(buyer.getLoc()).addItemName(itemId).addString(String.valueOf(itemsCount)));
-//					Announcements.shout(buyer,text, ChatType.SYSTEM_MESSAGE);
 					String log_content = date+"["+buyer.getName()+"]系统公告内容："+text+",获得方式:制作装备,角色ID："+buyer.getObjectId()+",道具ID："+itemId;
 					ThreadPoolManager.getInstance().schedule(new LogGeneral("specialItemsAnnounce/create",log_content),1000L);
 				}
