@@ -39,7 +39,7 @@ public class RequestExRequestTeleport extends L2GameClientPacket {
 		}
 		activeChar.bookmarkLocation = teleportInfo.getLoc();
 
-		if (!BookMarkList.checkFirstConditions(activeChar) || !BookMarkList.checkTeleportConditions(activeChar)) //TODO: Check conditions.
+		if (!BookMarkList.checkFirstConditions(activeChar) || !BookMarkList.checkTeleportConditions(activeChar,activeChar.bookmarkLocation)) //TODO: Check conditions.
 			return;
 
 		if (activeChar.getLevel() > Config.GATEKEEPER_FREE && !activeChar.reduceAdena(teleportInfo.getPrice(), true)) {

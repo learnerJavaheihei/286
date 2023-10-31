@@ -136,8 +136,8 @@ public class CommunityTeleport extends CustomCommunityHandler
 				int x = Integer.parseInt(st.nextToken());
 				int y = Integer.parseInt(st.nextToken());	
 				int z = Integer.parseInt(st.nextToken());
-
-				if(!BookMarkList.checkTeleportConditions(player))
+				Location location = new Location(x, y, z);
+				if(!BookMarkList.checkTeleportConditions(player,location))
 					return;
 
 				if(ItemFunctions.getItemCount(player, BBSConfig.TELEPORT_SERVICE_BM_COST_ITEM_ID) < BBSConfig.TELEPORT_SERVICE_BM_COST_ITEM_COUNT)
@@ -146,7 +146,7 @@ public class CommunityTeleport extends CustomCommunityHandler
 					return;
 				}
 
-				Location loc = Location.findPointToStay(new Location(x, y, z), 50, 100, player.getGeoIndex());
+				Location loc = Location.findPointToStay(location, 50, 100, player.getGeoIndex());
 				player.teleToLocation(loc);
 				ItemFunctions.deleteItem(player, BBSConfig.TELEPORT_SERVICE_BM_COST_ITEM_ID, BBSConfig.TELEPORT_SERVICE_BM_COST_ITEM_COUNT);
 				player.sendPacket(ShowBoardPacket.CLOSE);
@@ -364,7 +364,7 @@ public class CommunityTeleport extends CustomCommunityHandler
 
 	private void teleport(Player player, TeleportPoint point)
 	{
-		if(!BookMarkList.checkTeleportConditions(player))
+		if(!BookMarkList.checkTeleportConditions(player,point.getLocation()))
 			return;
 
 		if(player.getReflection().isDefault())
