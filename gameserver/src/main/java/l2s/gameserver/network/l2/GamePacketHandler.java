@@ -1681,7 +1681,7 @@ public final class GamePacketHandler implements IPacketHandler<GameClient>, ICli
 									msg = new RequestNewEnchantTry();
 									break;
 								case 0xF9:
-									//msg = new RequestNewEnchantRetryToPutItems();
+									msg = new RequestNewEnchantRetryToPutItems();
 									break;
 								case 0xFA:
 									//TODO
