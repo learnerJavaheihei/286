@@ -4480,9 +4480,11 @@ public final class Player extends Playable implements PlayerGroup {
         Statement statement = null;
         Statement statement2 = null;
         PreparedStatement statement3 = null;
+        PreparedStatement statement4 = null;
         ResultSet rset = null;
         ResultSet rset2 = null;
         ResultSet rset3 = null;
+        ResultSet rset4 = null;
         try {
             // Retrieve the L2Player from the characters table of the database
             con = DatabaseFactory.getInstance().getConnection();
@@ -4785,12 +4787,23 @@ public final class Player extends Playable implements PlayerGroup {
                 player.setRandomCraftList(CharacterRandomCraftDAO.getInstance().restore(player.getObjectId()));
 
                 GameObjectsStorage.put(player);
+
+                statement4 = con.prepareStatement("SELECT item_name FROM _character_suite WHERE obj_id=? and use_item = 1");
+                statement4.setInt(1, objectId);
+                rset4 = statement4.executeQuery();
+                if(rset4.next())
+                {
+                    player._myBuyEffect  = AbnormalEffect.valueOf(rset4.getString("item_name"));
+                }
+
+                player.startAbnormalEffect(player._myBuyEffect);
             }
         } catch (final Exception e) {
             _log.error("Player:restore: Could not restore char data!", e);
         } finally {
             DbUtils.closeQuietly(statement2, rset2);
             DbUtils.closeQuietly(statement3, rset3);
+            DbUtils.closeQuietly(statement4, rset4);
             DbUtils.closeQuietly(con, statement, rset);
         }
         return player;
