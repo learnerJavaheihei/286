@@ -13,6 +13,8 @@ import l2s.commons.lang.reference.HardReferences;
 import l2s.commons.time.cron.SchedulingPattern;
 import l2s.commons.util.Rnd;
 import l2s.commons.util.concurrent.atomic.AtomicState;
+import l2s.gameserver.core.BotConfig;
+import l2s.gameserver.core.BotEngine;
 import l2s.gameserver.model.GameObjectTasks.UnJailTask;//自动监狱使用
 import l2s.gameserver.*;
 import l2s.gameserver.ai.CtrlEvent;
@@ -6425,8 +6427,44 @@ public final class Player extends Playable implements PlayerGroup {
             ConfirmDlgPacket pkt = new ConfirmDlgPacket(SystemMsg.C1_IS_MAKING_AN_ATTEMPT_TO_RESURRECT_YOU_IF_YOU_CHOOSE_THIS_PATH_S2_EXPERIENCE_WILL_BE_RETURNED_FOR_YOU, 0);
             pkt.addName(reviver).addInteger(Math.round(percent));
 
-            ask(pkt, new ReviveAnswerListener(this, percent, pet));
+            ask(pkt, new ReviveAnswerListener(this, percent, pet,reviver));
+            /*内挂復活配套--*/
+            BotConfig botConfig = BotEngine.getInstance().getBotConfig(this);
+            BotConfig reviverBotConfig = BotEngine.getInstance().getBotConfig(reviver);
+            reviverBotConfig.getIsUsedReviveOwner_target().put(getObjectId(),false);
+            if(_isInPlugIn && botConfig.isAcceptRes())//如果自身处于开内挂时需要先判断是否是对方是同队的人才产生自行点击复活
+            {
+                if(reviver.getParty()!=null && getParty()!=null)//双方都有队伍
+                {
+                    if(getParty().containsMember(reviver))//双方都有队伍且都是同队才执行自动
+                    {
+                        autoAcceptRevive(reviver);
+                        return;
+                    }
+                }
+                if (reviver.getClanId() == getClanId()) {
+                    autoAcceptRevive(reviver);
+                }
+            }
+            /*--内挂復活配套*/
         }
+    }
+
+    private void autoAcceptRevive(Player reviver) {
+        ThreadPoolManager.getInstance().schedule(() -> {
+            IntObjectPair<OnAnswerListener> entry = getAskListener(true);
+            if(entry == null)
+                return;
+            OnAnswerListener listener = entry.getValue();
+            listener.sayYes();
+            BotConfig reviverBotConfig = BotEngine.getInstance().getBotConfig(reviver);
+            reviverBotConfig.getIsUsedReviveOwner_target().put(getObjectId(),true);
+
+            ConfirmDlgPacket dlg = new ConfirmDlgPacket(SystemMsg.S1, 1000);
+            dlg.addString("\u0031\u79d2\u540e\u4f1a\u590d\u6d3b");/*\u0031\u79d2\u540e\u4f1a\u590d\u6d3b 1秒后会复活*/
+            entry = new IntObjectPairImpl<OnAnswerListener>(Rnd.nextInt(), listener);
+            sendPacket(dlg);
+        }, 5 * 1000);//因需要施法 所以需要延后 复活
     }
 
     public void requestCheckBot() {

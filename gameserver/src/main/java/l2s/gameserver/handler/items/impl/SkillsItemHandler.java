@@ -68,6 +68,13 @@ public class SkillsItemHandler extends DefaultItemHandler
 		{
 			SkillEntry skillEntry = skills[i];
 			Creature aimingTarget = skillEntry.getTemplate().getAimingTarget(playable, playable.getTarget());
+			if (aimingTarget!=null) {
+				if (playable.getPlayer().getDistance(aimingTarget.getX(),aimingTarget.getY(),aimingTarget.getZ())>600) {
+					playable.sendMessage("距离目标太远了!");
+					return false;
+				}
+			}
+
 			if(skillEntry.checkCondition(playable, aimingTarget, ctrl, false, true))
 			{
 				if(!playable.getAI().Cast(skillEntry, aimingTarget, ctrl, false))
