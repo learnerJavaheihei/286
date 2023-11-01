@@ -45,6 +45,7 @@ import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.stats.triggers.TriggerType;
 import l2s.gameserver.utils.GameStats;
 import l2s.gameserver.utils.HtmlUtils;
+import l2s.gameserver.utils.MyUtilsFunction;
 import l2s.gameserver.utils.TradeHelper;
 
 import org.napile.primitive.pair.IntObjectPair;
@@ -281,11 +282,13 @@ public class EnterWorld extends L2GameClientPacket
 
 		if(Config.SHOW_HTML_WELCOME)
 		{
-			String html = HtmCache.getInstance().getHtml("welcome.htm", activeChar);
-			HtmlMessage msg = new HtmlMessage(0);
-			msg.setItemId(-1);
-			msg.setHtml(html);
-			activeChar.sendPacket(msg);
+			if (MyUtilsFunction.checkCanBuy(activeChar, 0, 1)) {
+				String html = HtmCache.getInstance().getHtml("welcome.htm", activeChar);
+				HtmlMessage msg = new HtmlMessage(0);
+				msg.setItemId(-1);
+				msg.setHtml(html);
+				activeChar.sendPacket(msg);
+			}
 		}
 
 		if(Config.PETITIONING_ALLOWED)

@@ -488,7 +488,7 @@ public class MyUtilsFunction {
             if (giveItem(player, items)) {
                 player.sendMessage("购买成功。");
                 insertBuyItem(player, index);
-                html = HtmCache.getInstance().getHtml("welcome1.htm", player);
+                return;
             } else {
                 player.sendMessage("购买失败。");
             }
