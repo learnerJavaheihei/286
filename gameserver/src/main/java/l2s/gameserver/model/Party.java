@@ -706,7 +706,9 @@ public class Party implements PlayerGroup
 		else
 		{
 			for(Player member : _members)
-				if(!member.isDead() && (member == player || player.isInRangeZ(member, Config.ALT_PARTY_DISTRIBUTION_RANGE)) && ItemFunctions.canAddItem(player, item))
+				if(!member.isDead() && (member == player || player.isInRangeZ(member, Config.ALT_PARTY_DISTRIBUTION_RANGE))
+						&& ItemFunctions.canAddItem(player, item)
+						&& Math.abs(fromNpc.getLevel()-member.getLevel()) <= 9)
 					membersInRange.add(member);
 		}
 
@@ -751,6 +753,9 @@ public class Party implements PlayerGroup
 		// составляем список игроков, удовлетворяющих требованиям
 		for(Player member : rewardedMembers)
 		{
+			if (Math.abs(monster.getLevel()-member.getLevel()) > 9) {
+				continue;
+			}
 			if(!monster.isInRangeZ(member, Config.ALT_PARTY_DISTRIBUTION_RANGE))
 				continue;
 			if(member.getLevel() <= (partyLevel - maxDistributionLevelDIff))

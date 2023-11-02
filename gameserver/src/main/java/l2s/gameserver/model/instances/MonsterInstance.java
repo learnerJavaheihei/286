@@ -399,35 +399,42 @@ public class MonsterInstance extends NpcInstance
 			else if(group instanceof Player)
 			{
 				Player player = (Player) group;
-				double[] xpsp = calculateExpAndSp(player.getLevel(), damage, totalDamage);
-				xpsp[0] = applyOverhit(killer, xpsp[0]);
-				player.addExpAndCheckBonus(this, (long) xpsp[0], (long) xpsp[1]);
+
+				if (Math.abs(getLevel()-player.getLevel()) <= 9) {
+					double[] xpsp = calculateExpAndSp(player.getLevel(), damage, totalDamage);
+					xpsp[0] = applyOverhit(killer, xpsp[0]);
+					player.addExpAndCheckBonus(this, (long) xpsp[0], (long) xpsp[1]);
+				}
 			}
 		}
 
 		if(topDamager != null && topDamager.isPlayable())
 		{
-			for(RewardList rewardList : getRewardLists())
-				rollRewards(rewardList, lastAttacker, topDamager);
+			// 相差 9级 以内
+			if (Math.abs(getLevel()-topDamager.getLevel()) <= 9) {
+				for(RewardList rewardList : getRewardLists())
+					rollRewards(rewardList, lastAttacker, topDamager);
 
-			Player player = topDamager.getPlayer();
-			if(player != null && Math.abs(getLevel() - player.getLevel()) < 9)
-			{
-				for(RewardItemData reward : player.getPremiumAccount().getRewards())
+				Player player = topDamager.getPlayer();
+				if(player != null && Math.abs(getLevel() - player.getLevel()) < 9)
 				{
-					if(Rnd.chance(reward.getChance()))
-						ItemFunctions.addItem(player, reward.getId(), Rnd.get(reward.getMinCount(), reward.getMaxCount()));
-				}
+					for(RewardItemData reward : player.getPremiumAccount().getRewards())
+					{
+						if(Rnd.chance(reward.getChance()))
+							ItemFunctions.addItem(player, reward.getId(), Rnd.get(reward.getMinCount(), reward.getMaxCount()));
+					}
 
-				for(RewardItemData reward : player.getVIP().getTemplate().getRewards())
-				{
-					if(Rnd.chance(reward.getChance()))
-						ItemFunctions.addItem(player, reward.getId(), Rnd.get(reward.getMinCount(), reward.getMaxCount()));
-				}
+					for(RewardItemData reward : player.getVIP().getTemplate().getRewards())
+					{
+						if(Rnd.chance(reward.getChance()))
+							ItemFunctions.addItem(player, reward.getId(), Rnd.get(reward.getMinCount(), reward.getMaxCount()));
+					}
 
-				if(getChampion() > 0 && Config.SPECIAL_ITEM_ID > 0 && Config.SPECIAL_ITEM_COUNT > 0 && Math.abs(getLevel() - player.getLevel()) < 9 && Rnd.chance(Config.SPECIAL_ITEM_DROP_CHANCE))
-					ItemFunctions.addItem(player, Config.SPECIAL_ITEM_ID, Config.SPECIAL_ITEM_COUNT);
+					if(getChampion() > 0 && Config.SPECIAL_ITEM_ID > 0 && Config.SPECIAL_ITEM_COUNT > 0 && Math.abs(getLevel() - player.getLevel()) < 9 && Rnd.chance(Config.SPECIAL_ITEM_DROP_CHANCE))
+						ItemFunctions.addItem(player, Config.SPECIAL_ITEM_ID, Config.SPECIAL_ITEM_COUNT);
+				}
 			}
+
 		}
 		
 		if ((killer.getClan() != null) && !(killer.getLevel() > (getLevel() + 15)))
