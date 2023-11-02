@@ -1,5 +1,6 @@
 package l2s.gameserver.core;
 
+import l2s.gameserver.Config;
 import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.botscript.*;
 import l2s.gameserver.model.Party;
@@ -97,11 +98,14 @@ public class BotEngine
     		player.sendMessage("活动中无法开启自動狩獵..");
     		return;
     	}
-        /*内挂剩余时间为0禁用*/
-        String s = BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()));
-        if (s==null || Integer.parseInt(s) == 0) {
-            player.sendMessage("当前剩余使用时间为0,无法开启自動狩獵..");
-            return;
+
+        if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
+            /*内挂剩余时间为0禁用*/
+            String s = BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()));
+            if (s==null || Integer.parseInt(s) == 0) {
+                player.sendMessage("当前剩余使用时间为0,无法开启自動狩獵..");
+                return;
+            }
         }
 
 		/*pvp活动禁用内挂*/
@@ -127,25 +131,28 @@ public class BotEngine
 				tasks.put(player.getObjectId(), botThinkTask);
 				player.broadcastCharInfo();
 			}
-            // 每5分钟将挂机剩余时间更新到数据库
-            TimerManager.getInstance().startRenewCacheTime(player);
+            if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME)
+                // 每5分钟将挂机剩余时间更新到数据库
+                TimerManager.getInstance().startRenewCacheTime(player);
 
             ScheduledFuture<?> checkTimeTask = timeTasks.get(player.getObjectId());
             if(checkTimeTask == null){
                 checkTimeTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
                     @Override
                     public void run() {
-                        Integer time = Integer.valueOf(BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId())));
-                        if (player._isInPlugIn && time > 0) {
-                            time--;
-                            /** 存储剩余时间的map 中更新时间 */
-                            BotEngine.leftTimeMap.put(String.valueOf(player.getObjectId()), String.valueOf(time));
-                        }
-                        if (time == 0) {
-                            BotEngine.getInstance().stopTask(player);
-                            BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
-                            botConfig.setAbort(true, "");
-                            return;
+                        if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
+                            Integer time = Integer.valueOf(BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId())));
+                            if (player._isInPlugIn && time > 0) {
+                                time--;
+                                /** 存储剩余时间的map 中更新时间 */
+                                BotEngine.leftTimeMap.put(String.valueOf(player.getObjectId()), String.valueOf(time));
+                            }
+                            if (time == 0) {
+                                BotEngine.getInstance().stopTask(player);
+                                BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
+                                botConfig.setAbort(true, "");
+                                return;
+                            }
                         }
 
                         /* 当前角色所在组的队长是否死亡，死亡 并且队长停止挂机时 停止挂机 */
@@ -254,9 +261,12 @@ public class BotEngine
             autoFarm.setUnkParam2(1);
             player.sendPacket(new ExAutoplaySetting(player));
 
-            /** 剩余时间放入数据库 */
-            String lefttime = BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()));
-            BotHangUpTimeDao.getInstance().updateHangUpTime(player.getObjectId(),Integer.parseInt(lefttime));
+            if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
+                /** 剩余时间放入数据库 */
+                String lefttime = BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()));
+                BotHangUpTimeDao.getInstance().updateHangUpTime(player.getObjectId(),Integer.parseInt(lefttime));
+            }
+
 		}
 		finally
 		{

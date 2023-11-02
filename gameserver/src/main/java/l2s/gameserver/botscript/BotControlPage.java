@@ -1,5 +1,6 @@
 package l2s.gameserver.botscript;
 
+import l2s.gameserver.Config;
 import l2s.gameserver.core.*;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.ItemHolder;
@@ -38,7 +39,12 @@ public class BotControlPage
 	public static void mainPage(Player activeChar)
 	{
 		BotConfigImp config = (BotConfigImp) BotEngine.getInstance().getBotConfig(activeChar);
-		String html = HtmCache.getInstance().getHtml("bot/main.htm", activeChar);
+		String html ="";
+		if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
+			html = HtmCache.getInstance().getHtml("bot/main_restrict_time.htm", activeChar);
+		}
+		else
+			html = HtmCache.getInstance().getHtml("bot/main.htm", activeChar);
 		html = html.replace("%runtimeStats%", config.isAbort() ? "<font color=FF0000>\u25a0</font>" : "<font color=00FF00>\u25a0</font>");
 		/*\u25a0 ■*/
 		html = html.replace("%run%", config.isAbort() ? "start" : "stop");
@@ -62,47 +68,52 @@ public class BotControlPage
 		html = html.replace("%coverMember%", config.isCoverMember() ? "L2UI.CheckBox_checked" : "L2UI.CheckBox");
 		html = html.replace("%followAttackWhenChoosed%", config.isFollowAttackWhenChoosed() ? "L2UI.CheckBox_checked" : "L2UI.CheckBox");
 		html = html.replace("%hpmpshiftpercent%", String.valueOf(config.getHpMpShiftPercent()));
-		html = html.replace("%scriptTime%","10\u5c0f\u65f6");
 		html = html.replace("%autoSpoiledAttack%",config.is_autoSpoiledAttack() ? "L2UI.CheckBox_checked" : "L2UI.CheckBox");
-		String leftTime = BotEngine.leftTimeMap.get(String.valueOf(activeChar.getObjectId()));
 
-		/** 新 或未使用内挂的老用户 */
-		if (leftTime==null ) {
-			/* 给缓存设置初始值 */
-			BotEngine.leftTimeMap.put(String.valueOf(activeChar.getObjectId()),"36000");
-			/* 数据库初始化挂机时间 */
-			BotHangUpTimeDao.getInstance().insertScriptTime(activeChar.getObjectId(),Player.scriptTime,Player.scriptTime,0);
-			leftTime = "36000";
-		}
-		Integer time = Integer.parseInt(leftTime);
-		int hourTemplate = time / 3600;
-		int minuteTemplate = (time - hourTemplate*3600 ) / 60;
-		String hour = null;
-		String minute = null;
-		if(hourTemplate<10){
-			hour = "0"+hourTemplate;
-		}else {
-			hour = String.valueOf(hourTemplate);
-		}
-		if(minuteTemplate<10){
-			minute = "0"+minuteTemplate;
-		}else {
-			minute = String.valueOf(minuteTemplate);
-		}
-		html = html.replace("%scriptRemainderTime%", hour+"\u5c0f\u65f6"+minute+"\u5206\u949f");
-		// 如果是第一次打开 需要去给上购买的标记 bypass -h htmbypass_bot.buyTime %isBuy% 换掉
+		if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
+			html = html.replace("%scriptTime%","10\u5c0f\u65f6");
 
-		Player._isBuyMap.putIfAbsent(activeChar.getObjectId(), false); // 如果是空的 说明定时刷新清空了或者是 第一次打开使用 默认就是未购买 false
-		Player._buyTimesByOBJ.putIfAbsent(activeChar.getObjectId(),0);
-		if (html.contains("bypass -h htmbypass_bot.buyTime %isBuy%")) {
-			if (BotHangUpTimeDao.getInstance().selectIsBuyByObjId(activeChar.getObjectId()) >= BotConfig.maxBuyTimes) {
-				Player._isBuyMap.put(activeChar.getObjectId(),true);
-			}else {
-				Player._isBuyMap.put(activeChar.getObjectId(),false);
+			String leftTime = BotEngine.leftTimeMap.get(String.valueOf(activeChar.getObjectId()));
+
+			/** 新 或未使用内挂的老用户 */
+			if (leftTime==null ) {
+				/* 给缓存设置初始值 */
+				BotEngine.leftTimeMap.put(String.valueOf(activeChar.getObjectId()),"36000");
+				/* 数据库初始化挂机时间 */
+				BotHangUpTimeDao.getInstance().insertScriptTime(activeChar.getObjectId(),Player.scriptTime,Player.scriptTime,0);
+				leftTime = "36000";
 			}
+			Integer time = Integer.parseInt(leftTime);
+			int hourTemplate = time / 3600;
+			int minuteTemplate = (time - hourTemplate*3600 ) / 60;
+			String hour = null;
+			String minute = null;
+			if(hourTemplate<10){
+				hour = "0"+hourTemplate;
+			}else {
+				hour = String.valueOf(hourTemplate);
+			}
+			if(minuteTemplate<10){
+				minute = "0"+minuteTemplate;
+			}else {
+				minute = String.valueOf(minuteTemplate);
+			}
+			html = html.replace("%scriptRemainderTime%", hour+"\u5c0f\u65f6"+minute+"\u5206\u949f");
+			// 如果是第一次打开 需要去给上购买的标记 bypass -h htmbypass_bot.buyTime %isBuy% 换掉
+
+			Player._isBuyMap.putIfAbsent(activeChar.getObjectId(), false); // 如果是空的 说明定时刷新清空了或者是 第一次打开使用 默认就是未购买 false
+			Player._buyTimesByOBJ.putIfAbsent(activeChar.getObjectId(),0);
+			if (html.contains("bypass -h htmbypass_bot.buyTime %isBuy%")) {
+				if (BotHangUpTimeDao.getInstance().selectIsBuyByObjId(activeChar.getObjectId()) >= BotConfig.maxBuyTimes) {
+					Player._isBuyMap.put(activeChar.getObjectId(),true);
+				}else {
+					Player._isBuyMap.put(activeChar.getObjectId(),false);
+				}
+			}
+			html = html.replace("%isBuy%",Player._isBuyMap.get(activeChar.getObjectId())?"true":"false");
+			html = html.replace("%time%",String.valueOf(BotConfig.maxBuyTimes-Player._buyTimesByOBJ.get(activeChar.getObjectId())));
 		}
-		html = html.replace("%isBuy%",Player._isBuyMap.get(activeChar.getObjectId())?"true":"false");
-		html = html.replace("%time%",String.valueOf(BotConfig.maxBuyTimes-Player._buyTimesByOBJ.get(activeChar.getObjectId())));
+
 		HtmlMessage msg = new HtmlMessage(0);
 		msg.setItemId(-1);
 		msg.setHtml(html);

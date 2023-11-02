@@ -4794,9 +4794,9 @@ public final class Player extends Playable implements PlayerGroup {
                 if(rset4.next())
                 {
                     player._myBuyEffect  = AbnormalEffect.valueOf(rset4.getString("item_name"));
+                    player.startAbnormalEffect(player._myBuyEffect);
                 }
 
-                player.startAbnormalEffect(player._myBuyEffect);
             }
         } catch (final Exception e) {
             _log.error("Player:restore: Could not restore char data!", e);

@@ -1440,6 +1440,8 @@ public class Config
 	public static int MAX_SCHEDULE;
 	public static boolean IS_OUTTIME_ON_ALT_MAX_LEVEL;
 
+	public static boolean ENABLE_BOTSCRIPT_RESTRICT_TIME;
+
 	public static void loadServerConfig()
 	{
 		ExProperties serverSettings = load(CONFIGURATION_FILE);
@@ -2155,6 +2157,7 @@ public class Config
 		ADD_SLIDING_SCALES = altSettings.getProperty("addSlidingScales", 0);
 		AUTO_UPDATE_PROGRESS_INTERVAL = altSettings.getProperty("AutoUpdateProgressInterval", 60);
 
+		ENABLE_BOTSCRIPT_RESTRICT_TIME = altSettings.getProperty("enable_botscript_restrict_time", false);
 
 		String[] autoLootItemIdList = altSettings.getProperty("AutoLootItemIdList", "-1").split(";");
 		for(String item : autoLootItemIdList)
