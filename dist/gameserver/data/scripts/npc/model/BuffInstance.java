@@ -8,12 +8,15 @@ import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.SkillHolder;
 import l2s.gameserver.database.DatabaseFactory;
 import l2s.gameserver.model.Player;
+import l2s.gameserver.model.Skill;
 import l2s.gameserver.model.actor.instances.creature.Abnormal;
+import l2s.gameserver.model.actor.instances.creature.AbnormalList;
 import l2s.gameserver.model.instances.NpcInstance;
 import l2s.gameserver.network.l2.components.HtmlMessage;
 import l2s.gameserver.network.l2.s2c.MagicSkillUse;
 import l2s.gameserver.templates.npc.NpcTemplate;
 import l2s.gameserver.utils.ItemFunctions;
+import org.apache.velocity.runtime.directive.Break;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,7 +25,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -392,6 +397,28 @@ public class BuffInstance extends NpcInstance
 				player.sendActionFailed();	
 			}
 		}
+		else if(buypassOptions[0].equals("clearAll")){
+			AbnormalList abnormalList = player.getAbnormalList();
+			if (abnormalList.isEmpty()) {
+				return;
+			}
+			ArrayList<Abnormal> toExits = new ArrayList<>();
+			abnormalList.forEach( e -> {
+				loop:
+				for (BuffTemplate buff : _buffTemplate.values()) {
+					if (buff.getId()== e.getSkill().getId()) {
+						toExits.add(e);
+						e.exit();
+						break loop;
+					}
+				}
+			});
+			if (toExits.isEmpty()) {
+				player.sendMessage("當前沒有可清除的輔助狀態!");
+			}
+			showChatWindow(player, "special/" + getNpcId() + ".htm", false);
+		}
+
 	}
 	private int maxSuite = 3;//這一個參數是限制了一個玩家最多能設置幾組預設buff
 	private String suitebutton = "<table><tr><td align=\"center\" width=215><table width=215 bgcolor=\"1F4362\"><tr><td  bgcolor=\"0000FF\" fixwidth=200>套餐 <font color=B5B5B5>$value$</font>&nbsp;[<font color=FF0000>$size$</font>]&nbsp;<font color=LEVEL>$money$</font>金</td></tr></table></td><td align=\"center\" width=45><table><tr><td><button value=\"使用\" action=\"$act$\" width=45 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"><br1><button value=\"刪除\" action=\"$delete$\" width=45 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr></table></td><br></tr></table>";
