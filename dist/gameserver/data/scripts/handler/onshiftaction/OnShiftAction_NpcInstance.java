@@ -2,12 +2,11 @@ package handler.onshiftaction;
 
 import handler.onshiftaction.commons.RewardListInfo;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import l2s.gameserver.model.Creature;
+import l2s.gameserver.model.Party;
 import org.apache.commons.text.TextStringBuilder;
 import l2s.gameserver.Config;
 import l2s.gameserver.handler.bypass.Bypass;
@@ -309,26 +308,258 @@ public class OnShiftAction_NpcInstance extends ScriptOnShiftActionHandler<NpcIns
 		player.sendPacket(msg);
 	}
 
+//	@Bypass("actions.OnActionShift:aggro")
+//	public void aggro(Player player, NpcInstance npc, String[] par)
+//	{
+//		if(player == null || npc == null)
+//			return;
+//
+//		TextStringBuilder dialog = new TextStringBuilder("<html><body><table width=\"80%\"><tr><td>Attacker</td><td>Damage</td><td>Hate</td></tr>");
+//
+//		Set<AggroList.HateInfo> set = new TreeSet<AggroList.HateInfo>(AggroList.HateComparator.getInstance());
+//		set.addAll(npc.getAggroList().getCharMap().values());
+//		for(AggroList.HateInfo aggroInfo : set)
+//			dialog.append("<tr><td>").append(aggroInfo.attacker.getName()).append("</td><td>").append(aggroInfo.damage).append("</td><td>").append(aggroInfo.hate).append("</td></tr>");
+//
+//		dialog.append("</table><br><center><button value=\"");
+//		dialog.append(player.isLangRus() ? "Обновить" : "Refresh");
+//		dialog.append("\" action=\"bypass -h htmbypass_actions.OnActionShift:aggro\" width=100 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\" /></center></body></html>");
+//
+//		HtmlMessage msg = new HtmlMessage(npc);
+//		msg.setHtml(dialog.toString());
+//		player.sendPacket(msg);
+//	}
 	@Bypass("actions.OnActionShift:aggro")
 	public void aggro(Player player, NpcInstance npc, String[] par)
 	{
-		if(player == null || npc == null)
-			return;
-
-		TextStringBuilder dialog = new TextStringBuilder("<html><body><table width=\"80%\"><tr><td>Attacker</td><td>Damage</td><td>Hate</td></tr>");
-
+	if(player == null || npc == null)
+		return;
+	int page = 1;
+	int pages = 1;
+	TextStringBuilder dialog = new TextStringBuilder("<html><body><title>伤害資訊</title><table><tr><td>");
+	dialog.append("<table  align=center valign=top width=292 border=0 cellspacing=0 cellpadding=0>\n" +
+			"<tr><td align=center width=242>"+npc.getTemplate().getName(player)+"</td>" +
+			"<td align=right>" +
+			"<button value=\"返回\" action=\"bypass -h htmbypass_actions.OnActionShift:showShort\" back=\"l2ui_ct1.button.button_df_small_down\" fore=\"l2ui_ct1.button.button_df_small\" width=\"50\" height=\"22\"/>\n" +
+			"</td>" +
+			"</tr>" +
+			"</table>");
+	dialog.append("<table border=0 cellpadding=0 cellspacing=0 width=292 height=280>");
+	dialog.append("<tr><td valign=\"top\" align=\"center\">" );
+	dialog.append("<center><img src=\"L2UI.SquareWhite\" width=292 height=1></center>\n" +
+			"<table bgcolor=333333 width=300><tr>" );
+	dialog.append("<td width=30 align='center'><center><font color=\"FFFF00\">排名</font></center></td>");
+	dialog.append("<td width=80 align='center'><center><font color=\"FFFF00\">玩家名称</font></center></td>");
+	dialog.append("<td width=100 align='center'><center><font color=\"FFFF00\">累计造成伤害</font></center></td>");
+	dialog.append("<td width=70 align='center'><center><font color=\"FFFF00\">怨恨值</font></center></td>");
+	dialog.append("</tr></table>\n" +
+			"<center><img src=\"L2UI.SquareWhite\" width=292 height=1></center>");
+	dialog.append("<table border=0 cellpadding=5 cellspacing=3 width=280 valign=top>");
+	try{
 		Set<AggroList.HateInfo> set = new TreeSet<AggroList.HateInfo>(AggroList.HateComparator.getInstance());
 		set.addAll(npc.getAggroList().getCharMap().values());
-		for(AggroList.HateInfo aggroInfo : set)
-			dialog.append("<tr><td>").append(aggroInfo.attacker.getName()).append("</td><td>").append(aggroInfo.damage).append("</td><td>").append(aggroInfo.hate).append("</td></tr>");
+		List<AggroList.HateInfo> collect = new ArrayList<>(set);
+		Comparator<AggroList.HateInfo> comparator = new Comparator<AggroList.HateInfo>() {
+			@Override
+			public int compare(AggroList.HateInfo o1, AggroList.HateInfo o2) {
+				return o2.damage - o1.damage;
+			}
+		};
+		if (collect != null && collect.size() > 0) {
+			collect.sort(comparator);
+			// 总个数
+			int nums = collect.size();
+			// 每页的个数
+			int pageSize = 10;
+			// 点击时的 总页数
+			pages = nums % pageSize == 0 ? nums / pageSize : nums / pageSize + 1;
 
-		dialog.append("</table><br><center><button value=\"");
-		dialog.append(player.isLangRus() ? "Обновить" : "Refresh");
-		dialog.append("\" action=\"bypass -h htmbypass_actions.OnActionShift:aggro\" width=100 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\" /></center></body></html>");
+			if (par.length == 2) {
+				page = Integer.parseInt(par[1]);
+			}
+			if (par.length == 3) {
+				if (par[2].equals("prev")) {
+					page = Integer.parseInt(par[1]) -1;
+					page = page ==0 ? 1 : page;
+				}else if (par[2].equals("next")) {
+					page = Integer.parseInt(par[1]) +1;
+					page = Math.min(page, pages);
+				}
+			}
 
+			// 当前页数
+			int pageStart = page>0 ? (page - 1) * pageSize:0; //6
+			int pageEnd = (nums -(page-1) * pageSize) <= pageSize ?  (nums -(page-1) * pageSize)+pageStart-1 :pageStart+pageSize-1; //
+
+			for (int i = pageStart; i <= pageEnd; i++) {
+				if (npc.getCurrentHpPercents() != 100.){
+					dialog.append("<tr><td width=30 align='center'><center>")
+							.append((i+1 == 1) ? "<font color=\"FFFF00\">" : ((i+1<=3)?"<font color=\"FF4500\">":"<font color=''>")) // 第一名金色 二三名红色 以下白色
+							.append(i+1)
+							.append("</font></center></td>")
+							.append("<td width=80><center>")
+							.append(collect.get(i).attacker.getName())
+							.append("</center></td><td width=100><center>")
+							.append(collect.get(i).damage)
+							.append("</center></td><td width=70><center>")
+							.append(collect.get(i).hate)
+							.append("</center></td></tr>");
+				}
+			}
+		}
+	}finally {
+		dialog.append("</table></td></tr></table><br><center>");
+		// 分页
+		dialog.append("<table valign=\"BOTTOM\">");
+		dialog.append("<tr><td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:aggro page 1\" width=15 height=15 back=\"L2UI_CH3.ScrollBarLeftOnBtn\" fore=\"L2UI_CH3.ScrollBarLeftBtn\"></td>");
+		dialog.append("<td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:aggro page ").append(String.valueOf(page)).append(" prev\" width=15 height=15 back=\"L2UI_CH3.prev1_down\" fore=\"L2UI_CH3.prev1\"></td>");
+		dialog.append("<td>").append(page).append("</td>");
+		dialog.append("<td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:aggro page ").append(String.valueOf(page)).append(" next\" width=15 height=15 back=\"L2UI_CH3.next1_down\" fore=\"L2UI_CH3.next1\"></td>");
+		dialog.append("<td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:aggro page ").append(String.valueOf(pages)).append("\" width=15 height=15 back=\"L2UI_CH3.ScrollBarRightOnBtn\" fore=\"L2UI_CH3.ScrollBarRightBtn\"></td>");
+		dialog.append("</tr></table></center>");
+		// 刷新
+		dialog.append("<center><table valign=\"BOTTOM\"><tr><td><button value=\"");
+		dialog.append(player.isLangRus() ? "刷新" : "刷新");
+		dialog.append("\" action=\"bypass -h htmbypass_actions.OnActionShift:aggro\" width=100 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\" /></td></tr></table></center></td></tr></table></body></html>");
 		HtmlMessage msg = new HtmlMessage(npc);
 		msg.setHtml(dialog.toString());
 		player.sendPacket(msg);
+	}
+
+	}
+
+	@Bypass("actions.OnActionShift:belonger")
+	public void belonger(Player player, NpcInstance npc, String[] par) {
+		if (player == null || npc == null)
+			return;
+
+		int page = 1;
+		int pages = 1;
+		TextStringBuilder dialog = new TextStringBuilder("<html><body><title>掉落歸屬資訊</title><table><tr><td>");
+		dialog.append("<table  align=center valign=top width=292 border=0 cellspacing=0 cellpadding=0>\n" +
+				"<tr><td align=center width=242>"+npc.getTemplate().getName(player)+"</td>" +
+				"<td align=right>" +
+				"<button value=\"返回\" action=\"bypass -h htmbypass_actions.OnActionShift:showShort\" back=\"l2ui_ct1.button.button_df_small_down\" fore=\"l2ui_ct1.button.button_df_small\" width=\"50\" height=\"22\"/>\n" +
+				"</td>" +
+				"</tr>" +
+				"</table>");
+		dialog.append("<table border=0 cellpadding=0 cellspacing=0 width=292 height=280>");
+		dialog.append("<tr><td valign=\"top\" align=\"center\">\n");
+		dialog.append("<center><img src=\"L2UI.SquareWhite\" width=292 height=1></center>\n" +
+				"<table bgcolor=333333 width=280 height=20><tr>");
+		dialog.append("<td width=30 align='center'><center><font color=\"FFFF00\">排名</font></center></td>");
+		dialog.append("<td width=80 align='center'><center><font color=\"FFFF00\">队   伍</font></center></td>");
+		dialog.append("<td width=100 align='center'><center><font color=\"FFFF00\">队伍总伤害</font></center></td>");
+		dialog.append("<td width=70 align='center'><center><font color=\"FFFF00\">掉落归属</font></center></td>");
+		dialog.append("</tr></table>\n" +
+				"<center><img src=\"L2UI.SquareWhite\" width=292 height=1></center>\n" +
+				"<br>");
+		dialog.append("<table border=0 cellpadding=5 cellspacing=3 width=280 valign=top>");
+
+
+		try {
+			// map<leaderName,damage> 按照伤害 从大到小 来排行 sort start
+			Map<String, Integer> map = new HashMap<>();
+
+			Collection<AggroList.PartyDamage> partyDamages = npc.getAggroList().getPartyDamages();
+			for (AggroList.PartyDamage partyDamage : partyDamages) {
+				//
+				if (partyDamage.party.getPartyLeader() != null && partyDamage.damage != 0) {
+					map.put(partyDamage.party.getPartyLeader().getName(), partyDamage.damage);
+				}
+			}
+			// 如果 玩家没有队伍 单独列出来
+			for (Map.Entry<Creature, AggroList.HateInfo> creatureHateInfoEntry : npc.getAggroList().getCharMap().entrySet()) {
+				if (!creatureHateInfoEntry.getKey().getPlayer().isInParty() && creatureHateInfoEntry.getValue().damage != 0) {
+					map.put(creatureHateInfoEntry.getKey().getPlayer().getName() + "_single", creatureHateInfoEntry.getValue().damage);
+				}
+			}
+
+			List<Map.Entry<String, Integer>> collect = new ArrayList<>(map.entrySet());
+			Comparator<Map.Entry<String, Integer>> comparator = new Comparator<Map.Entry<String, Integer>>() {
+				@Override
+				public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+					return o2.getValue() - o1.getValue();
+				}
+			};
+			if (collect != null && collect.size() > 0) {
+				collect.sort(comparator);
+				// sort end
+				Map<String, Integer> sortMap = collect.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				// map<leaderName,damage> 按照伤害 从大到小
+				// 得到第一個 也就是最高傷害的隊伍
+				String maxDamageParty = null;
+				maxDamageParty = collect.get(0).getKey();
+				String finalMaxDamageParty = maxDamageParty;
+
+				// 总个数
+				int nums = collect.size();
+				// 每页的个数
+				int pageSize = 10;
+				// 点击时的 总页数
+				pages = nums % pageSize == 0 ? nums / pageSize : nums / pageSize + 1;
+
+				if (par.length == 2) {
+					page = Integer.parseInt(par[1]);
+				}
+				if (par.length == 3) {
+					if (par[2].equals("prev")) {
+						page = Integer.parseInt(par[1]) -1;
+						page = page ==0 ? 1 : page;
+					}else if (par[2].equals("next")) {
+						page = Integer.parseInt(par[1]) +1;
+						page = Math.min(page, pages);
+					}
+				}
+
+				// 当前页数
+				int pageStart = page>0 ? (page - 1) * pageSize:0; //6
+				int pageEnd = (nums -(page-1) * pageSize) <= pageSize ?  (nums -(page-1) * pageSize)+pageStart-1 :pageStart+pageSize-1; //
+
+				Party party = player.getParty();
+				String partyLeaderName = "";
+				if (party!=null) {
+					partyLeaderName = party.getPartyLeader().getName();
+				}
+				for (int i = pageStart; i <= pageEnd; i++) {
+					dialog.append("<tr><td width=30 align='center'><center>")
+							.append((i + 1 == 1) ? "<font color=\"FFFF00\">" : ((i + 1 <= 3) ? "<font color=\"FF4500\">" : "<font color=''>")) // 第一名金色 二三名红色 以下白色
+							.append(i + 1)
+							.append("</font></center></td>")
+							.append("<td width=80 align='center'><center>")
+							// 如果名字 是当前玩家 高亮 或者是玩家的队长
+							.append((collect.get(i).getKey().equals(player.getName()) || collect.get(i).getKey().equals(player.getName() + "_single") || collect.get(i).getKey().equals(partyLeaderName)) ? "<font color=\"FF0000\">" : "")
+							.append((collect.get(i).getKey() != null && collect.get(i).getKey().contains("_single")) ? collect.get(i).getKey().replace("_single", "") : collect.get(i).getKey())
+							.append((collect.get(i).getKey() != null && collect.get(i).getKey().contains("_single")) ? " 玩家" : (collect.get(i).getKey() == null ? "" : "的队伍"))
+							.append((collect.get(i).getKey().equals(player.getName()) || collect.get(i).getKey().equals(player.getName() + "_single") || collect.get(i).getKey().equals(partyLeaderName)) ? "</font>" : "")
+							.append("</center></td><td width=100 align=right valign=right><center><font color=''>")
+							.append(collect.get(i).getValue())
+							.append("</font></center></td><td width=70 align='center'>")
+							.append("<center><font color=\"ff4500\">")
+							.append(collect.get(i).getKey().equals(finalMaxDamageParty) ? "归属者" : " ")
+							.append("</font></center></td></tr>");
+				}
+			}
+		} finally {
+
+			dialog.append("</table></td></tr></table><br><center>");
+			// 分页
+			dialog.append("<table valign=\"BOTTOM\">");
+			dialog.append("<tr><td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:belonger page 1\" width=15 height=15 back=\"L2UI_CH3.ScrollBarLeftOnBtn\" fore=\"L2UI_CH3.ScrollBarLeftBtn\"></td>");
+			dialog.append("<td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:belonger page ").append(String.valueOf(page)).append(" prev\" width=15 height=15 back=\"L2UI_CH3.prev1_down\" fore=\"L2UI_CH3.prev1\"></td>");
+			dialog.append("<td>").append(page).append("</td>");
+			dialog.append("<td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:belonger page ").append(String.valueOf(page)).append(" next\" width=15 height=15 back=\"L2UI_CH3.next1_down\" fore=\"L2UI_CH3.next1\"></td>");
+			dialog.append("<td><button value=\" \" action=\"bypass -h htmbypass_actions.OnActionShift:belonger page ").append(String.valueOf(pages)).append("\" width=15 height=15 back=\"L2UI_CH3.ScrollBarRightOnBtn\" fore=\"L2UI_CH3.ScrollBarRightBtn\"></td>");
+			dialog.append("</tr></table></center>");
+			// 刷新
+			dialog.append("<center><table valign=\"BOTTOM\"><tr><td><button value=\"");
+			dialog.append(player.isLangRus() ? "刷新" : "刷新");
+			dialog.append("\" action=\"bypass -h htmbypass_actions.OnActionShift:belonger\" width=100 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\" /></td></tr></table></center></td></tr></table></body></html>");
+			HtmlMessage msg = new HtmlMessage(npc);
+			msg.setHtml(dialog.toString());
+			player.sendPacket(msg);
+		}
+
 	}
 
 	private static boolean addResist(TextStringBuilder dialog, String name, double val)
