@@ -1,5 +1,6 @@
 package l2s.gameserver.network.l2.s2c;
 
+import java.util.Calendar;
 import java.util.List;
 
 import l2s.gameserver.model.LimitedShopContainer;
@@ -8,6 +9,7 @@ import l2s.gameserver.model.actor.variables.PlayerVariables;
 import l2s.gameserver.model.base.LimitedShopEntry;
 import l2s.gameserver.model.base.LimitedShopIngredient;
 import l2s.gameserver.model.base.LimitedShopProduction;
+import l2s.gameserver.utils.LimitShopDailyLimitTask;
 
 /**
  * @author nexvill
@@ -68,8 +70,15 @@ public class ExPurchaseLimitShopItemListNew extends L2GameServerPacket
 			writeD(0);
 			
 			writeH(0);
+
+			if (_player.getVar(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + product.getInfo().getInteger("product1Id")) == null){
+				_player.setVar(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + product.getInfo().getInteger("product1Id")
+						,product.getInfo().getInteger("dailyLimit")
+						, LimitShopDailyLimitTask.calendar.getTimeInMillis());
+			}
+
 			writeH(_player.getVarInt(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + product.getInfo().getInteger("product1Id"), product.getInfo().getInteger("dailyLimit")));
-			
+
 			writeH(0);
 			
 			writeD(0); // sale remain sec

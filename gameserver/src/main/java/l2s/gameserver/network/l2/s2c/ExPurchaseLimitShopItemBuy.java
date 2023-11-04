@@ -91,7 +91,7 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 					}
 					else
 					{
-						boolean itemDestroyed = inventory.destroyItemByItemId(ingredient.getItemId(), ingredient.getItemCount());
+						boolean itemDestroyed = inventory.destroyItemByItemId(ingredient.getItemId(), ingredient.getItemCount()* _itemCount);
 						if (!itemDestroyed)
 						{
 							final SystemMessage sm = new SystemMessage(SystemMessage._2_UNITS_OF_THE_ITEM_S1_IS_REQUIRED);
@@ -244,7 +244,7 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 				{
 					remainLimit = _player.getVarInt(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, product.getInfo().getInteger("dailyLimit"));
 					remainLimit = remainLimit - _itemCount;
-					_player.setVar(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, remainLimit);
+					_player.setVar(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, remainLimit,_player.getVarExpireTime(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId));
 				}
 				else
 				{

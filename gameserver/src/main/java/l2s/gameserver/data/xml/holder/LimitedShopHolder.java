@@ -123,4 +123,8 @@ public class LimitedShopHolder extends AbstractHolder
 	{
 		_entries.clear();
 	}
+
+	public TIntObjectHashMap<LimitedShopContainer> get_entries(){
+		return _entries;
+	}
 }

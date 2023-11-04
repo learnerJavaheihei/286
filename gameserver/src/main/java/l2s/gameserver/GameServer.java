@@ -385,6 +385,9 @@ public class GameServer
 
 		Toolkit.getDefaultToolkit().beep();
 
+		// 启动 lcoin 商店的限定道具出售自更新
+		LimitShopDailyLimitTask.getInstance().start();
+
 		if(Config.IS_TELNET_ENABLED)
 			statusServer = new TelnetServer();
 		else
