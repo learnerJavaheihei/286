@@ -943,7 +943,9 @@ public class Config
 	//20200612調整NPC能力--
 	private static String[] tmp ;
 	public static double[] ALT_NPC_PATK_MODIFIER;
-	public static double ALT_NPC_MATK_MODIFIER;
+	public static double[] ALT_NPC_MATK_MODIFIER;
+	public static double[] ALT_NPC_PDEF_MODIFIER;
+	public static double[] ALT_NPC_MDEF_MODIFIER;//--20200612調整NPC能力
 	public static double ALT_NPC_MAXHP_MODIFIER;
 	public static double ALT_NPC_MAXMP_MODIFIER;
 
@@ -1943,7 +1945,29 @@ public class Config
 		{
 			ALT_NPC_PATK_MODIFIER[i] = Double.parseDouble(tmp[i]);
 		}
-		ALT_NPC_MATK_MODIFIER = formulasSettings.getProperty("NpcMAtkModifier", 1.0);
+
+		tmp = formulasSettings.getProperty("NpcMAtkModifier", "1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0").split(";");
+		ALT_NPC_MATK_MODIFIER  = new double[tmp.length];
+
+		for(int i = 0; i < tmp.length; i++)
+		{
+			ALT_NPC_MATK_MODIFIER[i] = Double.parseDouble(tmp[i]);
+		}
+
+		tmp = formulasSettings.getProperty("NpcPDefModifier", "1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0").split(";");
+		ALT_NPC_PDEF_MODIFIER  = new double[tmp.length];
+		for(int i = 0; i < tmp.length; i++)
+		{
+			ALT_NPC_PDEF_MODIFIER[i] = Double.parseDouble(tmp[i]);
+		}
+
+		tmp = formulasSettings.getProperty("NpcMDefModifier", "1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0").split(";");
+		ALT_NPC_MDEF_MODIFIER  = new double[tmp.length];
+		for(int i = 0; i < tmp.length; i++)
+		{
+			ALT_NPC_MDEF_MODIFIER[i] = Double.parseDouble(tmp[i]);
+		}
+		//--20200612調整NPC能力
 		ALT_NPC_MAXHP_MODIFIER = formulasSettings.getProperty("NpcMaxHpModifier", 1.0);
 		ALT_NPC_MAXMP_MODIFIER = formulasSettings.getProperty("NpcMapMpModifier", 1.0);
 

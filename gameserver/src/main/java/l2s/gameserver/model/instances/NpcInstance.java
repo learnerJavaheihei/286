@@ -718,7 +718,7 @@ public class NpcInstance extends Creature
 	@Override
 	public int getMAtk(Creature target, Skill skill)
 	{
-		return (int) (super.getMAtk(target, skill) * Config.ALT_NPC_MATK_MODIFIER);
+		return super.getMAtk(target, skill);//20200612調整NPC能力
 	}
 
 	@Override

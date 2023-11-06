@@ -39,6 +39,7 @@ import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.skills.SkillEntryType;
 import l2s.gameserver.stats.Formulas;
+import l2s.gameserver.stats.Stats;
 import l2s.gameserver.templates.item.data.RewardItemData;
 import l2s.gameserver.templates.npc.Faction;
 import l2s.gameserver.templates.npc.NpcTemplate;
@@ -122,6 +123,28 @@ public class MonsterInstance extends NpcInstance
 	{
 		return (int) (super.getPAtk(target) * Config.ALT_NPC_PATK_MODIFIER[position]);
 	}
+
+	@Override
+	public int getMAtk(Creature target, Skill skill)
+	{
+		return (int) (super.getMAtk(target, skill) * Config.ALT_NPC_MATK_MODIFIER[position]);
+	}
+
+	@Override
+	public int getPDef(Creature target)
+	{
+		double pDef = getStat().calc(Stats.POWER_DEFENCE, getBaseStats().getPDef(), target, null);
+		return (int) (Math.max(pDef, getBaseStats().getPDef() / 2.) * Config.ALT_NPC_PDEF_MODIFIER[position]);
+	}
+
+	@Override
+	public int getMDef(Creature target, Skill skill)
+	{
+		double mDef = getStat().calc(Stats.MAGIC_DEFENCE, getBaseStats().getMDef(), target, skill);
+		return (int) (Math.max(mDef, getBaseStats().getMDef() / 2.) * Config.ALT_NPC_MDEF_MODIFIER[position]);
+	}
+
+	//--20200612調整NPC能力
 	public int getChampion()
 	{
 		return _isChampion;
