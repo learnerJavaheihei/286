@@ -230,7 +230,7 @@ public class RewardData implements Cloneable
 		int min = Integer.parseInt(rewardElement.attributeValue("min"));
 		int max = Integer.parseInt(rewardElement.attributeValue("max"));
 		// переводим в системный вид
-		int chance = (int) (Double.parseDouble(rewardElement.attributeValue("chance")) * 10000);
+		double chance = (double) (Double.parseDouble(rewardElement.attributeValue("chance")) * 10000);
 
 		RewardData data = new RewardData(itemId);
 		data.setChance(chance);
