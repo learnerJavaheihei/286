@@ -76,6 +76,7 @@ import l2s.gameserver.model.items.*;
 import l2s.gameserver.model.items.Warehouse.WarehouseType;
 import l2s.gameserver.model.items.attachment.FlagItemAttachment;
 import l2s.gameserver.model.items.attachment.PickableAttachment;
+import l2s.gameserver.model.mail.Mail;
 import l2s.gameserver.model.matching.MatchingRoom;
 import l2s.gameserver.model.petition.PetitionMainGroup;
 import l2s.gameserver.model.pledge.*;
@@ -7046,6 +7047,18 @@ public final class Player extends Playable implements PlayerGroup {
         getNetConnection().setPremiumAccountExpire(expireTime);
 
         if (startPremiumAccountTask()) {
+            List<ItemData> addItems = premiumAccount.get_addItems();
+            if(!addItems.isEmpty()){
+                addItems.forEach(item ->{
+                    if (!isInventoryFull()) {
+                        ItemFunctions.addItem(this, item.getId(), item.getCount(), true);
+                    }
+                    else {
+                        sendPreAccountItems(item);
+                    }
+                });
+            }
+
             if (!extended) {
                 if (getParty() != null)
                     getParty().recalculatePartyData();
@@ -7057,6 +7070,35 @@ public final class Player extends Playable implements PlayerGroup {
             return true;
         }
         return false;
+    }
+
+    private void sendPreAccountItems(ItemData item) {
+        String _topic = "购买會員獎勵道具";
+        String _body = "你的背包滿了,系統將超過可攜帶的會員獎勵道具以郵件發送給你,注意查收!";
+        Mail mail = new Mail();
+        mail.setSenderId(1);
+        mail.setSenderName("Admin");
+        mail.setReceiverId(getObjectId());
+        mail.setReceiverName(getName());
+        mail.setTopic(_topic);
+        mail.setBody(_body);
+
+        ItemInstance itemInstance = ItemFunctions.createItem(item.getId());
+        itemInstance.setLocation(ItemInstance.ItemLocation.MAIL);
+        itemInstance.setCount(item.getCount());
+        itemInstance.save();
+        mail.addAttachment(itemInstance);
+
+        mail.setType(Mail.SenderType.NEWS_INFORMER);
+        mail.setUnread(true);
+        mail.setExpireTime(-1);
+        mail.save();
+
+        if (isOnline()) {
+            sendPacket(ExNoticePostArrived.STATIC_TRUE);
+            sendPacket(new ExUnReadMailCount(this));
+            sendPacket(SystemMsg.THE_MAIL_HAS_ARRIVED);
+        }
     }
 
     public boolean removePremiumAccount() {

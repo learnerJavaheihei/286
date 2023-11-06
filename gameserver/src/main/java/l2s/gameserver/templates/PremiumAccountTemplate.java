@@ -60,6 +60,10 @@ public class PremiumAccountTemplate extends StatTemplate
 
 	private SkillEntry[] _skills = SkillEntry.EMPTY_ARRAY;
 
+
+
+	private final List<ItemData> _addItems = new ArrayList<ItemData>();
+
 	public PremiumAccountTemplate(int type, StatsSet set)
 	{
 		_type = type;
@@ -184,6 +188,14 @@ public class PremiumAccountTemplate extends StatTemplate
 	public int getWorldChatMinLevel()
 	{
 		return _worldChatMinLevel;
+	}
+
+	public List<ItemData> get_addItems() {
+		return _addItems;
+	}
+
+	public void set_addItems(ItemData item) {
+		_addItems.add(item);
 	}
 
 	public void addName(Language lang, String name)

@@ -146,6 +146,15 @@ public final class PremiumAccountParser extends StatParser<PremiumAccountHolder>
 						template.addReward(new RewardItemData(itemId, minItemCount, maxItemCount, itemChance));
 					}
 				}
+				else if("add_items".equalsIgnoreCase(subElement.getName()))
+				{
+					for(Element e : subElement.elements())
+					{
+						int itemId = Integer.parseInt(e.attributeValue("id"));
+						long itemCount = Long.parseLong(e.attributeValue("count"));
+						template.set_addItems(new ItemData(itemId, itemCount));
+					}
+				}
 			}
 			getHolder().addPremiumAccount(template);
 		}
