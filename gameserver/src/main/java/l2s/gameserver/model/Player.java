@@ -7732,15 +7732,15 @@ public final class Player extends Playable implements PlayerGroup {
                     startPvPFlag(null);
             }
         }
-
-        if ((isInPeaceZone) && (RankManager.getInstance().getPlayerGlobalRank(this)) == 1) {
-            _bowTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(this::sendBowAction, 5000L, 180000L);
-        } else {
-            if (_bowTask != null) {
-                _bowTask.cancel(true);
-                _bowTask = null;
-            }
-        }
+        // 向排行第一致敬動作
+//        if ((isInPeaceZone) && (RankManager.getInstance().getPlayerGlobalRank(this)) == 1) {
+//            _bowTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(this::sendBowAction, 5000L, 180000L);
+//        } else {
+//            if (_bowTask != null) {
+//                _bowTask.cancel(true);
+//                _bowTask = null;
+//            }
+//        }
 
         if (broadcastRelation)
             broadcastRelation();
@@ -7751,17 +7751,17 @@ public final class Player extends Playable implements PlayerGroup {
             stopWaterTask();
     }
 
-    private void sendBowAction() {
-        for (Creature crt : this.getAroundCharacters(1000, 1000)) {
-            CtrlIntention intention = crt.getAI().getIntention();
-            if (crt.isPlayer()//
-                    && ((intention == CtrlIntention.AI_INTENTION_ACTIVE) || (intention == CtrlIntention.AI_INTENTION_IDLE))//
-                    && !crt.isSitting() && !crt.isCastingNow()) {
-                crt.setHeading(PositionUtils.calculateHeadingFrom(crt, this), true);
-                crt.sendPacket(new ExBowActionTo(this));
-            }
-        }
-    }
+//    private void sendBowAction() {
+//        for (Creature crt : this.getAroundCharacters(1000, 1000)) {
+//            CtrlIntention intention = crt.getAI().getIntention();
+//            if (crt.isPlayer()//
+//                    && ((intention == CtrlIntention.AI_INTENTION_ACTIVE) || (intention == CtrlIntention.AI_INTENTION_IDLE))//
+//                    && !crt.isSitting() && !crt.isCastingNow()) {
+//                crt.setHeading(PositionUtils.calculateHeadingFrom(crt, this), true);
+//                crt.sendPacket(new ExBowActionTo(this));
+//            }
+//        }
+//    }
 
     public void startAutoSaveTask() {
         if (!Config.AUTOSAVE)
