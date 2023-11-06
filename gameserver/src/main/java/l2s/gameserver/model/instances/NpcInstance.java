@@ -724,7 +724,7 @@ public class NpcInstance extends Creature
 	@Override
 	public int getPAtk(Creature target)
 	{
-		return (int) (super.getPAtk(target) * Config.ALT_NPC_PATK_MODIFIER);
+		return super.getPAtk(target);//20200612調整NPC能力
 	}
 
 	@Override

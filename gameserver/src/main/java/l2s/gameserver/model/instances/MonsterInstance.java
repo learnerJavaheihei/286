@@ -78,11 +78,11 @@ public class MonsterInstance extends NpcInstance
 	private int _isChampion;
 
 	private final boolean _canMove;
-
+	private int position;//20200612調整NPC能力
 	public MonsterInstance(int objectId, NpcTemplate template, MultiValueSet<String> set)
 	{
 		super(objectId, template, set);
-
+		position = Math.min((getLevel() / 10), 8);//20200612調整NPC能力
 		_canMove = getParameter("canMove", true);
 	}
 
@@ -116,6 +116,12 @@ public class MonsterInstance extends NpcInstance
 		return attacker.getPlayer() != null || attacker.isDefender();
 	}
 
+	//20200612調整NPC能力--
+	@Override
+	public int getPAtk(Creature target)
+	{
+		return (int) (super.getPAtk(target) * Config.ALT_NPC_PATK_MODIFIER[position]);
+	}
 	public int getChampion()
 	{
 		return _isChampion;

@@ -939,7 +939,10 @@ public class Config
 	public static double PLAYER_P_ATK_MODIFIER;
 	public static double PLAYER_M_ATK_MODIFIER;
 
-	public static double ALT_NPC_PATK_MODIFIER;
+//	public static double ALT_NPC_PATK_MODIFIER;
+	//20200612調整NPC能力--
+	private static String[] tmp ;
+	public static double[] ALT_NPC_PATK_MODIFIER;
 	public static double ALT_NPC_MATK_MODIFIER;
 	public static double ALT_NPC_MAXHP_MODIFIER;
 	public static double ALT_NPC_MAXMP_MODIFIER;
@@ -1932,7 +1935,14 @@ public class Config
 		PLAYER_P_ATK_MODIFIER = formulasSettings.getProperty("PLAYER_P_ATK_MODIFIER", 1.0);
 		PLAYER_M_ATK_MODIFIER = formulasSettings.getProperty("PLAYER_M_ATK_MODIFIER", 1.0);
 
-		ALT_NPC_PATK_MODIFIER = formulasSettings.getProperty("NpcPAtkModifier", 1.0);
+//		ALT_NPC_PATK_MODIFIER = formulasSettings.getProperty("NpcPAtkModifier", 1.0);
+		//20200612調整NPC能力--
+		tmp = formulasSettings.getProperty("NpcPAtkModifier", "1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0").split(";");
+		ALT_NPC_PATK_MODIFIER  = new double[tmp.length];
+		for(int i = 0; i < tmp.length; i++)
+		{
+			ALT_NPC_PATK_MODIFIER[i] = Double.parseDouble(tmp[i]);
+		}
 		ALT_NPC_MATK_MODIFIER = formulasSettings.getProperty("NpcMAtkModifier", 1.0);
 		ALT_NPC_MAXHP_MODIFIER = formulasSettings.getProperty("NpcMaxHpModifier", 1.0);
 		ALT_NPC_MAXMP_MODIFIER = formulasSettings.getProperty("NpcMapMpModifier", 1.0);
