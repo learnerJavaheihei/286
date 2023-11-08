@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import l2s.gameserver.core.RestartServerHangUpTime;
 import l2s.gameserver.core.TimerManager;
 import l2s.gameserver.utils.*;
+import l2s.gameserver.utils.CompensationSystem.NewServerCompensationServiceImpl;
 import net.sf.ehcache.CacheManager;
 
 import l2s.commons.lang.StatsUtils;
@@ -235,6 +236,9 @@ public class GameServer
 
 		// 重启自动检查
 		AutoCancelConsignmentGold.getInstance().checkConsignmentGold();
+
+		//
+		NewServerCompensationServiceImpl.getInstance().onLoad();
 
 		CacheManager.getInstance();
 

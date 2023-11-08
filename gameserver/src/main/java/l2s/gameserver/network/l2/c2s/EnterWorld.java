@@ -43,6 +43,8 @@ import l2s.gameserver.skills.AbnormalEffect;
 import l2s.gameserver.skills.SkillCastingType;
 import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.stats.triggers.TriggerType;
+import l2s.gameserver.utils.CompensationSystem.NewServerCompensationEntry;
+import l2s.gameserver.utils.CompensationSystem.NewServerCompensationServiceImpl;
 import l2s.gameserver.utils.GameStats;
 import l2s.gameserver.utils.HtmlUtils;
 import l2s.gameserver.utils.MyUtilsFunction;
@@ -120,6 +122,7 @@ public class EnterWorld extends L2GameClientPacket
 			botScriptSellTime(activeChar);
 		}
 
+		checkCompensationBtn(activeChar);
 
 		boolean first = activeChar.entering;
 
@@ -476,6 +479,20 @@ public class EnterWorld extends L2GameClientPacket
 		}
 
 		activeChar.getInventory().checkItems();
+	}
+
+	private static void checkCompensationBtn(Player activeChar) {
+		List<NewServerCompensationEntry> filterList = NewServerCompensationServiceImpl.filterList;
+		if(NewServerCompensationServiceImpl.OnOffset && !filterList.isEmpty()){
+			String accountName = activeChar.getAccountName();
+			for (NewServerCompensationEntry newServerCompensationEntry : filterList) {
+				// TODO 还需要附加 当前一期是否被领取过
+				if (accountName.equals(newServerCompensationEntry.getAccount())) {
+					activeChar.setTurnOnCompensationBtn(true);
+					break;
+				}
+			}
+		}
 	}
 
 	private static void botScriptSellTime(Player activeChar) {

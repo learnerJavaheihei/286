@@ -602,6 +602,9 @@ public final class Player extends Playable implements PlayerGroup {
     private static final int[] INSTANCE_IDS;
     static DateFormat dateFormat;
 
+    // 控制 领取补偿 按钮 默认关闭
+    private boolean turnOnCompensationBtn = false;
+
     static {
         listAbnormalEffect.add(AbnormalEffect.RUNWAY_ARMOR5);
         listAbnormalEffect.add(AbnormalEffect.RUNWAY_ARMOR6);
@@ -635,6 +638,14 @@ public final class Player extends Playable implements PlayerGroup {
         INSTANCE_IDS = new int[]{182, 183, 184, 195, 196, 197, 198};
         dateFormat = new SimpleDateFormat("HH:mm:ss");
 
+    }
+
+    public void setTurnOnCompensationBtn(boolean turnOnCompensationBtn) {
+        this.turnOnCompensationBtn = turnOnCompensationBtn;
+    }
+
+    public boolean getTurnOnCompensationBtn() {
+        return turnOnCompensationBtn;
     }
 
     public int get_finishTaskCount() {

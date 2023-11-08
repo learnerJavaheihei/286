@@ -41,6 +41,9 @@ import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.templates.item.data.ItemData;
 import l2s.gameserver.templates.npc.NpcTemplate;
 import l2s.gameserver.utils.*;
+import l2s.gameserver.utils.CompensationSystem.NewServerCompensationDao;
+import l2s.gameserver.utils.CompensationSystem.NewServerCompensationEntry;
+import l2s.gameserver.utils.CompensationSystem.NewServerCompensationServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,6 +123,11 @@ public class MemberNPCInstance extends NpcInstance
 	public static int[] skillReserve = {
 			11400,11401,11402,11403,11404,51275,51276,51277,51278,51279,51280,51281,51271,51272,51273,1405,51271,51252,51251,51250,51249,51248,51247,5124
 	};
+	private static String compensation_btn1="<td width=50 align=center background=\"L2UI_ct1.button_df_disable\" height=18><button value=\"领取\" action=\"player\" width=115 height=18 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>";
+	private static String compensation_btn2="<td width=50 align=center background=\"L2UI_ct1.button_df_disable\" height=20><font color=DDD3B6>已领取</font></td>";
+	private static String compensation_btn3="<td width=50 align=center background=\"L2UI_ct1.button_df_disable\" height=20><font color=DDD3B6>未开启</font></td>";
+	private static String compensation_btn4="<td width=50 align=center background=\"L2UI_ct1.button_df_disable\" height=20><font color=DDD3B6>不可领取</font></td>";
+
 	public MemberNPCInstance(int objectId, NpcTemplate template, MultiValueSet<String> set)
 	{
 		super(objectId, template, set);
@@ -130,7 +138,33 @@ public class MemberNPCInstance extends NpcInstance
 		//這一區是第一次對話時該出現的對話框區域
 		if(val == 0)
 		{
-			showChatWindow(player, "member/" + getNpcId() + ".htm", firstTalk);
+			String html = HtmCache.getInstance().getHtml("member/" + getNpcId() + ".htm", player);
+			if (!NewServerCompensationServiceImpl.OnOffset) {
+				player.setTurnOnCompensationBtn(false);
+			}else
+				player.setTurnOnCompensationBtn(true);
+			for (NewServerCompensationEntry compensationEntry : NewServerCompensationServiceImpl.filterList) {
+				if (compensationEntry.getAccount().equals(player.getAccountName())) {
+					if (compensationEntry.getRemain_coin()<1) {
+						player.setTurnOnCompensationBtn(false);
+						break;
+					}
+				}
+			}
+
+			if(NewServerCompensationServiceImpl.OnOffset && player.getTurnOnCompensationBtn())
+			{
+				String btn = "<td align=center><font color=\"7fff00\"><button value=\"领取补偿\" action=\"bypass -h npc?compensation\" width=66 height=25 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"><font></td>";
+				html = html.replace("<?display?>", btn);
+			}
+			else
+			{
+				html = html.replace("<?display?>", "<td width=66 height=25></td>");
+			}
+			HtmlMessage msg = new HtmlMessage(5);
+			msg.setHtml(html);
+			player.sendPacket(msg);
+			player.setLastNpc(this);
 		}
 		else
 		{
@@ -1757,7 +1791,345 @@ public class MemberNPCInstance extends NpcInstance
 			player.broadcastUserInfo(true);
 			ShowChangeWeapen(player);
 		}
+		else if(buypassOptions[0].equals("compensation"))
+		{
+			if (!NewServerCompensationServiceImpl.OnOffset) {
+				return;
+			}
+			// 领取后 绑定账户设置临时关闭
+			String page = HtmCache.getInstance().getHtml("member/compensationUnit.htm", player);
+			NewServerCompensationEntry compensationEntry = null;
+			for (NewServerCompensationEntry newServerCompensationEntry : NewServerCompensationServiceImpl.filterList) {
+				if (newServerCompensationEntry.getAccount().equals(player.getAccountName())) {
+					compensationEntry = newServerCompensationEntry;
+					break;
+				}
+			}
+			if (compensationEntry==null)
+				return;
+
+			page = page.replace("%remain%",String.valueOf(lcoinCountFormat(compensationEntry.getRemain_coin())));
+
+			page = page.replace("%Lcoin1%",String.valueOf(lcoinCountFormat(compensationEntry.getFirstGiveCoin())));
+
+			page = page.replace("%Lcoin2%",String.valueOf(lcoinCountFormat(compensationEntry.getSecondGiveCoin())));
+
+			page = page.replace("%Lcoin3%",String.valueOf(lcoinCountFormat(compensationEntry.getThirdGiveCoin())));
+
+			page = page.replace("%Lcoin4%",String.valueOf(lcoinCountFormat(compensationEntry.getFourthGiveCoin())));
+
+			page = page.replace("%Lcoin5%",String.valueOf(lcoinCountFormat(compensationEntry.getFifthGiveCoin())));
+
+			int compensationUnit = NewServerCompensationServiceImpl.compensationUnit;
+
+			if (compensationUnit == 1) {
+
+				if (compensationEntry.getFirstDate() < 1){
+					String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFirstGiveCoin()+" first_date");
+					page = page.replace("%Lcoin1_btn%",btn1);// 有 但未 **领取
+				}
+				else
+					page = page.replace("%Lcoin1_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+
+				if (compensationEntry.getSecondGiveCoin() < 1)
+					page = page.replace("%Lcoin2_btn%",compensation_btn4);// 不足 **不可领取
+				else
+					page = page.replace("%Lcoin2_btn%",compensation_btn3);// 充足 时间未到 **未开启
+
+				if (compensationEntry.getThirdGiveCoin() < 1)
+					page = page.replace("%Lcoin3_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin3_btn%",compensation_btn3);
+
+				if (compensationEntry.getFourthGiveCoin() < 1)
+					page = page.replace("%Lcoin4_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin4_btn%",compensation_btn3);
+
+				if (compensationEntry.getFifthGiveCoin() < 1)
+					page = page.replace("%Lcoin5_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin5_btn%",compensation_btn3);
+			}
+			else if (compensationUnit == 2) {
+				if (compensationEntry.getFirstDate() < 1){
+					String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFirstGiveCoin()+" first_date");
+					page = page.replace("%Lcoin1_btn%",btn1);// 有 但未 **领取
+				}
+				else
+					page = page.replace("%Lcoin1_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+
+				if (compensationEntry.getSecondGiveCoin() < 1){
+					page = page.replace("%Lcoin2_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getSecondDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getSecondGiveCoin()+" second_date");
+						page = page.replace("%Lcoin2_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin2_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+
+				if (compensationEntry.getThirdGiveCoin() < 1)
+					page = page.replace("%Lcoin3_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin3_btn%",compensation_btn3);
+
+				if (compensationEntry.getFourthGiveCoin() < 1)
+					page = page.replace("%Lcoin4_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin4_btn%",compensation_btn3);
+
+				if (compensationEntry.getFifthGiveCoin() < 1)
+					page = page.replace("%Lcoin5_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin5_btn%",compensation_btn3);
+			}
+			else if (compensationUnit == 3) {
+				if (compensationEntry.getFirstDate() < 1){
+					String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFirstGiveCoin()+" first_date");
+					page = page.replace("%Lcoin1_btn%",btn1);// 有 但未 **领取
+				}
+				else
+					page = page.replace("%Lcoin1_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+
+				if (compensationEntry.getSecondGiveCoin() < 1){
+					page = page.replace("%Lcoin2_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getSecondDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getSecondGiveCoin()+" second_date");
+						page = page.replace("%Lcoin2_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin2_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+
+				if (compensationEntry.getThirdGiveCoin() < 1){
+					page = page.replace("%Lcoin3_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getThirdDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getThirdGiveCoin()+" third_date");
+						page = page.replace("%Lcoin3_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin3_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+
+				if (compensationEntry.getFourthGiveCoin() < 1)
+					page = page.replace("%Lcoin4_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin4_btn%",compensation_btn3);
+
+				if (compensationEntry.getFifthGiveCoin() < 1)
+					page = page.replace("%Lcoin5_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin5_btn%",compensation_btn3);
+
+			}
+			else if (compensationUnit == 4) {
+				if (compensationEntry.getFirstDate() < 1){
+					String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFirstGiveCoin()+" first_date");
+					page = page.replace("%Lcoin1_btn%",btn1);// 有 但未 **领取
+				}
+				else
+					page = page.replace("%Lcoin1_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+
+				if (compensationEntry.getSecondGiveCoin() < 1){
+					page = page.replace("%Lcoin2_btn%",compensation_btn4);
+				}
+				else {
+					if (compensationEntry.getSecondDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getSecondGiveCoin()+" second_date");
+						page = page.replace("%Lcoin2_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin2_btn%",compensation_btn2);// 有 **已领取
+				}
+
+				if (compensationEntry.getThirdGiveCoin() < 1){
+					page = page.replace("%Lcoin3_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getThirdDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getThirdGiveCoin()+" third_date");
+						page = page.replace("%Lcoin3_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin3_btn%",compensation_btn2);// 有 **已领取
+				}
+
+				if (compensationEntry.getFourthGiveCoin() < 1){
+					page = page.replace("%Lcoin4_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getFourthDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFourthGiveCoin()+" fourth_date");
+						page = page.replace("%Lcoin4_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin4_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+
+				if (compensationEntry.getFifthGiveCoin() < 1)
+					page = page.replace("%Lcoin5_btn%",compensation_btn4);
+				else
+					page = page.replace("%Lcoin5_btn%",compensation_btn3);
+
+			}
+			else if (compensationUnit == 5) {
+				if (compensationEntry.getFirstDate() < 1){
+					String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFirstGiveCoin()+" first_date");
+					page = page.replace("%Lcoin1_btn%",btn1);// 有 但未 **领取
+				}
+				else
+					page = page.replace("%Lcoin1_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+
+				if (compensationEntry.getSecondGiveCoin() < 1){
+					page = page.replace("%Lcoin2_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getSecondDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getSecondGiveCoin()+" second_date");
+						page = page.replace("%Lcoin2_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin2_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+
+				if (compensationEntry.getThirdGiveCoin() < 1){
+					page = page.replace("%Lcoin3_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getThirdDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getThirdGiveCoin()+" third_date");
+						page = page.replace("%Lcoin3_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin3_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+
+				if (compensationEntry.getFourthGiveCoin() < 1){
+					page = page.replace("%Lcoin4_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getFourthDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFourthGiveCoin()+" fourth_date");
+						page = page.replace("%Lcoin4_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin4_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+
+				if (compensationEntry.getFifthGiveCoin() < 1){
+					page = page.replace("%Lcoin5_btn%",compensation_btn4);
+				}
+				else{
+					if (compensationEntry.getFifthDate() < 1){
+						String btn1 = compensation_btn1.replace("player", "bypass -h npc?getCompensationLcoin " + player.getAccountName()+" "+compensationEntry.getFifthGiveCoin()+" fifth_date");
+						page = page.replace("%Lcoin5_btn%",btn1);// 有 但未 **领取
+					}
+					else
+						page = page.replace("%Lcoin5_btn%",compensation_btn2);// 有 **已领取  忽略第一期
+				}
+			}
+
+			HtmlMessage msg = new HtmlMessage(0);
+			msg.setItemId(-1);
+			msg.setHtml(page);
+			player.sendPacket(msg);
+		}
+		else if(buypassOptions[0].startsWith("getCompensationLcoin"))
+		{
+			if (!NewServerCompensationServiceImpl.OnOffset) {
+				showChatWindow(player, 0, true);
+                return;
+			}
+			String accountName = buypassOptions[1];
+
+			List<NewServerCompensationEntry> filterList = NewServerCompensationServiceImpl.filterList;
+			NewServerCompensationEntry CompensationEntry = null;
+			for (NewServerCompensationEntry newServerCompensationEntry : filterList) {
+				if (newServerCompensationEntry.getAccount().equals(accountName)) {
+					if (!checkCanGetCompensation(newServerCompensationEntry)) {
+						player.sendMessage("当前领取状态有误,请重试!");
+						return;
+					}
+					CompensationEntry = newServerCompensationEntry;
+					break;
+				}
+			}
+			// 领取
+			if (CompensationEntry==null) {
+				return;
+			}
+
+			if (player.isInventoryFull()) {
+				player.sendMessage("你的包裹已满,请清理后再来领取!");
+				return;
+			}
+			int count = Integer.parseInt(buypassOptions[2]);
+			String unitName = buypassOptions[3];
+
+			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("确认领取["+count*100+"]个 lcoin"), new OnAnswerListener() {
+				@Override
+				public void sayYes() {
+					NewServerCompensationDao.getInstance().updateNewServerCompensation(accountName,player.getName(),count,unitName);
+					ItemFunctions.addItem(player,NewServerCompensationServiceImpl.gameCoinId,(long)(count*100L));
+
+					// 更新、添加道具、重新加载 (如果所有账号全部领取完, 则关闭该系统)
+					NewServerCompensationServiceImpl.getInstance().load();
+
+					showChatWindow(player, 0, true);
+				}
+
+				@Override
+				public void sayNo() {
+					showChatWindow(player, 0, true);
+				}
+			});
+
+		}
 	}
+
+	private boolean checkCanGetCompensation(NewServerCompensationEntry newServerCompensationEntry) {
+		int compensationUnit = NewServerCompensationServiceImpl.compensationUnit;
+
+		if (compensationUnit == 1){
+			if (newServerCompensationEntry.getRemain_coin() >= newServerCompensationEntry.getFirstGiveCoin() && newServerCompensationEntry.getFirstDate() < 1) {
+				return true;
+			}
+		}
+		else if (compensationUnit == 2){
+			if (newServerCompensationEntry.getRemain_coin() >= newServerCompensationEntry.getSecondGiveCoin() && newServerCompensationEntry.getSecondDate() < 1) {
+				return true;
+			}
+		}
+		else if (compensationUnit == 3){
+			if (newServerCompensationEntry.getRemain_coin() >= newServerCompensationEntry.getThirdGiveCoin() && newServerCompensationEntry.getThirdDate() < 1) {
+				return true;
+			}
+		}
+		else if (compensationUnit == 4){
+			if (newServerCompensationEntry.getRemain_coin() >= newServerCompensationEntry.getFourthGiveCoin() && newServerCompensationEntry.getFourthDate() < 1) {
+				return true;
+			}
+		}
+		else if (compensationUnit == 5){
+			if (newServerCompensationEntry.getRemain_coin() >= newServerCompensationEntry.getFifthGiveCoin() && newServerCompensationEntry.getFifthDate() < 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private double lcoinCountFormat(int coin) {
+
+		return ((double) coin * 100) / 10000D;
+	}
+
 	private static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	private static void ShowChangeSuite(Player player)
 	{
