@@ -14,9 +14,9 @@ public abstract class BotConfig
 	private int _findMobMaxHeight = 500;
 	private boolean _followMove = false;
 	private boolean _followAttack = false;
-	private boolean _autoAttack = false;
+	private boolean _autoAttack = true;
 	private boolean _usePhysicalAttack = true;
-	private boolean _pickUpItem = false;
+	private boolean _pickUpItem = true;
 	private boolean _pickUpFirst = false;
 	private boolean _autoSweep = false;
 	private boolean _absorbBody = false;

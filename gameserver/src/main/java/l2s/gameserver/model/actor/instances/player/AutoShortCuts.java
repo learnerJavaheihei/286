@@ -191,6 +191,12 @@ public class AutoShortCuts
 					else
 					{
 						target = skill.getAimingTarget(_owner, _owner.getTarget());
+						if (target==null || target.isPlayer()) {
+							continue;
+						}
+						if(!skill.checkCondition(skillEntry, _owner, target, false, false, true, false, false))
+							continue;
+
 						if (skill.getMpConsume() <= _owner.getCurrentMp())
 							_owner.getAI().Cast(skillEntry, target, true, false);
 						else
@@ -798,7 +804,10 @@ public class AutoShortCuts
 			return false;
 
 		Creature aimingTarget = skill.getAimingTarget(servitor, player.getTarget());
-		
+
+		if (aimingTarget==null || aimingTarget.isPlayer())
+			return false;
+
 		if (!player.getAutoFarm().isFarmActivate() && (skill.getTemplate().getAutoUseType() == Skill.SkillAutoUseType.ATTACK))
 			return false;
 		
