@@ -130,7 +130,7 @@ public class BotAttack implements IBotActionHandler
 					List<Creature> aroundCharacters = World.getAroundCharacters(actor, 4500, 500);
 					for (Creature aroundCharacter : aroundCharacters) {
 						if (aroundCharacter.isPlayer() && !aroundCharacter.isDead()) {
-							if (aroundCharacter.getTarget() == target && !actor.isAttackingNow() && aroundCharacter.getPlayer().isInSameParty(actor)) {
+							if (aroundCharacter.getTarget() == target && !actor.isAttackingNow() && !aroundCharacter.getPlayer().isInSameParty(actor)) {
 								config.addBlockTargetId(monster.getObjectId());
 								actor.setTarget(null);
 								ThreadPoolManager.getInstance().schedule(new Runnable() {
