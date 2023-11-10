@@ -29,10 +29,7 @@ import l2s.gameserver.ai.CtrlIntention;
 import l2s.gameserver.ai.NpcAI;
 import l2s.gameserver.data.QuestHolder;
 import l2s.gameserver.data.htm.HtmCache;
-import l2s.gameserver.data.xml.holder.ItemHolder;
-import l2s.gameserver.data.xml.holder.MultiSellHolder;
-import l2s.gameserver.data.xml.holder.ResidenceHolder;
-import l2s.gameserver.data.xml.holder.SkillAcquireHolder;
+import l2s.gameserver.data.xml.holder.*;
 import l2s.gameserver.geodata.GeoEngine;
 import l2s.gameserver.geometry.Location;
 import l2s.gameserver.geometry.Territory;
@@ -111,8 +108,8 @@ import l2s.gameserver.taskmanager.DecayTaskManager;
 import l2s.gameserver.taskmanager.LazyPrecisionTaskManager;
 import l2s.gameserver.templates.StatsSet;
 import l2s.gameserver.templates.TeleportLocation;
-import l2s.gameserver.templates.item.ItemTemplate;
-import l2s.gameserver.templates.item.WeaponTemplate;
+import l2s.gameserver.templates.item.*;
+import l2s.gameserver.templates.item.support.variation.VariationStone;
 import l2s.gameserver.templates.npc.BuyListTemplate;
 import l2s.gameserver.templates.npc.Faction;
 import l2s.gameserver.templates.npc.MinionData;
@@ -500,7 +497,47 @@ public class NpcInstance extends Creature
 				i = itemCount; // Set so loop won't happent again
 				item.setCount(itemCount); // Set item count
 			}
+			if ((item.isWeapon() || item.isArmor() || item.isAccessory())&& item.getBodyPart() != 2048L && item.getBodyPart() != 256L && Rnd.get((int)1, (int)100) <= 100) {
+				int Stoneid = 0;
+//				Stoneid = item.getBodyPart() == 64L ? 31554 : (item.getBodyPart() == 1024L || item.getBodyPart() == 32768L ? 31555 : (item.getBodyPart() == 512L ? 31556 : 31557));
+				VariationStone stone =null;
+				if (item.isWeapon()) {
+					Stoneid = 94185;
+					stone = VariationDataHolder.getInstance().getStone(VariationType.WEAPON, Stoneid);
+				}
+				else if (item.isArmor()) {
+					Stoneid = 94187;
+					stone = VariationDataHolder.getInstance().getStone(VariationType.ARMOR, Stoneid);
+				}
+				else if (item.isAccessory()){
+					Stoneid = 94423;
+					if (item.getTemplate().getBodyPart() == (Bodypart.RIGHT_EAR.mask() + Bodypart.LEFT_EAR.mask()))  {
+						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_EARRING, Stoneid);
+					}
+					else if (item.getTemplate().getBodyPart() == Bodypart.NECKLACE.mask())  {
+						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_NECKLACE, Stoneid);
+					}
+					else if (item.getTemplate().getBodyPart() == (Bodypart.RIGHT_FINGER.mask() + Bodypart.LEFT_FINGER.mask()))  {
+						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_RING, Stoneid);
+					}
+				}
 
+				if (stone != null) {
+					int variation1Id = VariationUtils.publicGetRandomOptionId(stone.getVariation(1));
+					int variation2Id = VariationUtils.publicGetRandomOptionId(stone.getVariation(2));
+					if (variation1Id != 0 && variation2Id == 0)
+					{
+						item.setVariationStoneId(Stoneid);
+						item.setVariation1Id(variation1Id);
+					}
+					else if (variation1Id != 0 && variation2Id != 0)
+					{
+						item.setVariationStoneId(Stoneid);
+						item.setVariation1Id(variation1Id);
+						item.setVariation2Id(variation2Id);
+					}
+				}
+			}
 			if(isRaid())
 			{
 				SystemMessagePacket sm;

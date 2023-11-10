@@ -243,7 +243,9 @@ public final class VariationUtils
 
 		player.sendChanges();
 	}
-
+	public static int publicGetRandomOptionId(VariationInfo variation) {
+		return VariationUtils.getRandomOptionId(variation);
+	}
 	private static int getRandomOptionId(VariationInfo variation)
 	{
 		if(variation == null)
