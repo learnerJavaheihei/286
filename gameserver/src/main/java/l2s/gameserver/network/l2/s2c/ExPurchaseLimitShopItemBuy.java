@@ -236,8 +236,10 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 						break;
 					}
 				}
-				
-				inventory.addItem(resultProductId, resultProductCount);
+				for (int j = 1; j <=resultProductCount; j++) {
+					inventory.addItem(resultProductId, 1);
+				}
+
 				
 				int remainLimit = 0;
 				if (product.getInfo().getInteger("dailyLimit") > 0)
