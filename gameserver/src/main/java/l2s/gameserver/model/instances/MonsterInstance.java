@@ -441,8 +441,24 @@ public class MonsterInstance extends NpcInstance
 		{
 			// 相差 9级 以内
 			if (Math.abs(getLevel()-topDamager.getLevel()) <= 9) {
-				for(RewardList rewardList : getRewardLists())
-					rollRewards(rewardList, lastAttacker, topDamager);
+				int mode =100;
+				Player atv = lastAttacker.getPlayer();
+				if (atv!=null) {
+					Party party = atv.getParty();
+					if (atv.getParty()!=null) {
+						int minLevelInParty =atv.getLevel();
+						int maxLevelInParty =atv.getLevel();
+						for (Player player : party) {
+							minLevelInParty = Math.min(minLevelInParty,player.getLevel());
+							maxLevelInParty = Math.max(maxLevelInParty,player.getLevel());
+						}
+						mode = Config.ALT_PARTY_LVL_DIFF_PENALTY[Math.min(maxLevelInParty - minLevelInParty, Config.ALT_PARTY_LVL_DIFF_PENALTY.length - 1)];
+					}
+				}
+				if (Rnd.get(1,100) <= mode) {
+					for(RewardList rewardList : getRewardLists())
+						rollRewards(rewardList, lastAttacker, topDamager);
+				}
 
 				Player player = topDamager.getPlayer();
 				if(player != null && Math.abs(getLevel() - player.getLevel()) < 9)
