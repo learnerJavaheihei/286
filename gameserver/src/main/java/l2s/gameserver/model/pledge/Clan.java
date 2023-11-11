@@ -594,7 +594,7 @@ public class Clan implements Iterable<UnitMember>
 			statement.setLong(3, getExpelledMemberTime() / 1000);
 			statement.setLong(4, getLeavedAllyTime() / 1000);
 			statement.setLong(5, getDissolvedAllyTime() / 1000);
-			statement.setInt(6, _level);
+			statement.setInt(6, getLevel());
 			statement.setInt(7, getWhBonus());
 			statement.setInt(8, getAcademyGraduatesCount());
 			statement.setInt(9, getCastleDefendCount());

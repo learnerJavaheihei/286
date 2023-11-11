@@ -15,6 +15,7 @@ import l2s.gameserver.model.GameObjectsStorage;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.entity.Hero;
 import l2s.gameserver.model.entity.olympiad.OlympiadDatabase;
+import l2s.gameserver.model.pledge.Clan;
 import l2s.gameserver.network.authcomm.AuthServerCommunication;
 import l2s.gameserver.network.l2.components.SystemMsg;
 import l2s.gameserver.network.l2.GameClient;
@@ -283,6 +284,18 @@ public class Shutdown extends Thread
 		{
 			ClanTable.getInstance().storeClanWars();
 			System.out.println("Clan War: Data saved.");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		try
+		{
+			for (Clan clan : ClanTable.getInstance().getClans()) {
+				clan.updateClanInDB();
+			}
+			System.out.println("Clans: Data saved.");
 		}
 		catch(Exception e)
 		{
