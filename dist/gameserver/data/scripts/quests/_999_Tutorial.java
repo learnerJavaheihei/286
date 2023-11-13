@@ -2,16 +2,13 @@ package quests;
 
 import java.util.StringTokenizer;
 
-import l2s.commons.util.Rnd;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.actor.listener.CharListenerList;
-import l2s.gameserver.listener.actor.player.OnPickupItemListener;
 import l2s.gameserver.listener.actor.player.OnPlayerEnterListener;
 import l2s.gameserver.listener.actor.player.OnPlayerExitListener;
-import l2s.gameserver.model.base.ClassLevel;
+import l2s.gameserver.model.base.ClassId;
 import l2s.gameserver.model.base.Race;
 import l2s.gameserver.model.instances.NpcInstance;
-import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.model.quest.Quest;
 import l2s.gameserver.model.quest.QuestState;
 import l2s.gameserver.network.l2.components.NpcString;
@@ -27,30 +24,6 @@ import l2s.gameserver.network.l2.s2c.TutorialCloseHtmlPacket;
 */
 public final class _999_Tutorial extends Quest
 {
-	private class PickupItemListener implements OnPickupItemListener
-	{
-		@Override
-		public void onPickupItem(Player player, ItemInstance item)
-		{
-			QuestState st = player.getQuestState(_999_Tutorial.this);
-			if(st == null)
-				return;
-
-			if(item.getItemId() == BLUE_GEMSTONE)
-			{
-				final int nh_state = st.getInt(NEWBIE_HELPER_STATE);
-				if(nh_state == 1)
-				{
-					st.set(NEWBIE_HELPER_STATE, 2);
-					st.playTutorialVoice("tutorial_voice_013");
-					st.showQuestionMark(false, 5);
-					st.playSound(SOUND_TUTORIAL);
-					st.getPlayer().removeListener(_pickupItemListener);
-				}
-			}
-		}
-	}
-
 	private class PlayerEnterListener implements OnPlayerEnterListener
 	{
 		@Override
@@ -89,83 +62,37 @@ public final class _999_Tutorial extends Quest
 	private static final String ENTER_WORLD_EVENT = "EW"; // Вход в мир.
 	private static final String QUEST_TIMER_EVENT = "QT"; // Квестовый таймер.
 	private static final String QUESTION_MARK_EVENT = "QM"; // Вопросытельный знак.
-	private static final String CLIENT_EVENT = "CE"; // Дейтсвия клиента. (100 - Class Change, 200 - Death, 300 - Level UP)
-	private static final String TUTORIAL_BYPASS_EVENT = "BYPASS"; // Использование байпасса в туториале.
 	private static final String TUTORIAL_LINK_EVENT = "LINK"; // Использование ссылки в туториале.
-
+	
 	// NPC's
-	private static final int ROIEN_GRAND_MASTER = 30008; // NPC: Роен Великий Мастер
-	private static final int NEWBIE_HELPER_HUMAN_F = 30009; // NPC: Помощник Новичков
-	private static final int GALLINT_GRAND_MAGISTER = 30017; // NPC: Галлинт Великий Магистр
-	private static final int NEWBIE_HELPER_HUMAN_M = 30019; // NPC: Помощник Новичков
-	private static final int MITRAELL_BROWN_ELF_CHIEF = 30129; // NPC: Митраэль Вождь Темных Эльфов
-	private static final int NEWBIE_HELPER_DARK_ELF = 30131; // NPC: Помощник Новичков
-	private static final int NERUPA = 30370; // NPC: Нерупа
-	private static final int NEWBIE_HELPER_ELF = 30400; // NPC: Помощник Новичков
-	private static final int LAFERON_FOREMAN = 30528; // NPC: Лаферон Бригадир
-	private static final int NEWBIE_HELPER_DWARVEN = 30530; // NPC: Помощник Новичков
-	private static final int VULKUS_FLAME_GUARDIAN = 30573; // NPC: Вулькус Хранитель Огня
-	private static final int NEWBIE_HELPER_ORC = 30575; // NPC: Помощник Новичков
-	private static final int NEWBIE_GUIDE_HUMAN = 30598; // NPC: Гид Новичков
-	private static final int NEWBIE_GUIDE_ELF = 30599; // NPC: Гид Новичков
-	private static final int NEWBIE_GUIDE_DARK_ELF = 30600; // NPC: Гид Новичков
-	private static final int NEWBIE_GUIDE_DWARVEN = 30601; // NPC: Гид Новичков
-	private static final int NEWBIE_GUIDE_ORC = 30602; // NPC: Гид Новичков
-	private static final int RAGNIR_KAMAEL = 34109; // NPC:
-	private static final int NEWBIE_HELPER_KAMAEL = 34108; // NPC: Помощник Новичков
-	private static final int NEWBIE_GUIDE_KAMAEL = 34110; // NPC: Гид Новичков
-
+	private static final int NEWBIE_GUIDE_HUMAN = 30598; // NPC: 说话岛初学向导
+	private static final int NEWBIE_GUIDE_ELF = 30599; // NPC: 精灵村初学向导
+	private static final int NEWBIE_GUIDE_DARK_ELF = 30600; // NPC: 黑暗精灵初学向导
+	private static final int NEWBIE_GUIDE_DWARVEN = 30601; // NPC: 矮人初学向导
+	private static final int NEWBIE_GUIDE_ORC = 30602; // NPC: 兽人初学向导
+	private static final int NEWBIE_GUIDE_KAMAEL = 34110; // NPC: 鸟人初学向导
+	
 	private static final int[] NPC_LIST = {
-		ROIEN_GRAND_MASTER,
-		NEWBIE_HELPER_HUMAN_F,
-		GALLINT_GRAND_MAGISTER,
-		NEWBIE_HELPER_HUMAN_M,
-		MITRAELL_BROWN_ELF_CHIEF,
-		NEWBIE_HELPER_DARK_ELF,
-		NERUPA,
-		NEWBIE_HELPER_ELF,
-		LAFERON_FOREMAN,
-		NEWBIE_HELPER_DWARVEN,
-		VULKUS_FLAME_GUARDIAN,
-		NEWBIE_HELPER_ORC,
-		NEWBIE_GUIDE_HUMAN,
-		NEWBIE_GUIDE_ELF,
-		NEWBIE_GUIDE_DARK_ELF,
-		NEWBIE_GUIDE_DWARVEN,
-		NEWBIE_GUIDE_ORC,
-		RAGNIR_KAMAEL,
-		NEWBIE_HELPER_KAMAEL
+			NEWBIE_GUIDE_HUMAN,
+			NEWBIE_GUIDE_ELF,
+			NEWBIE_GUIDE_DARK_ELF,
+			NEWBIE_GUIDE_DWARVEN,
+			NEWBIE_GUIDE_ORC,
+			NEWBIE_GUIDE_KAMAEL
 	};
-
-	// Monster's
-	private static final int GREMLIN = 18342; // Монстр: Гремлин
-
+	
 	// Item's
-	private static final int BLUE_GEMSTONE = 6353; // Предмет: Синий Самоцвет
 	private static final int SOULSHOT = 91927; // Заряд Души
 	private static final int SPIRITSHOT = 91928; // Заряд Духа
-	private static final int ADVENTURERS_SCROLL_OF_ESCAPE = 10650; // Свиток Телепорта Путешественника
-	private static final int HASTE_POTION_FOR_NOVECES = 49036; // Зелье Ускорения для Путешественника
-	private static final int RECOMMENDATION_F = 1067; // Рекомендация
-	private static final int RECOMMENDATION_M = 1068; // Рекомендация
-	private static final int LEAF_OF_THE_MOTHER_TREE = 1069; // Лист Древа Жизни
-	private static final int BLOOD_OF_MITRAELL = 1070; // Кровь Митраэля
-	private static final int MARK_OF_FLAME = 1496; // Знак Пламени
-	private static final int MINING_LICENSE = 1498; // Лицензия Шахтера
 
-	// Other
-	private static final double BLUE_GEMSTONE_DROP_CHANCE = 50.; // Шанс выпадения Синего Самоцвета (50%).
-
-	private final OnPickupItemListener _pickupItemListener = new PickupItemListener();
 	private final OnPlayerEnterListener _playerEnterListener = new PlayerEnterListener();
 	private final OnPlayerExitListener _playerExitListener = new PlayerExitListener();
 
 	public _999_Tutorial()
 	{
 		super(PARTY_NONE, REPEATABLE);
-
+		
 		addFirstTalkId(NPC_LIST);
-		addKillId(GREMLIN);
 
 		CharListenerList.addGlobal(_playerEnterListener);
 		CharListenerList.addGlobal(_playerExitListener);
@@ -183,9 +110,6 @@ public final class _999_Tutorial extends Quest
 
 		if(event.equalsIgnoreCase(TUTORIAL_LINK_EVENT))
 			return onTutorialLink(value, st);
-
-		if(event.equalsIgnoreCase(CLIENT_EVENT))
-			return onClientEvent(Integer.parseInt(value), st);
 
 		final StringTokenizer tokenizer = new StringTokenizer(event, "_");
 		final String cmd = tokenizer.nextToken();
@@ -208,67 +132,9 @@ public final class _999_Tutorial extends Quest
 			notifyTutorialEvent(event, false, "", st);
 			return null;
 		}
-
-		String html = null;
-
-		final int nh_state = st.getInt(NEWBIE_HELPER_STATE);
-		if(event.equalsIgnoreCase("30008-3.htm") || event.equalsIgnoreCase("30017-3.htm") || event.equalsIgnoreCase("30370-3.htm") || event.equalsIgnoreCase("30129-3.htm") || event.equalsIgnoreCase("30573-3.htm") || event.equalsIgnoreCase("30528-3.htm")|| event.equalsIgnoreCase("34109-3.htm"))
-		{
-			if(nh_state == 3)
-			{
-				html = event;
-
-				st.set(NEWBIE_HELPER_STATE, 4);
-
-				switch(npc.getNpcId())
-				{
-					case ROIEN_GRAND_MASTER:
-						st.takeItems(RECOMMENDATION_F, st.getQuestItemsCount(RECOMMENDATION_F));
-						st.getPlayer().teleToLocation(-84056, 243256, -3735);
-						break;
-					case GALLINT_GRAND_MAGISTER:
-						st.takeItems(RECOMMENDATION_M, st.getQuestItemsCount(RECOMMENDATION_M));
-						st.getPlayer().teleToLocation(-84056, 243256, -3735);
-						break;
-					case NERUPA:
-						st.takeItems(LEAF_OF_THE_MOTHER_TREE, st.getQuestItemsCount(LEAF_OF_THE_MOTHER_TREE));
-						st.getPlayer().teleToLocation(45464, 48408, -3064);
-						break;
-					case MITRAELL_BROWN_ELF_CHIEF:
-						st.takeItems(BLOOD_OF_MITRAELL, st.getQuestItemsCount(BLOOD_OF_MITRAELL));
-						st.getPlayer().teleToLocation(12152, 16680, -4588);
-						break;
-					case VULKUS_FLAME_GUARDIAN:
-						st.takeItems(MARK_OF_FLAME, st.getQuestItemsCount(MARK_OF_FLAME));
-						st.getPlayer().teleToLocation(-45080, -113592, -213);
-						break;
-					case LAFERON_FOREMAN:
-						st.takeItems(MINING_LICENSE, st.getQuestItemsCount(MINING_LICENSE));
-						st.getPlayer().teleToLocation(115608, -177992, -916);
-						break;
-					case RAGNIR_KAMAEL:
-						st.takeItems(MINING_LICENSE, st.getQuestItemsCount(MINING_LICENSE));//что тут должно быть?TODO
-						break;
-				}
-
-				if(st.getPlayer().isMageClass() && st.getPlayer().getRace() != Race.ORC)
-				{
-					st.giveItems(SPIRITSHOT, 100, false);
-					st.playTutorialVoice("tutorial_voice_027");
-				}
-				else
-				{
-					st.giveItems(SOULSHOT, 200, false);
-					st.playTutorialVoice("tutorial_voice_026");
-				}
-
-				st.showQuestionMark(false, 28);
-			}
-		}
-
-		return html;
+		return null;
 	}
-
+	
 	@Override
 	public String onFirstTalk(final NpcInstance npc, final Player player)
 	{
@@ -279,111 +145,16 @@ public final class _999_Tutorial extends Quest
 		String html = null;
 
 		final int npcId = npc.getNpcId();
-		final int nh_state = st.getInt(NEWBIE_HELPER_STATE);
 		switch(npcId)
 		{
-			case ROIEN_GRAND_MASTER:
-			case GALLINT_GRAND_MAGISTER:
-			case NERUPA:
-			case MITRAELL_BROWN_ELF_CHIEF:
-			case VULKUS_FLAME_GUARDIAN:
-			case LAFERON_FOREMAN:
-			case RAGNIR_KAMAEL:
-				if(!checkNpcCondition(npcId, st.getPlayer()) || nh_state == 0 || nh_state == 1 || nh_state == 2)
-					html = npc.getNpcId() + "-1.htm";
-				else if(nh_state == 3)
-					html = npc.getNpcId() + "-2.htm";
-				else if(nh_state == 4)
-					html = npc.getNpcId() + "-4.htm";
-				break;
-			case NEWBIE_HELPER_HUMAN_F:
-			case NEWBIE_HELPER_HUMAN_M:
-			case NEWBIE_HELPER_ELF:
-			case NEWBIE_HELPER_DARK_ELF:
-			case NEWBIE_HELPER_ORC:
-			case NEWBIE_HELPER_DWARVEN:
-			case NEWBIE_HELPER_KAMAEL:
-				if(!checkNpcCondition(npcId, st.getPlayer()))
-					html = npc.getNpcId() + "-0.htm";
-				else if(nh_state == 0)
-				{
-					st.set(NEWBIE_HELPER_STATE, 1);
-					st.startQuestTimer(QUEST_TIMER_EVENT + "_" + 2, 30000L);
-					st.getPlayer().addListener(_pickupItemListener);
-
-					if(player.isMageClass())
-						html = npc.getNpcId() + "-1b.htm";
-					else
-						html = npc.getNpcId() + "-1a.htm";
-				}
-				else if(nh_state == 1 || nh_state == 2)
-				{
-					if(st.getQuestItemsCount(BLUE_GEMSTONE) == 0)
-					{
-						if(player.isMageClass())
-							html = npc.getNpcId() + "-2b.htm";
-						else
-							html = npc.getNpcId() + "-2a.htm";
-					}
-					else
-					{
-						st.set(NEWBIE_HELPER_STATE, 3);
-
-						switch(npcId)
-						{
-							case NEWBIE_HELPER_HUMAN_F:
-								st.giveItems(RECOMMENDATION_F, 1, false);
-								break;
-							case NEWBIE_HELPER_HUMAN_M:
-								st.giveItems(RECOMMENDATION_M, 1, false);
-								break;
-							case NEWBIE_HELPER_ELF:
-								st.giveItems(LEAF_OF_THE_MOTHER_TREE, 1, false);
-								break;
-							case NEWBIE_HELPER_DARK_ELF:
-								st.giveItems(BLOOD_OF_MITRAELL, 1, false);
-								break;
-							case NEWBIE_HELPER_ORC:
-								st.giveItems(MARK_OF_FLAME, 1, false);
-								break;
-							case NEWBIE_HELPER_DWARVEN:
-								st.giveItems(MINING_LICENSE, 1, false);
-								break;
-							case NEWBIE_HELPER_KAMAEL:
-								//st.giveItems(MINING_LICENSE, 1, false);//TODO что тут?
-								break;
-						}
-
-						if(player.isMageClass() && player.getRace() != Race.ORC)
-						{
-							st.giveItems(SPIRITSHOT, 100, false);
-							st.playTutorialVoice("tutorial_voice_027");
-							html = npc.getNpcId() + "-3b.htm";
-						}
-						else
-						{
-							st.giveItems(SOULSHOT, 200, false);
-							st.playTutorialVoice("tutorial_voice_026");
-							html = npc.getNpcId() + "-3a.htm";
-						}
-
-						st.takeItems(BLUE_GEMSTONE, st.getQuestItemsCount(BLUE_GEMSTONE));
-						st.giveItems(ADVENTURERS_SCROLL_OF_ESCAPE, 5, false);
-						st.giveItems(HASTE_POTION_FOR_NOVECES, 5, false);
-					}
-				}
-				else if(nh_state == 3)
-					html = npc.getNpcId() + "-4.htm";
-				else if(nh_state == 4)
-					html = npc.getNpcId() + "-5.htm";
-				break;
 			case NEWBIE_GUIDE_HUMAN:
 			case NEWBIE_GUIDE_ELF:
 			case NEWBIE_GUIDE_DARK_ELF:
 			case NEWBIE_GUIDE_DWARVEN:
 			case NEWBIE_GUIDE_ORC:
 			case NEWBIE_GUIDE_KAMAEL:
-				if(player.getLevel() <= 20 && player.getClassLevel() == ClassLevel.NONE && st.getInt(SHOTS_RECEIVED) == 0) // TODO: Check conditions.
+			{
+				if (st.getInt(SHOTS_RECEIVED) == 0)
 				{
 					st.set(SHOTS_RECEIVED, 1);
 					if(st.getPlayer().isMageClass() && st.getPlayer().getRace() != Race.ORC)
@@ -392,33 +163,9 @@ public final class _999_Tutorial extends Quest
 						st.giveItems(SOULSHOT, 200, false);
 				}
 				return "";
+			}
 		}
 		return html;
-	}
-
-	@Override
-	public String onKill(final NpcInstance npc, final QuestState st)
-	{
-		final int npcId = npc.getNpcId();
-		switch(npcId)
-		{
-			case GREMLIN:
-				final int nh_state = st.getInt(NEWBIE_HELPER_STATE);
-				if(nh_state == 1 || nh_state == 2)
-				{
-					st.cancelQuestTimer(QUEST_TIMER_EVENT + "_" + 2);
-					if(st.getQuestItemsCount(BLUE_GEMSTONE) < 1)
-					{
-						if(nh_state == 2 || Rnd.chance(BLUE_GEMSTONE_DROP_CHANCE))
-						{
-							npc.dropItem(st.getPlayer(), BLUE_GEMSTONE, 1);
-							st.playSound(SOUND_TUTORIAL);
-						}
-					}
-				}
-				break;
-		}
-		return null;
 	}
 
 	private String onEnterWorld(final QuestState st)
@@ -449,19 +196,7 @@ public final class _999_Tutorial extends Quest
 			}
 			else if(nh_state == 1 || nh_state == 2)
 			{
-				if(nh_state == 1)
-					st.getPlayer().addListener(_pickupItemListener);
-
 				st.showQuestionMark(false, 2);
-				st.playSound(SOUND_TUTORIAL);
-			}
-		}
-		else
-		{
-			final ClassLevel classLevel = st.getPlayer().getClassId().getClassLevel();
-			if(playerLevel >= 19 && classLevel == ClassLevel.NONE)
-			{
-				st.showQuestionMark(false, 13);
 				st.playSound(SOUND_TUTORIAL);
 			}
 		}
@@ -596,94 +331,6 @@ public final class _999_Tutorial extends Quest
 					break;
 			}
 		}
-		else if(markId == 5)
-		{
-			switch(player.getRace())
-			{
-				case HUMAN:
-					if(player.isMageClass())
-						st.addRadarWithMap(-91036, 248044, -3568);
-					else
-						st.addRadarWithMap(-71424, 258336, -3109);
-					break;
-				case ELF:
-					st.addRadarWithMap(46112, 41200, -3504);
-					break;
-				case DARKELF:
-					st.addRadarWithMap(28384, 11056, -4232);
-					break;
-				case ORC:
-					st.addRadarWithMap(-56736, -113680, -672);
-					break;
-				case DWARF:
-					st.addRadarWithMap(108567, -173994, -408);
-					break;
-				case KAMAEL:
-					st.addRadarWithMap(108567, -173994, -408);//TODO
-					break;
-			}
-			html = "tutorial_03.htm";
-		}
-		else if(markId == 13)
-		{
-			switch(player.getRace())
-			{
-				case HUMAN:
-					if(player.isMageClass())
-						html = "tutorial_21a.htm";
-					else
-						html = "tutorial_21.htm";
-					break;
-				case ELF:
-					if(player.isMageClass())
-						html = "tutorial_21c.htm";
-					else
-						html = "tutorial_21b.htm";
-					break;
-				case DARKELF:
-					if(player.isMageClass())
-						html = "tutorial_21h.htm";
-					else
-						html = "tutorial_21g.htm";
-					break;
-				case ORC:
-					if(player.isMageClass())
-						html = "tutorial_21e.htm";
-					else
-						html = "tutorial_21d.htm";
-					break;
-				case DWARF:
-					html = "tutorial_21f.htm";
-					break;
-				case KAMAEL:
-					html = "tutorial_21k.htm";
-					break;
-			}
-		}
-		else if(markId == 28)
-		{
-			switch(player.getRace())
-			{
-				case HUMAN:
-					st.addRadarWithMap(-84081, 243277, -3723);
-					break;
-				case ELF:
-					st.addRadarWithMap(45475, 48359, -3060);
-					break;
-				case DARKELF:
-					st.addRadarWithMap(12111, 16686, -4582);
-					break;
-				case ORC:
-					st.addRadarWithMap(-45032, -113598, -192);
-					break;
-				case DWARF:
-					st.addRadarWithMap(115632, -177996, -905);
-					break;
-				case KAMAEL:
-					st.addRadarWithMap(115632, -177996, -905);//TODO
-					break;
-			}
-		}
 
 		return html;
 	}
@@ -691,6 +338,7 @@ public final class _999_Tutorial extends Quest
 	private String onTutorialLink(final String value, final QuestState st)
 	{
 		String html = null;
+		Player player = st.getPlayer();
 
 		final StringTokenizer tokenizer = new StringTokenizer(value, "_");
 		final String cmd = tokenizer.nextToken();
@@ -715,57 +363,12 @@ public final class _999_Tutorial extends Quest
 							break;
 					}
 				}
-				st.getPlayer().sendPacket(TutorialCloseHtmlPacket.STATIC);
+				player.sendPacket(TutorialCloseHtmlPacket.STATIC);
 			}
 		}
 		return html;
 	}
-
-	private String onClientEvent(final int eventId, final QuestState st)
-	{
-		if(eventId == 300) // Повышение уровня.
-		{
-			final int playerLevel = st.getPlayer().getLevel();
-			final ClassLevel classLevel = st.getPlayer().getClassId().getClassLevel();
-			if(playerLevel >= 19 && classLevel == ClassLevel.NONE)
-			{
-				st.showQuestionMark(false, 13);
-				st.playSound(SOUND_TUTORIAL);
-			}
-		}
-		return null;
-	}
-
-	private boolean checkNpcCondition(int npcId, Player player)
-	{
-		switch(npcId)
-		{
-			case ROIEN_GRAND_MASTER:
-			case NEWBIE_HELPER_HUMAN_F:
-				return player.getRace() == Race.HUMAN && !player.isMageClass();
-			case GALLINT_GRAND_MAGISTER:
-			case NEWBIE_HELPER_HUMAN_M:
-				return player.getRace() == Race.HUMAN && player.isMageClass();
-			case NERUPA:
-			case NEWBIE_HELPER_ELF:
-				return player.getRace() == Race.ELF;
-			case MITRAELL_BROWN_ELF_CHIEF:
-			case NEWBIE_HELPER_DARK_ELF:
-				return player.getRace() == Race.DARKELF;
-			case VULKUS_FLAME_GUARDIAN:
-			case NEWBIE_HELPER_ORC:
-				return player.getRace() == Race.ORC;
-			case LAFERON_FOREMAN:
-			case NEWBIE_HELPER_DWARVEN:
-				return player.getRace() == Race.DWARF;
-
-			case RAGNIR_KAMAEL:
-			case NEWBIE_HELPER_KAMAEL:
-				return player.getRace() == Race.KAMAEL;
-		}
-		return false;
-	}
-
+	
 	@Override
 	public boolean isVisible(final Player player)
 	{

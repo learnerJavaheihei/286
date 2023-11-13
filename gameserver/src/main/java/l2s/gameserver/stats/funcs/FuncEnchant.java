@@ -10,7 +10,7 @@ import l2s.gameserver.templates.item.ItemQuality;
 import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.templates.item.ItemType;
 import l2s.gameserver.templates.item.WeaponTemplate.WeaponType;
-
+//强化属性设定
 public class FuncEnchant extends Func
 {
 	public FuncEnchant(Stats stat, int order, Object owner, double value, StatsSet params)

@@ -57,7 +57,7 @@ public class MyUtilsFunction {
 
     static final String[][] ItemId = {
             // 第一個是幣數量  第二個是物品及數量  第三個是等級限制 第四個是購買次數 輸入999 表示可買999 也等於無限次數了
-            {"120", "29585,1;49518,5;29009,5;34603,20000;34610,10000", "85", "1"}, //這一個是鎖引0
+            {"12", "29817,10;49772,10;90907,30;1061,50;29596,1;49134,1", "85", "1"}, //這一個是鎖引0
             {"350", "29595,1;70106,1;90836,1;90885,1;34604,40000;34611,20000", "85", "1"},//這一個是鎖引1
     };
     private static int[] Boss20 = new int[]{25146, 25357, 25366, 25001, 25127, 25019, 25076, 25149, 25166, 25369, 25365, 25038, 25272, 25095};
@@ -496,7 +496,7 @@ public class MyUtilsFunction {
             if (playerClan != null)//有盟的處理方式
             {
                 playerClan.addMembersBuff(player.getName(), 46002, 1, (System.currentTimeMillis() + (24 * 60 * 60 * 1000)) / 1000);
-                playerClan.broadcastSayPacketToOnlineMembers(ChatType.COMMANDCHANNEL_ALL, player.getName(), "购买破冰之礼赠送联盟礼物，请24小时内找致命蔷薇处领取。");
+                playerClan.broadcastSayPacketToOnlineMembers(ChatType.COMMANDCHANNEL_ALL, player.getName(), "购买破冰之礼赠送联盟礼物，请24小时内在亚丁楼梯下找黄金球棒丹迪领取。");
                 //ChatType.COMMANDCHANNEL_ALL 這一句你可以自己換別的類型，就會出現不同的顏色了。
             }
             player.sendPacket(msg);
@@ -587,32 +587,37 @@ public class MyUtilsFunction {
             int item57 = 0;
             long exp57 = 0;
             if (player.getLevel() >= 40 && player.getLevel() < 50) {
-                itemid = 91290;
+                itemid = 80000;
                 item57 = 20000;
                 exp57 = 5000000;
             }
             if (player.getLevel() >= 50 && player.getLevel() < 60) {
-                itemid = 91291;
+                itemid = 80001;
                 item57 = 30000;
                 exp57 = 10000000;
             }
             if (player.getLevel() >= 60 && player.getLevel() < 70) {
-                itemid = 91292;
+                itemid = 80002;
                 item57 = 40000;
                 exp57 = 30000000;
             }
-            if (player.getLevel() >= 70 && player.getLevel() < 80) {
-                itemid = 91293;
+            if (player.getLevel() >= 70 && player.getLevel() < 75) {
+                itemid = 80003;
                 item57 = 50000;
                 exp57 = 100000000;
             }
-            if (player.getLevel() >= 80 && player.getLevel() < 85) {
-                itemid = 91294;
+            if (player.getLevel() >= 75 && player.getLevel() < 80) {
+                itemid = 80004;
                 item57 = 60000;
                 exp57 = 10000000000L;
             }
+			if (player.getLevel() >= 80 && player.getLevel() < 85) {
+                itemid = 80005;
+                item57 = 60000;
+                exp57 = 30000000000L;
+            }
             if (player.getLevel() >= 85) {
-                itemid = 91295;
+                itemid = 80006;
                 item57 = 70000;
                 exp57 = 50000000000L;
             }
@@ -648,17 +653,17 @@ public class MyUtilsFunction {
             int item157 = 0;
             long sp57 = 0;
             if (player.getSp() >= 200000 && player.getSp() < 3000000) {
-                itemid1 = 91296;
+                itemid1 = 80007;
                 item157 = 10000;
                 sp57 = 200000;
             }
             if (player.getLevel() >= 3000000 && player.getLevel() < 30000000) {
-                itemid1 = 91297;
+                itemid1 = 80008;
                 item157 = 30000;
                 sp57 = 3000000;
             }
             if (player.getLevel() >= 30000000) {
-                itemid1 = 91298;
+                itemid1 = 80009;
                 item157 = 50000;
                 sp57 = 30000000;
             }
@@ -841,16 +846,16 @@ public class MyUtilsFunction {
 
 
             long count = 1L;
-            player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("确定要追踪至[" + vilePlayer.getName() + "]所在地点吗?,将花费["+count+"]个会员币."), new OnAnswerListener() {
+            player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("确定要追踪至[" + vilePlayer.getName() + "]所在地点吗?,将花费["+count+"]个贊助幣."), new OnAnswerListener() {
                 @Override
                 public void sayYes() {
 
                     if (!player.getInventory().destroyItemByItemId(MemberCoins,count)) {
-                        player.sendMessage("会员币不足!");
+                        player.sendMessage("贊助幣不足!");
                         onBypassFeedback(player,"findRedMan");
                         return;
                     }
-                    player.sendMessage("追踪恶人,花费["+count+"]个会员币!");
+                    player.sendMessage("追踪恶人,花费["+count+"]个贊助幣!");
                     player.teleToLocation(vilePlayer.getX(),vilePlayer.getY(),vilePlayer.getZ());
                     int vileValue = vilePlayers.get(vilePlayer) == null ? 0 : vilePlayers.get(vilePlayer);
                     if (vileValue < 5)
@@ -1165,8 +1170,8 @@ public class MyUtilsFunction {
             return;
         }
 
-        if (Config.enablePremiumAccountPeaceZone && !isPremiumAccountPeaceZone(player, loc)  && player.getLevel() > 10) {
-            String msg = "非会员不能传送到非安全区区域！";
+        if (Config.enablePremiumAccountPeaceZone && !isPremiumAccountPeaceZone(player, loc)  && player.getLevel() > 20) {
+            String msg = "非会员，20级后不能传送到非安全区区域！";
             player.sendMessage(msg);
             return;
         }
@@ -1218,7 +1223,7 @@ public class MyUtilsFunction {
         }
     }
     public static void showBossHtml(Player player, int[] Boss, int money) {
-        String html = HtmCache.getInstance().getHtml("teleporter/30146-RaidBoss.htm", player);
+        String html = HtmCache.getInstance().getHtml("teleporter/30848-RaidBoss.htm", player);
         StringBuilder content = new StringBuilder();
         for (int i = 0; i < Boss.length; ++i) {
             NpcInstance npc = RaidBossSpawnManager.getInstance().getRaidBossId(Boss[i]);
@@ -1226,15 +1231,15 @@ public class MyUtilsFunction {
                 content.append("<tr>");
                 Creature mostHated = npc.getAggroList().getMostHated(-1);
                 if (mostHated != null) {
-                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player) + "<br1><font color=0000FF>" + NpcHolder.getInstance().getTemplate(mostHated.getNpcId()).getName(player) + " \u6311\u6230\u4e2d</font></td>");
+                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + npc.getTemplate().getName(player) + "<br1><font color=0000FF>" + mostHated.getName() + " \u6311\u6230\u4e2d</font></td>");
                 } else if (npc.isAttackingNow()) {
-                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player)  + "<br1><font color=0000FF>\u8207\u73a9\u5bb6 \u6230\u9b25\u4e2d</font></td>");
+                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + npc.getTemplate().getName(player)  + "<br1><font color=0000FF>\u8207\u73a9\u5bb6 \u6230\u9b25\u4e2d</font></td>");
                 } else {
-                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player)  + "<br1><font color=00FF00>\u53ef\u6311\u6230</font></td>");
+                    content.append("<td fixwidth=35>" + npc.getLevel() + "</td><td fixwidth=215>" + npc.getTemplate().getName(player)  + "<br1><font color=00FF00>\u53ef\u6311\u6230</font></td>");
                 }
                 content.append("<td fixwidth=50>");
-                content.append("<button value=\"\u50b3\u9001\" action=\"bypass -h MyUtils_Teleport " + npc.getX() + "," + npc.getY() + "," + npc.getZ() + " " + money + " one " + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player).replace(" ", "") + "\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
-                content.append("<button value=\"\u968a\u50b3\" action=\"bypass -h MyUtils_Teleport " + npc.getX() + "," + npc.getY() + "," + npc.getZ() + " " + money + " group " + NpcHolder.getInstance().getTemplate(npc.getNpcId()).getName(player).replace(" ", "") + "\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
+                content.append("<button value=\"\u50b3\u9001\" action=\"bypass -h MyUtils_Teleport " + npc.getX() + "," + npc.getY() + "," + npc.getZ() + " " + money + " one " + npc.getTemplate().getName(player).replace(" ", "") + "\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
+                content.append("<button value=\"\u968a\u50b3\" action=\"bypass -h MyUtils_Teleport " + npc.getX() + "," + npc.getY() + "," + npc.getZ() + " " + money + " group " + npc.getTemplate().getName(player).replace(" ", "") + "\" width=50 height=18 back=\"l2ui_ct1.Button_DF_Msn_down\" fore=\"l2ui_ct1.Button_DF_Msn\">");
                 content.append("</td></tr>");
                 continue;
             }

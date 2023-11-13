@@ -59,7 +59,7 @@ public class _10989_DangerousPredators extends Quest
 			}
 			case "gerald_q10989_02.htm":
 			{
-				st.addExpAndSp(26_000, 1_000);
+				st.addExpAndSp(2_600, 1_000);
 				st.giveItems(SOE_NOVICE, 10);
 				st.giveItems(NOVICE_NECKLACE, 1);
 				st.giveItems(NOVICE_EARRING, 2);

@@ -105,6 +105,7 @@ public class Config
 	public static String DATABASE_LOGIN;
 	public static String DATABASE_PASSWORD;
 	public static boolean DATABASE_AUTOUPDATE;
+	public static double SPAWN_MULTIPLIER;
 	public static boolean enablePremiumAccountPeaceZone;
 	// Database additional options
 	public static boolean AUTOSAVE;
@@ -2151,6 +2152,7 @@ public class Config
 	{
 		ExProperties altSettings = load(ALT_SETTINGS_FILE);
 		CHAO_DROP_ITEM_COUNT40 =  altSettings.getProperty("CHAODROPITEMCOUNT40", 40) ;//超過40級不掉落東西
+		SPAWN_MULTIPLIER = altSettings.getProperty("SpawnMultiplier", 1);//配置刷怪倍數
 		MONSTER_RANDOM_SPAWN = altSettings.getProperty("MonsterRandomSpawn", false);
 		STARTING_LVL = altSettings.getProperty("StartingLvl", 1);
 		STARTING_SP = altSettings.getProperty("StartingSP", 0L);

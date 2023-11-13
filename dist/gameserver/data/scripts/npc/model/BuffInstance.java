@@ -37,6 +37,18 @@ public class BuffInstance extends NpcInstance
 {
 	// 技能 等級 最小等級需求  金額
 	public static final int[][] BUFFS_MAGIC = {
+			{ 1033, 1, 35, 10 },		//毒性抵抗
+			{ 1033, 2, 40, 30 },		//毒性抵抗
+			{ 1033, 3, 44, 50 },		//毒性抵抗
+			{ 1304, 1, 42, 10 },		//伊娃之盾
+			{ 1304, 2, 50, 30 },		//伊娃之盾
+			{ 1304, 3, 58, 50 },		//伊娃之盾
+			{ 1304, 4, 66, 50 },		//伊娃之盾
+			{ 1304, 5, 72, 50 },		//伊娃之盾
+			{ 1284, 1, 62, 10 },		//復仇
+			{ 1284, 2, 68, 30 },		//復仇
+			{ 1284, 3, 74, 50 },		//復仇
+			{ 1362, 1, 77, 50 },		//聖靈
 			{ 1068, 1, 1, 10 },		//力量強化
 			{ 1068, 2, 20, 30 },	//力量強化
 			{ 1068, 3, 40, 50 },	//力量強化
@@ -141,6 +153,8 @@ public class BuffInstance extends NpcInstance
 	};
 	public static final int[][] BUFFS_DANCE = { 
 			{ 264, 1, 55, 500 },	//大地之歌
+			{ 270, 1, 43, 500 },	//
+			{ 366, 1, 77, 1000 },	//
 			//{ 264, 2, 71, 500 },	大地之歌
 			{ 265, 1, 52, 500 },	//生命之歌
 			{ 266, 1, 58, 500 },	//水靈之歌
@@ -259,37 +273,34 @@ public class BuffInstance extends NpcInstance
 				}
 			}
 		}
-		else if(buypassOptions[0].equals("GiveHp"))
+		else if(buypassOptions[0].equals("GiveMpHpCp"))
 		{
-			int needMoney = 1;//一血 換一金
+			String html = HtmCache.getInstance().getHtml("special/34071.htm", player);
+			HtmlMessage htmlMessage = new HtmlMessage(5);
+			htmlMessage.setHtml(html);
+			int needMoneyHp = 1;//一血 換一金
+			int needMoneyCp = 1;//一键回满
+			int needMoneyMp = 3;//1MP 換3金
 			int needAllHp = (int)(player.getMaxHp() - player.getCurrentHp());
-			if (needAllHp==0 )
+			int needAllMp = (int)(player.getMaxMp() - player.getCurrentMp());
+			int needAllCp = (int)(player.getMaxCp() - player.getCurrentCp());
+			if (needAllHp==0 && needAllMp==0 && needAllCp==0 )
 			{
-				player.sendMessage("HP狀態滿無法使用。");
+				player.sendMessage("你的状态健康无需使用。");
+				player.sendPacket(htmlMessage);
 				return;
 			}
-			if(!ItemFunctions.deleteItem(player, 57, needAllHp*needMoney))
+			if(!ItemFunctions.deleteItem(player, 57, needAllHp*needMoneyHp+needMoneyCp*needAllCp+needMoneyMp *needAllMp))
 			{
 				player.sendMessage("金幣不足無法使用");
+				player.sendPacket(htmlMessage);
 				return;
 			}
 			player.setCurrentHp(player.getMaxHp(),false,true);
-		}
-		else if(buypassOptions[0].equals("GiveMp"))
-		{
-			int needMoney = 30;//1MP 換30金
-			int needAllMp = (int)(player.getMaxMp() - player.getCurrentMp());
-			if (needAllMp==0 )
-			{
-				player.sendMessage("mp狀態滿無法使用。");
-				return;
-			}
-			if(!ItemFunctions.deleteItem(player, 57, needAllMp*needMoney))
-			{
-				player.sendMessage("金幣不足無法使用");
-				return;
-			}
 			player.setCurrentMp(player.getMaxMp(),true);
+			player.setCurrentCp(player.getMaxCp());
+
+			player.sendPacket(htmlMessage);
 		}
 		else if(buypassOptions[0].equals("myLockBuff"))
 		{

@@ -182,9 +182,13 @@ public class RequestRecipeItemMakeSelf extends L2GameClientPacket
 				//TODO [G1ta0] добавить проверку на перевес
 				/*製作裝備隨機強化--*/
 				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
-				if(item.isWeapon() || item.isArmor() || item.isAccessory())//武器 装备 饰品
+				if(item.isWeapon())//武器 装备 饰品
 				{
-					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
+					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
+				}
+				else if(item.isArmor() || item.isAccessory())//武器 装备 饰品
+				{
+					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
 				}
 				else
 				{

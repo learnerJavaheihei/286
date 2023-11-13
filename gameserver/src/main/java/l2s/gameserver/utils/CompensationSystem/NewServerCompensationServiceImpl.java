@@ -14,22 +14,22 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
-public class NewServerCompensationServiceImpl{
+public class NewServerCompensationServiceImpl {
     private static NewServerCompensationServiceImpl _instance = new NewServerCompensationServiceImpl();
     public static NewServerCompensationServiceImpl getInstance(){
         return _instance;
     }
     private static Logger _log = LoggerFactory.getLogger(NewServerCompensationServiceImpl.class);
-
+	//补偿修改时间
     public static boolean OnOffset = false;
     public static final String[] Unit = {
-            "2023-11-08  16:37:00",
-            "2023-11-08  16:38:00",
-            "2023-11-08  16:39:00",
-            "2023-11-08  16:40:00",
-            "2023-11-08  16:41:00"
+            "2023-11-10  19:00:00",
+            "2023-11-17  20:00:00",
+            "2023-11-24  20:00:00",
+            "2023-12-01  20:00:00",
+            "2023-12-08  20:00:00"
     };
-    private static final long stopCompensationTime = 1699433160000L; // 2023-12-08 01:20:00
+    private static final long stopCompensationTime = 1702641600000L; // 2023-12-15 01:20:00
     public static int compensationUnit = 0;
     public static int gameCoinId = 91663;
     public static List<NewServerCompensationEntry> filterList = new ArrayList<NewServerCompensationEntry>();
@@ -71,7 +71,7 @@ public class NewServerCompensationServiceImpl{
                 @Override
                 public void run() {
                     OnOffset = false;
-                    Announcements.announceToAll("各位玩家,补偿系统已关闭!");
+                   // Announcements.announceToAll("各位玩家,补偿系统已关闭!");
                 }
             },stopCompensationTime-System.currentTimeMillis());
         }
@@ -138,7 +138,7 @@ public class NewServerCompensationServiceImpl{
                 @Override
                 public void run() {
                     OnOffset = false;
-                    Announcements.announceToAll("各位玩家,补偿系统已关闭!");
+                   // Announcements.announceToAll("各位玩家,补偿系统已关闭!");
                 }
             },stopCompensationTime-System.currentTimeMillis());
             _log.info("*** compensation sys firstUnit greater than start_time sys turn off... ***");
@@ -165,7 +165,7 @@ public class NewServerCompensationServiceImpl{
                 @Override
                 public void run() {
                     load();
-                    Announcements.announceToAll("各位玩家,补偿系统第"+compensationUnit+"期已开启!");
+                   // Announcements.announceToAll("各位玩家,补偿系统第"+compensationUnit+"期已开启!");
                     startCheck();
                 }
             }, unitTime - System.currentTimeMillis());

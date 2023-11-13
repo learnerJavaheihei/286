@@ -279,9 +279,11 @@ public class RaidBossInstance extends MonsterInstance
 
 	public void startRaidBerserkTask()
 	{
-		if(!_canRaidBerserk)
+		
+		/*移除BOSS狂暴if(!_canRaidBerserk)*/
 			return;
 
+		/*移除BOSS狂暴
 		if(_raidBerserkTask != null)
 			return;
 
@@ -289,6 +291,7 @@ public class RaidBossInstance extends MonsterInstance
 			return;
 
 		_raidBerserkTask = ThreadPoolManager.getInstance().schedule(new BerserkTask(true), TimeUnit.MINUTES.toMillis(10));
+		*/
 	}
 
 	public void stopRaidBerserkTask()

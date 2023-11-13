@@ -32,7 +32,7 @@ public class HennaList
 
 	private static final Logger _log = LoggerFactory.getLogger(HennaList.class);
 
-	private static final int MAX_STAT_VALUE = 15;
+	private static final int MAX_STAT_VALUE = 5;//修復紋身最大5-無限負
 
 	private List<Henna> _hennaList = Collections.emptyList();
 	private Henna _premiumHenna = null;

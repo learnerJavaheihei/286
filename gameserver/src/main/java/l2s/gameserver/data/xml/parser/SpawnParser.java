@@ -88,6 +88,11 @@ public final class SpawnParser extends AbstractParser<SpawnHolder>
 				PeriodOfDay periodOfDay = spawnElement.attributeValue("period_of_day") == null ? PeriodOfDay.NONE : PeriodOfDay.valueOf(spawnElement.attributeValue("period_of_day").toUpperCase());
 				if(group == null)
 					group = periodOfDay.name();
+				/* int count1 = 1;//刷怪倍数 */
+				if(count != 1)
+				{
+					count = count *= Config.SPAWN_MULTIPLIER;//刷怪倍数
+				}
 
 				SpawnTemplate template = new SpawnTemplate(name, periodOfDay, count, respawn, respawnRandom, respawnPattern);
 

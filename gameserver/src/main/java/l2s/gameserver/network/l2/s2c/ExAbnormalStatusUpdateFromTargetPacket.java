@@ -45,15 +45,16 @@ public class ExAbnormalStatusUpdateFromTargetPacket extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeD(_objectId);
-		writeH(0); // 286 classic/essence - not shown anymore abnormals on target
-		//writeH(_effects.size());
-		//for(Abnormal temp : _effects)
-		//{
-		//	writeD(temp.skillId);
-		//	writeH(temp.skillLvl);
-		//	writeH(temp.abnormalType);
-		//	writeOptionalD(temp.duration);
-		//	writeD(temp.effectorObjectId); // Buffer OID
-		//}
+		//writeH(0); // 286 classic/essence - not shown anymore abnormals on target
+		//修复看到目标异常状态
+		writeH(_effects.size());
+		for(Abnormal temp : _effects)
+		{
+			writeD(temp.skillId);
+			writeH(temp.skillLvl);
+			writeH(temp.abnormalType);
+			writeOptionalD(temp.duration);
+			writeD(temp.effectorObjectId); // Buffer OID
+		}
 	}
 }

@@ -78,20 +78,56 @@ public final class VariationUtils
 			91952, // Ring of Insolence
 			893, // Majestic Ring
 			902, // Phoenix Ring
-			889 // Tateossian Ring
+			889, // Tateossian Ring
+			879,
+			880,
+			881,
+			882,
+			883,
+			884,
+			885,
+			886,
+			887,
+			888,
+			895,
+			890
 		};
 		int[] standardEarrings =
 		{
 			91953, // Dragon Valley Earring
 			862, // Majestic Earring
 			871, // Phoenix Earring
-			858 // Tateossian Earring
+			858, // Tateossian Earring
+			847,
+			848,
+			849,
+			850,
+			851,
+			852,
+			853,
+			854,
+			855,
+			856,
+			857,
+			864
 		};
 		int[] standardNecklaces =
 		{
 			924, // Majestic Necklace
 			933, // Phoenix Necklace
-			920 // Tateossian Necklace
+			920, // Tateossian Necklace
+			910,
+			911,
+			912,
+			913,
+			914,
+			915,
+			916,
+			918,
+			919,
+			119,
+			917,
+			926
 		};
 		int[] rareRings =
 		{

@@ -120,7 +120,7 @@ public class BotControlPage
 		activeChar.sendPacket(msg);
 	}
 	// 每次购买时间的费用 依次
-	static int[] buyTimesCustom = {20,30,40,50,60,70,80};
+	static int[] buyTimesCustom = {5,10,15,20,25,30,35};
 
 	public static void buyTime(Player player, String[] param) {
 		// 如果买过
@@ -131,16 +131,16 @@ public class BotControlPage
 		}else if(param[0].equals("false")){
 			int time = Player._buyTimesByOBJ.getOrDefault(player.getObjectId(),0);
 			int count = buyTimesCustom[Math.min(Math.max(0,time),BotConfig.maxBuyTimes-1)];
-			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("确定要购买「 两小时挂机时长吗 」？将消耗 "+count+" 幣"), new OnAnswerListener()
+			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("确定要购买「 两小时挂机时长吗 」？将消耗 "+count+" Lcoin幣"), new OnAnswerListener()
 			{
 				public void sayYes()
 				{
-					if (time < BotConfig.maxBuyTimes && player.getInventory().getCountOf(29520)>=count) {
+					if (time < BotConfig.maxBuyTimes && player.getInventory().getCountOf(91663)>=count) {
 						Player._buyTimesByOBJ.put(player.getObjectId(),time+1);
 					}
 
 					// 购买
-					if (player.getInventory().destroyItemByItemId(29520,count)) {
+					if (player.getInventory().destroyItemByItemId(91663,count)) {
 						// 扣除币成功 增加时长
 						String leftTime = BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId()));
 						int addLeftTime = Integer.parseInt(leftTime) + (2 * 60 * 60);

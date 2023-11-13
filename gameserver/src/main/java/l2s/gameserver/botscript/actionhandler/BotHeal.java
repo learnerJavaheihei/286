@@ -24,6 +24,7 @@ public class BotHeal implements IBotActionHandler
 	{
 		ItemInstance potion;
 		ItemInstance potion2;
+		ItemInstance potion3;
 		SkillEntry lifebalance;
 		SkillEntry entry;
 		if(this.isActionsDisabledExcludeAttack(actor) || isSitting)
@@ -42,12 +43,12 @@ public class BotHeal implements IBotActionHandler
 		{
 			actor.useItem(potion2, false, false);
 		}
-		if(config.isAntidote() && actor.getAbnormalList().contains(AbnormalType.POISON) && (potion2 = actor.getInventory().getItemByItemId(1832)) != null)
+		if(config.isAntidote() && actor.getAbnormalList().contains(AbnormalType.POISON) && ((potion2 = actor.getInventory().getItemByItemId(1832)) != null || (potion3 = actor.getInventory().getItemByItemId(1831)) != null))
 			/*物品ID1832 濃縮解毒藥*/
 		{
 			actor.useItem(potion2, false, false);
 		}
-		if(config.isBondage() && actor.getAbnormalList().contains(AbnormalType.BLEEDING) && (potion2 = actor.getInventory().getItemByItemId(1834)) != null)
+		if(config.isBondage() && actor.getAbnormalList().contains(AbnormalType.BLEEDING) && ((potion2 = actor.getInventory().getItemByItemId(1834)) != null || (potion3 = actor.getInventory().getItemByItemId(1833)) != null))
 			/*物品ID1834 強力繃帶*/
 		{
 			actor.useItem(potion2, false, false);

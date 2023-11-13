@@ -44,7 +44,6 @@ public class _201_TutorialBlueGemstone extends Quest
 	private static final int SOULSHOT = 91927;
 	private static final int SOE = 10650;
 	private static final int HASTE_POTION = 49036;
-	private static final int RECOMMENDATION = 1067;
 	
 	private final OnPlayerEnterListener _playerEnterListener = new PlayerEnterListener();
 	
@@ -65,10 +64,10 @@ public class _201_TutorialBlueGemstone extends Quest
 			st.setCond(1);
 			return "";
 		}
-		else if (event.equalsIgnoreCase("roien_q201_03.htm"))
+		/* else if (event.equalsIgnoreCase("roien_q201_03.htm"))
 		{
 			st.takeItems(RECOMMENDATION, st.getQuestItemsCount(RECOMMENDATION));
-		}
+		} */
 		else if (event.equalsIgnoreCase("teleport"))
 		{
 			st.giveItems(SOULSHOT, 200, false);
@@ -93,7 +92,6 @@ public class _201_TutorialBlueGemstone extends Quest
 				st.takeItems(BLUE_GEMSTONE, st.getQuestItemsCount(BLUE_GEMSTONE));
 				st.giveItems(HASTE_POTION, 5, false);
 				st.giveItems(SOE, 5, false);
-				st.giveItems(RECOMMENDATION, 1, false);
 				st.giveItems(SOULSHOT, 200, false);
 				st.playTutorialVoice("tutorial_voice_026");
 				st.setCond(3);

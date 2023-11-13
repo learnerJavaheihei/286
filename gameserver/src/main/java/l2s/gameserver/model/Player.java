@@ -5050,7 +5050,7 @@ public final class Player extends Playable implements PlayerGroup {
                 _clan.addSkillsQuietly(this);
 
             if (Config.UNSTUCK_SKILL && getSkillLevel(1050) < 3)//修改出生回歸技能
-                addSkill(SkillEntry.makeSkillEntry(SkillEntryType.NONE, 2213, 2));//修改出生回歸技能
+                addSkill(SkillEntry.makeSkillEntry(SkillEntryType.NONE, 55245, 1));//修改出生回歸技能
 
             for (OptionDataTemplate optionData : _options.valueCollection()) {
                 for (SkillEntry skillEntry : optionData.getSkills())

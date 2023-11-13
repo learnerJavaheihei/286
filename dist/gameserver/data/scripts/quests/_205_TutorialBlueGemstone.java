@@ -44,7 +44,6 @@ public class _205_TutorialBlueGemstone extends Quest
 	private static final int SOULSHOT = 91927;
 	private static final int SOE = 10650;
 	private static final int HASTE_POTION = 49036;
-	private static final int MARK_OF_FLAME = 1496;
 	
 	private final OnPlayerEnterListener _playerEnterListener = new PlayerEnterListener();
 	
@@ -65,10 +64,10 @@ public class _205_TutorialBlueGemstone extends Quest
 			st.setCond(1);
 			return "";
 		}
-		else if (event.equalsIgnoreCase("vulkus_q205_03.htm"))
+/* 		else if (event.equalsIgnoreCase("vulkus_q205_03.htm"))
 		{
 			st.takeItems(MARK_OF_FLAME, st.getQuestItemsCount(MARK_OF_FLAME));
-		}
+		} */
 		else if (event.equalsIgnoreCase("teleport"))
 		{
 			st.giveItems(SOULSHOT, 200, false);
@@ -96,7 +95,6 @@ public class _205_TutorialBlueGemstone extends Quest
 				st.takeItems(BLUE_GEMSTONE, st.getQuestItemsCount(BLUE_GEMSTONE));
 				st.giveItems(HASTE_POTION, 5, false);
 				st.giveItems(SOE, 5, false);
-				st.giveItems(MARK_OF_FLAME, 1, false);
 				st.giveItems(SOULSHOT, 200, false);
 				st.playTutorialVoice("tutorial_voice_026");
 				st.setCond(3);

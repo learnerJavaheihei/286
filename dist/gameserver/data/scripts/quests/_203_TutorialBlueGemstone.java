@@ -45,7 +45,6 @@ public class _203_TutorialBlueGemstone extends Quest
 	private static final int SPIRITSHOT = 91928;
 	private static final int SOE = 10650;
 	private static final int HASTE_POTION = 49036;
-	private static final int LEAF_OF_THE_MOTHER_TREE = 1069;
 	
 	private final OnPlayerEnterListener _playerEnterListener = new PlayerEnterListener();
 	
@@ -66,10 +65,10 @@ public class _203_TutorialBlueGemstone extends Quest
 			st.setCond(1);
 			return "";
 		}
-		else if (event.equalsIgnoreCase("nerupa_q203_03.htm"))
+		/* else if (event.equalsIgnoreCase("nerupa_q203_03.htm"))
 		{
 			st.takeItems(LEAF_OF_THE_MOTHER_TREE, st.getQuestItemsCount(LEAF_OF_THE_MOTHER_TREE));
-		}
+		} */
 		else if (event.equalsIgnoreCase("teleport"))
 		{
 			if (!st.getPlayer().isMageClass())
@@ -104,7 +103,6 @@ public class _203_TutorialBlueGemstone extends Quest
 				st.takeItems(BLUE_GEMSTONE, st.getQuestItemsCount(BLUE_GEMSTONE));
 				st.giveItems(HASTE_POTION, 5, false);
 				st.giveItems(SOE, 5, false);
-				st.giveItems(LEAF_OF_THE_MOTHER_TREE, 1, false);
 				if (!player.isMageClass())
 					st.giveItems(SOULSHOT, 200, false);
 				else

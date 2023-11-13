@@ -210,7 +210,7 @@ public class MemberNPCInstance extends NpcInstance
 		else if(buypassOptions[0].equals("UpgradeLoad"))
 		{
 			final int feeItemId = 29984;
-			final long feeItemCount = 1000;
+			final long feeItemCount = 5;
 			final String[] availableColors = BBSConfig.COLOR_TITLE_SERVICE_COLORS;
 			if(feeItemId == 0 || availableColors.length == 0)
 			{

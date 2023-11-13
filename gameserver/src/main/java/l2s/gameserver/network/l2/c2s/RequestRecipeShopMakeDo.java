@@ -212,9 +212,13 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 				}
 				/*製作裝備隨機強化--*/
 				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
-				if(item.isWeapon() || item.isArmor() || item.isAccessory())//武器 装备 饰品
+				if(item.isWeapon())//武器 装备 饰品
 				{
-					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
+					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
+				}
+				else if(item.isArmor() || item.isAccessory())//武器 装备 饰品
+				{
+					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
 				}
 				else
 				{
@@ -230,6 +234,7 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
 					Announcements.announceToAll(new SystemMessage(14002).addName(buyer).addString(date).addZoneName(buyer.getLoc()).addItemName(itemId).addString(String.valueOf(itemsCount)));
+//					Announcements.shout(buyer,text, ChatType.SYSTEM_MESSAGE);
 					String log_content = date+"["+buyer.getName()+"]系统公告内容："+text+",获得方式:制作装备,角色ID："+buyer.getObjectId()+",道具ID："+itemId;
 					ThreadPoolManager.getInstance().schedule(new LogGeneral("specialItemsAnnounce/create",log_content),1000L);
 				}

@@ -44,7 +44,6 @@ public class _202_TutorialBlueGemstone extends Quest
 	private static final int SPIRITSHOT = 91928;
 	private static final int SOE = 10650;
 	private static final int HASTE_POTION = 49036;
-	private static final int RECOMMENDATION = 1068;
 	
 	private final OnPlayerEnterListener _playerEnterListener = new PlayerEnterListener();
 	
@@ -65,11 +64,11 @@ public class _202_TutorialBlueGemstone extends Quest
 			st.setCond(1);
 			return "";
 		}
-		else if (event.equalsIgnoreCase("gallint_q202_03.htm"))
+		/* else if (event.equalsIgnoreCase("gallint_q202_03.htm"))
 		{
 			st.takeItems(RECOMMENDATION, st.getQuestItemsCount(RECOMMENDATION));
 			st.giveItems(SPIRITSHOT, 100, false);
-		}
+		} */
 		else if (event.equalsIgnoreCase("teleport"))
 		{
 			st.getPlayer().teleToLocation(-84056, 243256, -3735);
@@ -93,7 +92,6 @@ public class _202_TutorialBlueGemstone extends Quest
 				st.takeItems(BLUE_GEMSTONE, st.getQuestItemsCount(BLUE_GEMSTONE));
 				st.giveItems(HASTE_POTION, 5, false);
 				st.giveItems(SOE, 5, false);
-				st.giveItems(RECOMMENDATION, 1, false);
 				st.giveItems(SPIRITSHOT, 100, false);
 				st.playTutorialVoice("tutorial_voice_026");
 				st.setCond(3);

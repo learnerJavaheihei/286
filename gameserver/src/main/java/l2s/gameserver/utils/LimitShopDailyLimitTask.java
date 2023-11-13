@@ -22,8 +22,8 @@ public class LimitShopDailyLimitTask {
     private static final Logger _log = LoggerFactory.getLogger(LimitShopDailyLimitTask.class);
     public static Calendar calendar =Calendar.getInstance();
     static{
-        calendar.set(Calendar.HOUR_OF_DAY, 21);
-        calendar.set(Calendar.MINUTE, 8);
+        calendar.set(Calendar.HOUR_OF_DAY, 6); // LCOIN商店定时更新
+        calendar.set(Calendar.MINUTE, 30);
         calendar.set(Calendar.SECOND, 0);
         if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
             calendar.add(Calendar.DAY_OF_MONTH,1);
