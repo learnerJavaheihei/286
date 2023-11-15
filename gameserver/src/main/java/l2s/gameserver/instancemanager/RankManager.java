@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author NviX
  */
+ //排名系統 排行榜
 public class RankManager {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RankManager.class);
 
@@ -39,7 +40,11 @@ public class RankManager {
 	private static final SkillEntry DWARF_LEVEL_RANKING_1ST_CLASS = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 60010, 1);
 	private static final SkillEntry KAMAEL_LEVEL_RANKING_1ST_CLASS = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 60011, 1);
 
-	private static final SkillEntry RACE_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54204, 1);
+	private static final SkillEntry RACE_HUMAN_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54204, 1);
+	private static final SkillEntry RACE_ELF_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54210, 1);
+	private static final SkillEntry RACE_DARKELF_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54211, 1);
+	private static final SkillEntry RACE_ORC_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54209, 1);
+	private static final SkillEntry RACE_DWARF_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54212, 1);
 	private static final SkillEntry RACE_KAMAEL_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54205, 1);
 	
 	private static final SkillEntry PVP_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 52019, 1);
@@ -498,7 +503,11 @@ public class RankManager {
 		player.getAbnormalList().stop(ORC_LEVEL_RANKING_1ST_CLASS, false);
 		player.getAbnormalList().stop(DWARF_LEVEL_RANKING_1ST_CLASS, false);
 		player.getAbnormalList().stop(KAMAEL_LEVEL_RANKING_1ST_CLASS, false);
-		player.removeSkill(RACE_RANKING_BENEFIT, false);
+		player.removeSkill(RACE_HUMAN_RANKING_BENEFIT, false);
+		player.removeSkill(RACE_ELF_RANKING_BENEFIT, false);
+		player.removeSkill(RACE_DARKELF_RANKING_BENEFIT, false);
+		player.removeSkill(RACE_ORC_RANKING_BENEFIT, false);
+		player.removeSkill(RACE_DWARF_RANKING_BENEFIT, false);
 		player.removeSkill(RACE_KAMAEL_RANKING_BENEFIT, false);
 		player.getAbnormalList().stop(PVP_RANKING_BENEFIT, false);
 
@@ -543,16 +552,39 @@ public class RankManager {
 					break;
 				}
 			}
-			if(player.getRace() == Race.KAMAEL)
+			if (player.getRace() == Race.KAMAEL)
 				player.addSkill(RACE_KAMAEL_RANKING_BENEFIT, false);
-			else
-				player.addSkill(RACE_RANKING_BENEFIT, false);
+			else if (player.getRace() == Race.HUMAN)
+				player.addSkill(RACE_HUMAN_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.ELF)
+				player.addSkill(RACE_ELF_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.DARKELF)
+				player.addSkill(RACE_DARKELF_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.ORC)
+				player.addSkill(RACE_ORC_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.DWARF)
+				player.addSkill(RACE_DWARF_RANKING_BENEFIT, false);
 			
 			int pvpRank = player.getPreviousPvpRank();
 			if ((pvpRank > 0) && (pvpRank < 4))
 			{
 				PVP_RANKING_BENEFIT.getEffects(player, player);
 			}
+		}
+		if(raceRank == 2 || raceRank == 3) 
+		{
+			if (player.getRace() == Race.KAMAEL)
+				player.addSkill(RACE_KAMAEL_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.HUMAN)
+				player.addSkill(RACE_HUMAN_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.ELF)
+				player.addSkill(RACE_ELF_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.DARKELF)
+				player.addSkill(RACE_DARKELF_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.ORC)
+				player.addSkill(RACE_ORC_RANKING_BENEFIT, false);
+			else if(player.getRace() == Race.DWARF)
+				player.addSkill(RACE_DWARF_RANKING_BENEFIT, false);
 		}
 	}
 

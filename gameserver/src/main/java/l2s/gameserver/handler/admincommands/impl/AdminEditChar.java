@@ -63,7 +63,8 @@ public class AdminEditChar implements IAdminCommandHandler
 		admin_setbday,
 		admin_give_item,
 		admin_add_bang,
-		admin_set_bang
+		admin_set_bang,
+		admin_show_ip, //新增 顯示IP
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class AdminEditChar implements IAdminCommandHandler
 					{
 						player = (Player) target;
 						player.setTitle(val);
-						player.sendMessage("Your title has been changed by a GM");
+						player.sendMessage("您的稱號已被Admin變更。");// Your title has been changed by a GM
 						player.sendChanges();
 					}
 					else if(target.isNpc())
@@ -98,7 +99,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				}
 				catch(StringIndexOutOfBoundsException e)
 				{ // Case of empty character title
-					activeChar.sendMessage("You need to specify the new title.");
+					activeChar.sendMessage("您需要指定新的稱號");// You need to specify the new title.
 					return false;
 				}
 			else if(fullString.startsWith("admin_setclass"))
@@ -112,18 +113,18 @@ public class AdminEditChar implements IAdminCommandHandler
 						target = activeChar;
 					if(id > (ClassId.VALUES.length - 1))
 					{
-						activeChar.sendMessage("There are no classes over 136 id.");
+						activeChar.sendMessage("沒有超過136的職業ID");// There are no classes over 136 id.
 						return false;
 					}
 					Player player = target.getPlayer();
 					player.setClassId(id, true);
-					player.sendMessage("Your class has been changed by a GM");
+					player.sendMessage("您的職業已被Admin變更。");// Your class has been changed by a GM
 					player.broadcastUserInfo(true);
 					return true;
 				}
 				catch(StringIndexOutOfBoundsException e)
 				{
-					activeChar.sendMessage("You need to specify the new class id.");
+					activeChar.sendMessage("您需要指定新的職業ID");// You need to specify the new class id.
 					return false;
 				}
 			else if(fullString.startsWith("admin_setname"))
@@ -138,17 +139,17 @@ public class AdminEditChar implements IAdminCommandHandler
 						return false;
 					if(mysql.simple_get_int("count(*)", "characters", "`char_name` like '" + val + "'") > 0)
 					{
-						activeChar.sendMessage("Name already exist.");
+						activeChar.sendMessage("名稱已存在");// Name already exist.
 						return false;
 					}
-					Log.add("Character " + player.getName() + " renamed to " + val + " by GM " + activeChar.getName(), "renames");
+					Log.add("玩家「" + player.getName() + "」變更名稱「" + val + "」操作由「" + activeChar.getName(), "」重新命名。");// Character renamed to  by GM renames
 					player.reName(val);
-					player.sendMessage("Your name has been changed by a GM");
+					player.sendMessage("您的名稱已被Admin變更。");//Your name has been changed by a GM
 					return true;
 				}
 				catch(StringIndexOutOfBoundsException e)
 				{ // Case of empty character name
-					activeChar.sendMessage("You need to specify the new name.");
+					activeChar.sendMessage("您需要指定新的名稱");// You need to specify the new name.
 					return false;
 				}
 
@@ -187,7 +188,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch(StringIndexOutOfBoundsException e)
 			{ // Case of empty character name
-				activeChar.sendMessage("You didnt enter a character name to find.");
+				activeChar.sendMessage("您沒有輸入要查找的角色名稱");// You didnt enter a character name to find.
 
 				listCharacters(activeChar, 0);
 			}
@@ -208,7 +209,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch(StringIndexOutOfBoundsException e)
 			{
-				activeChar.sendMessage("Please specify new karma value.");
+				activeChar.sendMessage("您需要指定新的性向值");// Please specify new karma value.
 			}
 		else if(fullString.startsWith("admin_save_modifications"))
 			try
@@ -218,7 +219,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch(StringIndexOutOfBoundsException e)
 			{ // Case of empty character name
-				activeChar.sendMessage("Error while modifying character.");
+				activeChar.sendMessage("修改人物出錯");// Error while modifying character.
 				listCharacters(activeChar, 0);
 			}
 		else if(fullString.equals("admin_rec"))
@@ -547,6 +548,52 @@ public class AdminEditChar implements IAdminCommandHandler
 			target.sendPacket(new ExPCCafePointInfoPacket(target, count, 1, 2, 12));
 			activeChar.sendMessage("You have set " + target.getName() + "'s Pc Bang Points to " + count);
 		}
+		//新增 顯示IP--
+		else if(fullString.startsWith("admin_show_ip"))
+		{
+			String CharacterToFind = wordList[1];
+			HtmlMessage adminReply = new HtmlMessage(5);
+			int CharactersFound = 0;
+
+			StringBuilder replyMSG = new StringBuilder("<html><body>");
+			replyMSG.append("<table width=260><tr>");
+			replyMSG.append("<td width=40><button value=\"首頁\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+			replyMSG.append("<td width=180><center>角色管理</center></td>");
+			replyMSG.append("<td width=40><button value=\"返回\" action=\"bypass -h admin_show_characters 0\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+			replyMSG.append("</tr></table>");
+			replyMSG.append("<br><br>");
+			
+			replyMSG.append("<table width=270><tr><td width=80>名稱</td><td width=110>職業</td><td width=40>等級</td></tr></table>");
+			
+			for(Player element : GameObjectsStorage.getPlayers(true, true))
+				if(element.getIP().equals(CharacterToFind))
+				{
+					CharactersFound = CharactersFound + 1;
+					replyMSG.append("<table width=270>");
+					replyMSG.append("<tr><td width=80><a action=\"bypass -h admin_character_list " + element.getName() + "\">" + element.getName() + "</a></td><td width=110>" + HtmlUtils.htmlClassName(element.getClassId().getId()) + "</td><td width=40>" + element.getLevel() + "</td></tr>");
+					replyMSG.append("</table>");
+				}
+			if(CharactersFound == 0)
+			{
+				replyMSG.append("<table width=270>");
+				replyMSG.append("<tr><td width=270>您的查找未找到相關角色</td></tr>");
+				replyMSG.append("<tr><td width=270>請再次嘗試<br></td></tr>");
+				replyMSG.append("</table><br>");
+				replyMSG.append("<center><table><tr><td>");
+				replyMSG.append("<edit var=\"character_name\" width=80></td><td><button value=\"查找\" action=\"bypass -h admin_find_character $character_name\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\">");
+				replyMSG.append("</td></tr></table></center>");
+			}
+			else
+			{
+				replyMSG.append("<center><br>IP: " + CharacterToFind + " 角色「" + CharactersFound + "」名");
+			}
+
+			replyMSG.append("</center></body></html>");
+
+			adminReply.setHtml(replyMSG.toString());
+			activeChar.sendPacket(adminReply);
+		}
+		//--新增 顯示IP
 		return true;
 	}
 
@@ -579,30 +626,30 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=180><center>Character Selection Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=40><button value=\"首頁\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=180><center>角色列表</center></td>");
+		replyMSG.append("<td width=40><button value=\"返回\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table>");
 		replyMSG.append("<br><br>");
 		replyMSG.append("<table width=270>");
-		replyMSG.append("<tr><td width=270>You can find a character by writing his name and</td></tr>");
-		replyMSG.append("<tr><td width=270>clicking Find bellow.<br></td></tr>");
-		replyMSG.append("<tr><td width=270>Note: Names should be written case sensitive.</td></tr>");
+		replyMSG.append("<tr><td width=270>您可以通過寫下他的名字找到角色</td></tr>");
+		replyMSG.append("<tr><td width=270>點擊查找<br></td></tr>");
+		replyMSG.append("<tr><td width=270>注意: 名字應區分大小寫</td></tr>");
 		replyMSG.append("</table><br>");
 		replyMSG.append("<center><table><tr><td>");
-		replyMSG.append("<edit var=\"character_name\" width=80></td><td><button value=\"Find\" action=\"bypass -h admin_find_character $character_name\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\">");
+		replyMSG.append("<edit var=\"character_name\" width=80></td><td><button value=\"查找\" action=\"bypass -h admin_find_character $character_name\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\">");
 		replyMSG.append("</td></tr></table></center><br><br>");
 
 		for(int x = 0; x < MaxPages; x++)
 		{
 			int pagenr = x + 1;
-			replyMSG.append("<center><a action=\"bypass -h admin_show_characters " + x + "\">Page " + pagenr + "</a></center>");
+			replyMSG.append("<center><a action=\"bypass -h admin_show_characters " + x + "\">第 " + pagenr + " 頁" + "</a></center>");
 		}
 		replyMSG.append("<br>");
 
 		// List Players in a Table
 		replyMSG.append("<table width=270>");
-		replyMSG.append("<tr><td width=80>Name:</td><td width=110>Class:</td><td width=40>Level:</td></tr>");
+		replyMSG.append("<tr><td width=80>名稱:</td><td width=110>職業:</td><td width=40>等級:</td></tr>");
 		for(int i = CharactersStart; i < CharactersEnd; i++)
 		{
 			Player p = players.get(i);
@@ -640,39 +687,40 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=180><center>Character Selection Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_show_characters 0\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=40><button value=\"首頁\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=180><center>角色管理</center></td>");
+		replyMSG.append("<td width=40><button value=\"返回\" action=\"bypass -h admin_show_characters 0\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table><br>");
 
 		replyMSG.append("<table width=270>");
-		replyMSG.append("<tr><td width=100>Account/IP:</td><td>" + player.getAccountName() + "/" + player.getIP() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Name/Level:</td><td>" + player.getName() + "/" + player.getLevel() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Class/Id:</td><td>" + HtmlUtils.htmlClassName(player.getClassId().getId()) + "/" + player.getClassId().getId() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Clan/Level:</td><td>" + clanName + "</td></tr>");
+		replyMSG.append("<tr><td width=100>帳號/IP:</td><td>" + player.getAccountName() + "/" +   "<a action=\"bypass -h admin_show_ip" + player.getIP() + "\">" + player.getIP() + "</a></td></tr>");//新增顯示IP
+		replyMSG.append("<tr><td width=100>名稱/等級:</td><td>" + player.getName() + "/" + player.getLevel() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>職業/Id:</td><td>" + HtmlUtils.htmlClassName(player.getClassId().getId()) + "/" + player.getClassId().getId() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>血盟/等級:</td><td>" + clanName + "</td></tr>");
 		replyMSG.append("<tr><td width=100>Exp/Sp:</td><td>" + player.getExp() + "/" + player.getSp() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Cur/Max Hp:</td><td>" + (int) player.getCurrentHp() + "/" + player.getMaxHp() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Cur/Max Mp:</td><td>" + (int) player.getCurrentMp() + "/" + player.getMaxMp() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Cur/Max Load:</td><td>" + player.getCurrentLoad() + "/" + player.getMaxLoad() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Patk/Matk:</td><td>" + player.getPAtk(null) + "/" + player.getMAtk(null, null) + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Pdef/Mdef:</td><td>" + player.getPDef(null) + "/" + player.getMDef(null, null) + "</td></tr>");
-		replyMSG.append("<tr><td width=100>PAtkSpd/MAtkSpd:</td><td>" + player.getPAtkSpd() + "/" + player.getMAtkSpd() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Acc/Evas:</td><td>" + player.getPAccuracy() + "/" + player.getPEvasionRate(null) + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Crit/MCrit:</td><td>" + player.getPCriticalHit(null) + "/" + df.format(player.getMCriticalHit(null, null)) + "%</td></tr>");
-		replyMSG.append("<tr><td width=100>Walk/Run:</td><td>" + player.getWalkSpeed() + "/" + player.getRunSpeed() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Karma/Fame:</td><td>" + player.getKarma() + "/" + player.getFame() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>當前/Max.Hp:</td><td>" + (int) player.getCurrentHp() + "/" + player.getMaxHp() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>當前/Max.Mp:</td><td>" + (int) player.getCurrentMp() + "/" + player.getMaxMp() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>當前/Max.負重:</td><td>" + player.getCurrentLoad() + "/" + player.getMaxLoad() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>P.攻擊/M.攻擊:</td><td>" + player.getPAtk(null) + "/" + player.getMAtk(null, null) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>P.防禦/M.防禦:</td><td>" + player.getPDef(null) + "/" + player.getMDef(null, null) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>P.攻速/M.施法:</td><td>" + player.getPAtkSpd() + "/" + player.getMAtkSpd() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>P.命中/M.命中:</td><td>" + player.getPAccuracy() + "/" + player.getMAccuracy() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>P.迴避/M.迴避:</td><td>" + player.getPEvasionRate(null) + "/" + player.getMEvasionRate(null) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>P.致命/M.致命:</td><td>" + player.getPCriticalHit(null) + "/" + df.format(player.getMCriticalHit(null, null)) + "%</td></tr>");
+		replyMSG.append("<tr><td width=100>行走/奔跑:</td><td>" + player.getWalkSpeed() + "/" + player.getRunSpeed() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>性向/聲望:</td><td>" + player.getKarma() + "/" + player.getFame() + "</td></tr>");
 		replyMSG.append("<tr><td width=100>PvP/PK:</td><td>" + player.getPvpKills() + "/" + player.getPkKills() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Coordinates:</td><td>" + player.getX() + "," + player.getY() + "," + player.getZ() + "</td></tr>");
-		replyMSG.append("<tr><td width=100>Direction:</td><td>" + PositionUtils.getDirectionTo(player, activeChar) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>坐標:</td><td>" + player.getX() + "," + player.getY() + "," + player.getZ() + "</td></tr>");
+		replyMSG.append("<tr><td width=100>方向:</td><td>" + PositionUtils.getDirectionTo(player, activeChar) + "</td></tr>");
 		replyMSG.append("<tr><td width=100>Intention:</td><td>" + player.getAI().getIntention() + "</td></tr>");
 		replyMSG.append("</table><br>");
 
 		replyMSG.append("<table<tr>");
-		replyMSG.append("<td><button value=\"Skills\" action=\"bypass -h admin_show_skills\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td><button value=\"Effects\" action=\"bypass -h admin_show_effects\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td><button value=\"Actions\" action=\"bypass -h admin_character_actions\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td><button value=\"技能\" action=\"bypass -h admin_show_skills\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td><button value=\"輔助\" action=\"bypass -h admin_show_effects\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td><button value=\"動作\" action=\"bypass -h admin_character_actions\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr><tr>");
-		replyMSG.append("<td><button value=\"Stats\" action=\"bypass -h admin_edit_character\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td><button value=\"狀態\" action=\"bypass -h admin_edit_character\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("<td><button value=\"Exp & Sp\" action=\"bypass -h admin_add_exp_sp_to_character\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("<td></td>");
 		replyMSG.append("</tr></table></body></html>");
@@ -789,17 +837,17 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=180><center>Character Selection Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_current_player\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=40><button value=\"首頁\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=180><center>角色管理</center></td>");
+		replyMSG.append("<td width=40><button value=\"返回\" action=\"bypass -h admin_current_player\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table>");
 		replyMSG.append("<br><br>");
-		replyMSG.append("<center>Editing character: " + player.getName() + "</center><br>");
+		replyMSG.append("<center>目標玩家「" + player.getName() + "」" + "</center><br>");
 		replyMSG.append("<table width=250>");
-		replyMSG.append("<tr><td width=40></td><td width=70>Curent:</td><td width=70>Max:</td><td width=70></td></tr>");
-		replyMSG.append("<tr><td width=40>HP:</td><td width=70>" + player.getCurrentHp() + "</td><td width=70>" + player.getMaxHp() + "</td><td width=70>Karma: " + player.getKarma() + "</td></tr>");
+		replyMSG.append("<tr><td width=40></td><td width=70>當前:</td><td width=70>最大:</td><td width=70></td></tr>");
+		replyMSG.append("<tr><td width=40>HP:</td><td width=70>" + player.getCurrentHp() + "</td><td width=70>" + player.getMaxHp() + "</td><td width=70>性向: " + player.getKarma() + "</td></tr>");
 		replyMSG.append("<tr><td width=40>MP:</td><td width=70>" + player.getCurrentMp() + "</td><td width=70>" + player.getMaxMp() + "</td><td width=70>Pvp Kills: " + player.getPvpKills() + "</td></tr>");
-		replyMSG.append("<tr><td width=40>Load:</td><td width=70>" + player.getCurrentLoad() + "</td><td width=70>" + player.getMaxLoad() + "</td><td width=70>Pvp Flag: " + player.getPvpFlag() + "</td></tr>");
+		replyMSG.append("<tr><td width=40>負重:</td><td width=70>" + player.getCurrentLoad() + "</td><td width=70>" + player.getMaxLoad() + "</td><td width=70>Pvp Flag: " + player.getPvpFlag() + "</td></tr>");
 		replyMSG.append("</table>");
 		replyMSG.append("<table width=270><tr><td>Class<?> Template Id: " + player.getClassId() + "/" + player.getClassId().getId() + "</td></tr></table><br>");
 		replyMSG.append("<table width=270>");
@@ -807,10 +855,10 @@ public class AdminEditChar implements IAdminCommandHandler
 		replyMSG.append("</table><br>");
 		replyMSG.append("<table width=270>");
 		replyMSG.append("<tr><td width=50>Hp:</td><td><edit var=\"hp\" width=50></td><td width=50>Mp:</td><td><edit var=\"mp\" width=50></td></tr>");
-		replyMSG.append("<tr><td width=50>Pvp Flag:</td><td><edit var=\"pvpflag\" width=50></td><td width=50>Karma:</td><td><edit var=\"karma\" width=50></td></tr>");
+		replyMSG.append("<tr><td width=50>Pvp Flag:</td><td><edit var=\"pvpflag\" width=50></td><td width=50>性向:</td><td><edit var=\"karma\" width=50></td></tr>");
 		replyMSG.append("<tr><td width=50>Class<?> Id:</td><td><edit var=\"classid\" width=50></td><td width=50>Pvp Kills:</td><td><edit var=\"pvpkills\" width=50></td></tr>");
 		replyMSG.append("</table><br>");
-		replyMSG.append("<center><button value=\"Save Changes\" action=\"bypass -h admin_save_modifications $hp & $mp & $karma & $pvpflag & $pvpkills & $classid &\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></center><br>");
+		replyMSG.append("<center><button value=\"保存變更\" action=\"bypass -h admin_save_modifications $hp & $mp & $karma & $pvpflag & $pvpkills & $classid &\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></center><br>");
 		replyMSG.append("</body></html>");
 
 		adminReply.setHtml(replyMSG.toString());
@@ -830,19 +878,19 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=180><center>Character Selection Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_current_player\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=40><button value=\"首頁\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=180><center>角色管理</center></td>");
+		replyMSG.append("<td width=40><button value=\"返回\" action=\"bypass -h admin_current_player\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table><br><br>");
-		replyMSG.append("<center>Admin Actions for: " + player.getName() + "</center><br>");
+		replyMSG.append("<center>Admin動作目標「" + player.getName() + "」" + "</center><br>");
 		replyMSG.append("<center><table width=200><tr>");
 		replyMSG.append("<td width=100>Argument(*):</td><td width=100><edit var=\"arg\" width=100></td>");
 		replyMSG.append("</tr></table><br></center>");
 		replyMSG.append("<table width=270>");
 
-		replyMSG.append("<tr><td width=90><button value=\"Teleport\" action=\"bypass -h admin_teleportto " + player.getName() + "\" width=85 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=90><button value=\"Recall\" action=\"bypass -h admin_recall " + player.getName() + "\" width=85 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=90><button value=\"Quests\" action=\"bypass -h admin_quests " + player.getName() + "\" width=85 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td></tr>");
+		replyMSG.append("<tr><td width=90><button value=\"傳送\" action=\"bypass -h admin_teleportto " + player.getName() + "\" width=85 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=90><button value=\"召喚\" action=\"bypass -h admin_recall " + player.getName() + "\" width=85 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=90><button value=\"任務\" action=\"bypass -h admin_quests " + player.getName() + "\" width=85 height=20 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td></tr>");
 
 		replyMSG.append("</body></html>");
 
@@ -857,9 +905,9 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=180><center>Character Selection Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_show_characters 0\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=40><button value=\"首頁\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=180><center>角色管理</center></td>");
+		replyMSG.append("<td width=40><button value=\"返回\" action=\"bypass -h admin_show_characters 0\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table>");
 		replyMSG.append("<br><br>");
 
@@ -868,7 +916,10 @@ public class AdminEditChar implements IAdminCommandHandler
 			{
 				CharactersFound = CharactersFound + 1;
 				replyMSG.append("<table width=270>");
-				replyMSG.append("<tr><td width=80>Name</td><td width=110>Class</td><td width=40>Level</td></tr>");
+				if(CharactersFound == 1)
+				{
+					replyMSG.append("<tr><td width=80>名稱</td><td width=110>職業</td><td width=40>等級</td></tr>");
+				}
 				replyMSG.append("<tr><td width=80><a action=\"bypass -h admin_character_list " + element.getName() + "\">" + element.getName() + "</a></td><td width=110>" + HtmlUtils.htmlClassName(element.getClassId().getId()) + "</td><td width=40>" + element.getLevel() + "</td></tr>");
 				replyMSG.append("</table>");
 			}
@@ -876,16 +927,16 @@ public class AdminEditChar implements IAdminCommandHandler
 		if(CharactersFound == 0)
 		{
 			replyMSG.append("<table width=270>");
-			replyMSG.append("<tr><td width=270>Your search did not find any characters.</td></tr>");
-			replyMSG.append("<tr><td width=270>Please try again.<br></td></tr>");
+			replyMSG.append("<tr><td width=270>您的查找未找到相關角色</td></tr>");
+			replyMSG.append("<tr><td width=270>請再次嘗試<br></td></tr>");
 			replyMSG.append("</table><br>");
 			replyMSG.append("<center><table><tr><td>");
-			replyMSG.append("<edit var=\"character_name\" width=80></td><td><button value=\"Find\" action=\"bypass -h admin_find_character $character_name\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\">");
+			replyMSG.append("<edit var=\"character_name\" width=80></td><td><button value=\"查找\" action=\"bypass -h admin_find_character $character_name\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\">");
 			replyMSG.append("</td></tr></table></center>");
 		}
 		else
 		{
-			replyMSG.append("<center><br>Found " + CharactersFound + " character");
+			replyMSG.append("<center><br>查找到相關角色「 " + CharactersFound + " 」名");
 
 			if(CharactersFound == 1)
 				replyMSG.append(".");
@@ -915,13 +966,13 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		final StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
-		replyMSG.append("<td width=180><center>Character Selection Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_current_player\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=40><button value=\"首頁\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td width=180><center>角色管理</center></td>");
+		replyMSG.append("<td width=40><button value=\"返回\" action=\"bypass -h admin_current_player\" width=40 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table>");
 		replyMSG.append("<br><br>");
-		replyMSG.append("<table width=270><tr><td>Name: " + player.getName() + "</td></tr>");
-		replyMSG.append("<tr><td>Lv: " + player.getLevel() + " " + HtmlUtils.htmlClassName(player.getClassId().getId()) + "</td></tr>");
+		replyMSG.append("<table width=270><tr><td>名稱: " + player.getName() + "</td></tr>");
+		replyMSG.append("<tr><td>等級/職業: " + player.getLevel() + " / " + HtmlUtils.htmlClassName(player.getClassId().getId()) + "</td></tr>");
 		replyMSG.append("<tr><td>Exp: " + player.getExp() + "</td></tr>");
 		replyMSG.append("<tr><td>Sp: " + player.getSp() + "</td></tr></table>");
 		replyMSG.append("<br><table width=270><tr><td>Note: Dont forget that modifying players skills can</td></tr>");
@@ -931,7 +982,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		replyMSG.append("<center><table><tr>");
 		replyMSG.append("<td>Exp: <edit var=\"exp_to_add\" width=50></td>");
 		replyMSG.append("<td>Sp:  <edit var=\"sp_to_add\" width=50></td>");
-		replyMSG.append("<td>&nbsp;<button value=\"Save Changes\" action=\"bypass -h admin_add_exp_sp exp $exp_to_add sp $sp_to_add\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
+		replyMSG.append("<td>&nbsp;<button value=\"保存變更\" action=\"bypass -h admin_add_exp_sp exp $exp_to_add sp $sp_to_add\" width=80 height=15 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></td>");
 		replyMSG.append("</tr></table></center>");
 		replyMSG.append("</body></html>");
 

@@ -9,6 +9,7 @@ import l2s.gameserver.network.l2.s2c.StatusUpdatePacket;
 import l2s.gameserver.stats.Formulas;
 import l2s.gameserver.stats.Stats;
 import l2s.gameserver.templates.skill.EffectTemplate;
+import l2s.gameserver.model.Skill;
 
 /**
  * @author Bonux
@@ -47,8 +48,14 @@ public class t_hp extends EffectHandler
 
 		if(first)
 		{
-			if(getSkill().isMagic() && Formulas.calcMCrit(effector, effected, getSkill()))
-				hp *= 10.; // TODO: Сверить с оффом.
+			Skill skill = getSkill();
+			if(skill.isMagic() && Formulas.calcMCrit(effector, effected, skill)){
+				if (skill.getSkillType() == Skill.SkillType.POISON) {
+					hp *= 5.; //毒暴擊
+				}else 
+					hp *= 10.; // 不是毒暴擊
+			}
+
 			else
 				return;
 		}

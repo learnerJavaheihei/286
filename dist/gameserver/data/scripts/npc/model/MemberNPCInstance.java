@@ -467,10 +467,10 @@ public class MemberNPCInstance extends NpcInstance
 							if(feeItems == null)
 								return;
 
-							if(player.hasPremiumAccount() && player.getPremiumAccount() != paTemplate)
+							if(player.hasPremiumAccount() && player.getPremiumAccount() != paTemplate && schemeId != 2)
 							{
 								int premiumAccountExpire = player.getNetConnection().getPremiumAccountExpire();
-								if(premiumAccountExpire != Integer.MAX_VALUE)
+								if(premiumAccountExpire != Integer.MAX_VALUE )
 								{
 									String expireBlock = tpls.get(5);
 									expireBlock = expireBlock.replace("<?date_expire?>", TimeUtils.toSimpleFormat(premiumAccountExpire * 1000L));

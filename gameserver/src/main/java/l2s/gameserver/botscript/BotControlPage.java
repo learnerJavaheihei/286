@@ -67,7 +67,8 @@ public class BotControlPage
 		html = html.replace("%partyParalysis%", config.isPartyParalysis() ? "L2UI.CheckBox_checked" : "L2UI.CheckBox");
 		html = html.replace("%coverMember%", config.isCoverMember() ? "L2UI.CheckBox_checked" : "L2UI.CheckBox");
 		html = html.replace("%followAttackWhenChoosed%", config.isFollowAttackWhenChoosed() ? "L2UI.CheckBox_checked" : "L2UI.CheckBox");
-		html = html.replace("%hpmpshiftpercent%", String.valueOf(config.getHpMpShiftPercent()));
+		html = html.replace("%hpmpshiftpercent%", String.valueOf(config.getHpShiftPercent()));
+		html = html.replace("%hmMp%", String.valueOf(config.getMpShiftPercent()));
 		html = html.replace("%autoSpoiledAttack%",config.is_autoSpoiledAttack() ? "L2UI.CheckBox_checked" : "L2UI.CheckBox");
 
 		if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){

@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
-
+//修改 階段刷BOSS
 public class AutoUpdateGameProgress {
     private static final AutoUpdateGameProgress _instance = new AutoUpdateGameProgress();
 
@@ -42,9 +42,9 @@ public class AutoUpdateGameProgress {
     // 阶段 boss id boss 死后下次刷新的 BOSS id
     public static String[] progressBossIds = new String[]{
             // 每行 最多填 5 个值(与开设几个阶段对应值) 分别对应 从第一 到 第五阶段 单个boss 应该替换的 id
-            "29001;18913;18920;18926;18926",// 巨蟻女王
-            "29006;18917;18923;18929;18929",// 核心
-            "29014;18918;18924;18930;18930",// 奧爾芬
+            "29001;29001;29001;29001;29001",// 巨蟻女王
+/*             "29006;18917;18923;18929;18929",// 核心
+            "29014;18918;18924;18930;18930",// 奧爾芬 */
 /*             "29068;29068;29068;29068;29068",// 安塔瑞斯
             "29020;29020;29020;29020;29020",// 巴溫
             "29022;29022;29022;29022;29022",// 札肯 */

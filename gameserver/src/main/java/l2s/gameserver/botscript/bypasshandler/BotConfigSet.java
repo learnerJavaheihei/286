@@ -614,20 +614,29 @@ public class BotConfigSet
 																													BotControlPage.petPage(player);
 																													return;
 																												}
-																												String str = param[1];
-																												for (char c : str.toCharArray()) {
+																												String str1 = param[1];
+																												String str2 = param[2];
+																												for (char c : str1.toCharArray()) {
 																													if (!Character.isDigit(c)) {
 																														player.sendMessage("请输入0-100之间的数字");
 																														player.sendActionFailed();
 																														return;
 																													}
 																												}
-																												if (Integer.parseInt(param[1])<0 || Integer.parseInt(param[1])>100) {
+																												for (char c : str2.toCharArray()) {
+																													if (!Character.isDigit(c)) {
+																														player.sendMessage("请输入0-100之间的数字");
+																														player.sendActionFailed();
+																														return;
+																													}
+																												}
+																												if (Integer.parseInt(param[1])<0 || Integer.parseInt(param[1])>100 || Integer.parseInt(param[2])<0 || Integer.parseInt(param[2])>100) {
 																													player.sendMessage("请输入0-100之间的数字");
 																													player.sendActionFailed();
 																													return;
 																												}
-																												config.setHpMpShiftPercent(Integer.parseInt(param[1]));
+																												config.setHpShiftPercent(Integer.parseInt(param[1]));
+																												config.setMpShiftPercent(Integer.parseInt(param[2]));
 																												break block132;
 																											}
 																											String skillName = param[1];

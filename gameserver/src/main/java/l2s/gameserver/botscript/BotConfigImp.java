@@ -8,7 +8,8 @@ import java.util.Set;
 
 public class BotConfigImp extends BotConfig
 {
-	private int hpMpShiftPercent = 60;
+	private int hpShiftPercent = 60;
+	private int MpShiftPercent = 60;
 	private Map<String, Boolean> partyMemberHolder = new HashMap<String, Boolean>();
 	private String leaderName = "";
 	private MpHealOrder mpHealOrder = MpHealOrder.\u96e8\u9732\u5747\u6cbe;
@@ -32,14 +33,22 @@ public class BotConfigImp extends BotConfig
 	private int balanceSize = 0;
 	private int evaPercent = 0;
 
-	public int getHpMpShiftPercent()
+	public int getHpShiftPercent()
 	{
-		return this.hpMpShiftPercent;
+		return this.hpShiftPercent;
+	}
+	public int getMpShiftPercent()
+	{
+		return this.MpShiftPercent;
 	}
 
-	public void setHpMpShiftPercent(int hpMpShiftPercent)
+	public void setHpShiftPercent(int hpShiftPercent)
 	{
-		this.hpMpShiftPercent = hpMpShiftPercent;
+		this.hpShiftPercent = hpShiftPercent;
+	}
+	public void setMpShiftPercent(int MpShiftPercent)
+	{
+		this.MpShiftPercent = MpShiftPercent;
 	}
 
 	public String getLeaderName()

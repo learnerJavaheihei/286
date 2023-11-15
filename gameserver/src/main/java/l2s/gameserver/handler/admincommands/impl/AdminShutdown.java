@@ -81,8 +81,9 @@ public class AdminShutdown implements IAdminCommandHandler
 		replyMSG.append("<table width=300>");
 		int totalOnline = GameObjectsStorage.getPlayers(true, true).size();
 		int realOnline = GameObjectsStorage.getPlayers(false, false).size();
-		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"真實在線人數：":"Players Online:")+"</td><td width=200>" + realOnline + "</td></tr>");
-		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"假在線人數：":"Fake Players Online:")+"</td><td width=200>" + (totalOnline - realOnline) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"在線橘色：":"Players Online:")+"</td><td width=200>" + realOnline + "</td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"擺攤人數：":"Fake Players Online:")+"</td><td width=200>" + (totalOnline - realOnline) + "</td></tr>");
+		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"在線IP：":"Players Online IP:")+"</td><td width=200>" + GameObjectsStorage.getPlayersReall() + "</td></tr>");
 		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"內存使用：":"Used Memory:")+"</td><td width=200>" + StatsUtils.getMemUsedMb() + "</td></tr>");
 		replyMSG.append("<tr><td width=100>"+(activeChar.getLanguage().getShortName().equalsIgnoreCase("zh-tw")?"服務器倍率：":"Server Rates:")+"</td><td width=200></td></tr>");
 

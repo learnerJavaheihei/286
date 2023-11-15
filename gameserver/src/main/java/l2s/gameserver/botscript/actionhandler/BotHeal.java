@@ -17,42 +17,48 @@ import java.util.LinkedList;
 
 public class BotHeal implements IBotActionHandler
 {
-	private static /* synthetic */ int[] $SWITCH_TABLE$botscript$MpHealOrder;
+    private static /* synthetic */ int[] $SWITCH_TABLE$botscript$MpHealOrder;
 
-	@Override
-	public boolean doAction(Player actor, BotConfig config, boolean isSitting, boolean movable, boolean simpleActionDisable)
-	{
-		ItemInstance potion;
-		ItemInstance potion2;
-		ItemInstance potion3;
-		SkillEntry lifebalance;
-		SkillEntry entry;
-		if(this.isActionsDisabledExcludeAttack(actor) || isSitting)
-		{
-			return false;
-		}
-		Party party = actor.getParty();
-		BotConfigImp botConfigImp = (BotConfigImp) config;
-		double selfPercent = actor.getCurrentHpPercents();
-		if(config.getPotionHpHeal() != 0 && selfPercent <= config.getPotionHpHeal() && config.getHpPotionId() != 0 && (potion = actor.getInventory().getItemByItemId(config.getHpPotionId())) != null && !actor.getAbnormalList().contains(potion.getTemplate().getAttachedSkills()[0].getId()))
-		{
-			actor.useItem(potion, false, false);
-		}
-		double selfMpPercent = actor.getCurrentMpPercents();
-		if(config.getPotionMpHeal() != 0 && selfMpPercent <= config.getPotionMpHeal() && config.getMpPotionId() != 0 && (potion2 = actor.getInventory().getItemByItemId(config.getMpPotionId())) != null && !actor.getAbnormalList().contains(potion2.getTemplate().getAttachedSkills()[0].getId()))
-		{
-			actor.useItem(potion2, false, false);
-		}
-		if(config.isAntidote() && actor.getAbnormalList().contains(AbnormalType.POISON) && ((potion2 = actor.getInventory().getItemByItemId(1832)) != null || (potion3 = actor.getInventory().getItemByItemId(1831)) != null))
-			/*物品ID1832 濃縮解毒藥*/
-		{
-			actor.useItem(potion2, false, false);
-		}
-		if(config.isBondage() && actor.getAbnormalList().contains(AbnormalType.BLEEDING) && ((potion2 = actor.getInventory().getItemByItemId(1834)) != null || (potion3 = actor.getInventory().getItemByItemId(1833)) != null))
-			/*物品ID1834 強力繃帶*/
-		{
-			actor.useItem(potion2, false, false);
-		}
+    @Override
+    public boolean doAction(Player actor, BotConfig config, boolean isSitting, boolean movable, boolean simpleActionDisable)
+    {
+        ItemInstance potion;
+        ItemInstance potion2;
+        ItemInstance potion3;
+        SkillEntry lifebalance;
+        SkillEntry entry;
+        if (this.isActionsDisabledExcludeAttack(actor) || isSitting)
+        {
+            return false;
+        }
+        Party party = actor.getParty();
+        BotConfigImp botConfigImp = (BotConfigImp) config;
+        double selfPercent = actor.getCurrentHpPercents();
+        if (config.getPotionHpHeal() != 0 && selfPercent <= config.getPotionHpHeal() && config.getHpPotionId() != 0 && (potion = actor.getInventory().getItemByItemId(config.getHpPotionId())) != null && !actor.getAbnormalList().contains(potion.getTemplate().getAttachedSkills()[0].getId()))
+        {
+            actor.useItem(potion, false, false);
+        }
+        double selfMpPercent = actor.getCurrentMpPercents();
+        if (config.getPotionMpHeal() != 0 && selfMpPercent <= config.getPotionMpHeal() && config.getMpPotionId() != 0 && (potion2 = actor.getInventory().getItemByItemId(config.getMpPotionId())) != null && !actor.getAbnormalList().contains(potion2.getTemplate().getAttachedSkills()[0].getId()))
+        {
+            actor.useItem(potion2, false, false);
+        }
+        if (config.isAntidote() && actor.getAbnormalList().contains(AbnormalType.POISON)) {
+            potion2 = actor.getInventory().getItemByItemId(1832);
+            potion3 = actor.getInventory().getItemByItemId(1831);
+            if (potion2 != null || potion3 != null) {
+                /*物品ID1832 濃縮解毒藥*/
+                actor.useItem(potion2 != null ? potion2 : potion3, false, false);
+            }
+        }
+        if (config.isBondage() && actor.getAbnormalList().contains(AbnormalType.BLEEDING)) {
+            potion2 = actor.getInventory().getItemByItemId(1834);
+            potion3 = actor.getInventory().getItemByItemId(1833);
+            if (potion2 != null || potion3 != null) {
+                /*物品ID1834 強力繃帶*/
+                actor.useItem(potion2 != null ? potion2 : potion3, false, false);
+            }
+        }
 		if(botConfigImp.getEvaPercent() != 0 && botConfigImp.getEvaPercent() >= actor.getCurrentMpPercents() && (entry = actor.getKnownSkill(1506)) != null && !actor.isSkillDisabled(entry.getTemplate()) && BotThinkTask.checkSkillMpCost(actor, entry) && entry.checkCondition(actor, actor, false, false, true, false, false) && this.checkHealSkill((Playable) actor, entry))
 		/*技能ID1506 伊娃祝福*/
 		{

@@ -19,15 +19,19 @@ implements IBotRuntimeChecker {
         }
         if (actor.getPvpFlag() != 0) {
             config.setAbort(true, "\u65e0\u6cd5\u5728\u7d2b\u540d\u72b6\u6001\u4e0b\u4f7f\u7528\u6302\u673a\u529f\u80fd");
-		/*\u65e0\u6cd5\u5728\u7d2b\u540d\u72b6\u6001\u4e0b\u4f7f\u7528\u6302\u673a\u529f\u80fd 无法在紫名状态下使用挂机功能*/
+		/*无法在紫名状态下使用挂机功能*/
+		}
+		if (actor.getKarma() != 0) {
+            config.setAbort(true, "\u65e0\u6cd5\u5728\u7ea2\u540d\u72b6\u6001\u4e0b\u4f7f\u7528\u6302\u673a\u529f\u80fd");
+		/*无法在红名状态下使用挂机功能*/
         }
         if (actor.isInSiegeZone() || actor.isInZone(Zone.ZoneType.battle_zone)) {
             config.setAbort(true, "\u65e0\u6cd5\u5728\u653b\u57ce\u3001PvP\u5730\u533a\u4f7f\u7528\u6302\u673a\u529f\u80fd");
-		/*\u65e0\u6cd5\u5728\u653b\u57ce\u3001PvP\u5730\u533a\u4f7f\u7528\u6302\u673a\u529f\u80fd 无法在攻城、PvP地区使用挂机功能*/
+		/*无法在攻城、PvP地区使用挂机功能*/
         }
         if (actor.isInOlympiadMode()) {
             config.setAbort(true, "\u65e0\u6cd5\u5728\u5965\u8d5b\u8fc7\u7a0b\u4e2d\u4f7f\u7528\u6302\u673a\u529f\u80fd");
-		/*\u65e0\u6cd5\u5728\u5965\u8d5b\u8fc7\u7a0b\u4e2d\u4f7f\u7528\u6302\u673a\u529f\u80fd 无法在奥赛过程中使用挂机功能*/
+		/*无法在奥赛过程中使用挂机功能*/
         }
 		/*PVP活动无法启动--*/
     	if (actor.isInPvPEvent())

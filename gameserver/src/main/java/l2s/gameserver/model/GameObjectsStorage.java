@@ -13,6 +13,8 @@ import l2s.gameserver.model.instances.StaticObjectInstance;
 import org.apache.commons.lang3.ArrayUtils;
 import org.napile.primitive.maps.IntObjectMap;
 import org.napile.primitive.maps.impl.CHashIntObjectMap;
+import java.util.HashSet;//20200427真實人數
+import java.util.Set;//20200427真實人數
 
 /**
  * @author VISTALL
@@ -114,6 +116,20 @@ public class GameObjectsStorage
 		}
 		return _players.valueCollection();
 	}
+	//20200427真實人數--
+	public static int getPlayersReall()
+	{
+		final Set<String> realPlayers = new HashSet<>();
+		for (Player onlinePlayer : _players.valueCollection())
+		{
+			if ((onlinePlayer != null) )
+			{
+				realPlayers.add(onlinePlayer.getIP());
+			}
+		}
+		return realPlayers.size();
+	}
+	//20200427--真實人數
 
 	public static Collection<Player> getFakePlayers()
 	{

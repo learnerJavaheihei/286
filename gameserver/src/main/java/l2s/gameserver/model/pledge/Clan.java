@@ -1842,7 +1842,7 @@ public class Clan implements Iterable<UnitMember>
 			}
 			else
 			{
-				if(getLevel() >= 5)
+				if(getLevel() >= 1)//修復血盟盟主在線不加
 				{
 					if(getLeader().isOnline())
 					{
@@ -1892,7 +1892,7 @@ public class Clan implements Iterable<UnitMember>
 			if(newLevel == 3)
 				clanLeader.sendPacket(SystemMsg.NOW_THAT_YOUR_CLAN_LEVEL_IS_ABOVE_LEVEL_5_IT_CAN_ACCUMULATE_CLAN_REPUTATION_POINTS);
 
-			if(newLevel > oldLevel && newLevel >= 1)
+			if(newLevel > oldLevel && newLevel >= 1)//修復血盟不循環加bUFF
 			{
 				for(Player clanMember : getOnlineMembers())
 				{

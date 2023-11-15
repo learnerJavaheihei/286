@@ -26,11 +26,11 @@ public class BotHpMpShift implements IBotActionHandler
 		{
 			return false;
 		}
-		if(actor.getCurrentMpPercents() >= 99.9)
+		if(actor.getCurrentMpPercents() >= (double) ((BotConfigImp) config).getMpShiftPercent())
 		{
 			return false;
 		}
-		if(actor.getCurrentHpPercents() <= (double) ((BotConfigImp) config).getHpMpShiftPercent())
+		if(actor.getCurrentHpPercents() <= (double) ((BotConfigImp) config).getHpShiftPercent())
 		{
 			return false;
 		}

@@ -45,15 +45,15 @@ public class BossBarrierM extends Mystic
 		}
 
 		if(actor.getAbnormalList().contains(AbnormalType.BOSSSHIELD) && stage ==1){
-			addTask(1,15000);
+			addTask(1,60000);
 			stage = 2;
 		}
 		if(actor.getAbnormalList().contains(AbnormalType.BOSSSHIELD) && stage ==21){
-			addTask(1,15000);
+			addTask(1,60000);
 			stage = 22;
 		}
 		if(actor.getAbnormalList().contains(AbnormalType.BOSSSHIELD) && stage ==31){
-			addTask(1,15000);
+			addTask(1,60000);
 			stage = 32;
 		}
 		if(attacker != null && stage == 2 || stage == 22 || stage == 32)
