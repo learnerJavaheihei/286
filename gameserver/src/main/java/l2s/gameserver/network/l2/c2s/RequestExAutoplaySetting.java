@@ -39,8 +39,6 @@ public class RequestExAutoplaySetting extends L2GameClientPacket
 		AutoFarm autoFarm = player.getAutoFarm();
 		BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
 		botConfig.setPickUpItem(_autoPickUpItems);
-		botConfig.set_autoAdjustRange(!_meleeAttackMode);
-		BotEngine.getInstance().Adjust(player,botConfig);
 		player.setAutoLoot(_autoPickUpItems);
 
 		autoFarm.setAutoPickUpItems(_autoPickUpItems);

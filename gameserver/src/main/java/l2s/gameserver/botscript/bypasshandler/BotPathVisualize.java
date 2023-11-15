@@ -87,18 +87,6 @@ public class BotPathVisualize
 			}
 		}
 	}
-	@Bypass(value = "bot.autoAdjustRange")
-	public void autoDistance(Player player, NpcInstance npc, String[] param){
-		BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
-		//如果是开 就 调为关
-		if (param[0].equalsIgnoreCase("ON")) {
-			botConfig.set_autoAdjustRange(true);
-		}
-		if (param[0].equalsIgnoreCase("OFF")) {
-			botConfig.set_autoAdjustRange(false);
-		}
-		BotControlPage.pathPage(player);
-	}
 	@Bypass(value = "bot.autoSpoiledAttack")
 	public void autoSpoiledAttack(Player player, NpcInstance npc, String[] param){
 		BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);

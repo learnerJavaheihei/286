@@ -257,17 +257,12 @@ public class BotControlPage
 		html = html.replace("%findMobMaxDistance%", Integer.toString(config.getFindMobMaxDistance()));
 		html = html.replace("%findMobMaxHeight%", Integer.toString(config.getFindMobMaxHeight()));
 		html = html.replace("%geometry%", config.getGeometry().cnName());
-		StringBuilder builder = new StringBuilder(html);
-		if (config.is_autoAdjustRange()) {
-			builder.replace(builder.indexOf("<$switch$>"),builder.lastIndexOf("<$switch$>"),"<font color=\"FF0000\">");
-		}
-		html = builder.toString();
+
 		html = html.replace("<$switch$>","");
-		html = html.replace("%switch%", config.is_autoAdjustRange()?"OFF":"ON");
+
 		html = html.replace("%x%", Integer.toString(config.getStartX()));
 		html = html.replace("%y%", Integer.toString(config.getStartY()));
 		html = html.replace("%z%", Integer.toString(config.getStartZ()));
-		player.sendMessage("目前最大找怪范围为："+config.getFindMobMaxDistance()+",自动调整找怪范围状态为"+(config.is_autoAdjustRange()?"开启":"关闭"));
 		HtmlMessage msg = new HtmlMessage(0);
 		msg.setItemId(-1);
 		msg.setHtml(html);
