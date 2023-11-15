@@ -3,15 +3,20 @@ package l2s.gameserver.network.l2.s2c;
 import java.util.List;
 
 import l2s.commons.util.Rnd;
+import l2s.gameserver.data.string.ItemNameHolder;
+import l2s.gameserver.data.xml.holder.ItemHolder;
 import l2s.gameserver.data.xml.holder.LimitedShopHolder;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.actor.variables.PlayerVariables;
 import l2s.gameserver.model.base.LimitedShopEntry;
 import l2s.gameserver.model.base.LimitedShopIngredient;
 import l2s.gameserver.model.base.LimitedShopProduction;
+import l2s.gameserver.model.items.ItemInfo;
+import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.model.items.PcInventory;
 import l2s.gameserver.model.pledge.Clan;
 import l2s.gameserver.templates.item.ItemTemplate;
+import l2s.gameserver.utils.ItemFunctions;
 
 /**
  * @author nexvill
@@ -22,7 +27,7 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 	private final int _listId;
 	private final List<LimitedShopEntry> _list;
 	private final int _itemIndex;
-	private final int _itemCount;
+	private int _itemCount;
 
 	public ExPurchaseLimitShopItemBuy(Player player, int listId, int itemIndex, int itemCount)
 	{
@@ -91,6 +96,19 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 					}
 					else
 					{
+
+						int productId = product.getInfo().getInteger("product1Id");
+
+						int remainLimit = 0;
+						if (product.getInfo().getInteger("dailyLimit") > 0)
+						{
+							remainLimit = _player.getVarInt(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, product.getInfo().getInteger("dailyLimit"));
+
+							if (remainLimit <= _itemCount) {
+								_itemCount = Math.max(0,remainLimit);
+							}
+						}
+
 						boolean itemDestroyed = inventory.destroyItemByItemId(ingredient.getItemId(), ingredient.getItemCount()* _itemCount);
 						if (!itemDestroyed)
 						{
@@ -100,6 +118,7 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 							_player.sendPacket(sm);
 							return;
 						}
+						_player.sendMessage("购买「"+ItemNameHolder.getInstance().getItemName(_player,productId)+"」成功,花费「"+ItemNameHolder.getInstance().getItemName(_player,ingredient.getItemId())+"」"+(ingredient.getItemCount()* _itemCount)+"个");
 					}
 				}
 				break;
@@ -113,7 +132,24 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 			if (product.getInfo().getInteger("index") == _itemIndex)
 			{
 				int productId = product.getInfo().getInteger("product1Id");
-				
+
+				int remainLimit = 0;
+				if (product.getInfo().getInteger("dailyLimit") > 0)
+				{
+					remainLimit = _player.getVarInt(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, product.getInfo().getInteger("dailyLimit"));
+
+					if (remainLimit <= _itemCount) {
+						_itemCount = Math.max(0,remainLimit);
+						remainLimit = 0 ;
+					}else
+						remainLimit = remainLimit - _itemCount;
+					_player.setVar(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, remainLimit,_player.getVarExpireTime(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId));
+				}
+				else
+				{
+					remainLimit = 999;
+				}
+
 				int productsCount = 1;
 				if (product.getInfo().getInteger("product2Id") > 0)
 					productsCount++;
@@ -241,17 +277,7 @@ public class ExPurchaseLimitShopItemBuy extends L2GameServerPacket
 				}
 
 				
-				int remainLimit = 0;
-				if (product.getInfo().getInteger("dailyLimit") > 0)
-				{
-					remainLimit = _player.getVarInt(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, product.getInfo().getInteger("dailyLimit"));
-					remainLimit = remainLimit - _itemCount;
-					_player.setVar(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId, remainLimit,_player.getVarExpireTime(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + productId));
-				}
-				else
-				{
-					remainLimit = 999;
-				}
+
 				
 				writeC(0);
 				writeC(_listId);

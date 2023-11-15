@@ -77,8 +77,9 @@ public class ExPurchaseLimitShopItemListNew extends L2GameServerPacket
 						,Math.min(Math.max(0,product.getInfo().getInteger("dailyLimit")),1000)
 						, LimitShopDailyLimitTask.calendar.getTimeInMillis());
 			}
+			int count = _player.getVarInt(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + product.getInfo().getInteger("product1Id"), product.getInfo().getInteger("dailyLimit"));
 
-			writeH(_player.getVarInt(PlayerVariables.LIMIT_ITEM_REMAIN + "_" + product.getInfo().getInteger("product1Id"), product.getInfo().getInteger("dailyLimit")));
+			writeH(Math.max(0,count));
 
 			writeH(0);
 			
