@@ -44,21 +44,25 @@ public class LimitShopDailyLimitTask {
             }
             return false;
         });
-        checkUpdate();
+        checkUpdate(false);
         // 定时更新
         AutoUpdateDailyLimitTask autoUpdateDailyLimitTask = new AutoUpdateDailyLimitTask();
         ThreadPoolManager.getInstance().scheduleAtFixedDelay(autoUpdateDailyLimitTask, calendar.getTimeInMillis()-System.currentTimeMillis(),24*60*60*1000L);
     }
 
-    private void checkUpdate() {
+    private void checkUpdate(boolean update) {
         List<Map<String,Object>> dbDatas= selectDailyLimit();
+        if (update) {
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+        }
+
         updateDailyLimit(dbDatas);
     }
 
     private class AutoUpdateDailyLimitTask implements Runnable {
         @Override
         public void run() {
-            checkUpdate();
+            checkUpdate(true);
         }
     }
 
@@ -114,7 +118,6 @@ public class LimitShopDailyLimitTask {
 
                 Player player = GameObjectsStorage.getPlayer(obj_id);
                 if (player!=null) {
-                    calendar.add(Calendar.DAY_OF_MONTH,1);
                     player.setVar(name,dailyLimit, calendar.getTimeInMillis());
                     count++;
                 }
