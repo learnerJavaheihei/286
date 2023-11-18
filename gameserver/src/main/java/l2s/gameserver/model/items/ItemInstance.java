@@ -496,10 +496,10 @@ public final class ItemInstance extends GameObject implements JdbcEntity
 
 	public boolean isAugmented()
 	{
-		if (!getTemplate().isHairAccessory() && !getTemplate().isCloak())//修复后的
+		/*if (!getTemplate().isHairAccessory() && !getTemplate().isCloak())//修复后的
 		// if (!getTemplate().isHairAccessory())原来的
 			return getVariation1Id() != 0 && getVariation2Id() != 0;
-		else
+		else*/
 			return getVariation1Id() != 0 || getVariation2Id() != 0;
 	}
 
