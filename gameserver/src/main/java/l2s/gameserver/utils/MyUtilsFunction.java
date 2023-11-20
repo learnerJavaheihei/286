@@ -541,22 +541,21 @@ public class MyUtilsFunction {
                 });
             }
         }
-		else if (inputString.startsWith("GetMemberCoin")) 
-		{
+        else if (inputString.startsWith("GetMemberCoin")) {
             //bypass -h MyUtils_GetMemberCoin
-            int memberCoins = CheckMemberHaveConis(player);
+            int memberCoins = CheckMemberHaveCoins(player);
             HtmTemplates tpls = HtmCache.getInstance().getTemplates("member/GetMemberCoin.htm", player);
             String html = tpls.get(0);
 
             if (buypassOptions.length == 2) {
                 int getCoins = Integer.parseInt(buypassOptions[1]);
-                ;
-                if (getCoins > memberCoins) {
-                    String tmp = tpls.get(3);
+
+                if (getCoins <= 0 || getCoins > memberCoins) {
+                    String tmp = tpls.get(2);
                     html = html.replace("<?content?>", tmp);
                     sendHtmlMessage(player, html);
                     return;
-                } //CheckMemberHaveConis
+                } //CheckMemberHaveCoins
                 if (UpdateMemberConis(player, -getCoins)) {
                     ItemFunctions.addItem(player, 29984, getCoins, true);
                 }
@@ -569,7 +568,7 @@ public class MyUtilsFunction {
                 sendHtmlMessage(player, html);
                 return;
             }
-            String tmp = tpls.get(4);
+            String tmp = tpls.get(1);
             tmp = tmp.replace("<$memberCoins$>", memberCoins + "");
             html = html.replace("<?content?>", tmp);
             sendHtmlMessage(player, html);
@@ -1261,7 +1260,7 @@ public class MyUtilsFunction {
         msg.setHtml(html);
         player.sendPacket((IBroadcastPacket) msg);
     }
-	public static int CheckMemberHaveConis(Player player)
+	public static int CheckMemberHaveCoins(Player player)
 	{
         Connection con = null;
         PreparedStatement statement = null;

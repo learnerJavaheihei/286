@@ -289,40 +289,37 @@ public class MemberNPCInstance extends NpcInstance
 			player.sendPacket(ShowPCCafeCouponShowUI.STATIC);
 			return;
 		}
-		else if(buypassOptions[0].equals("GetMemberCoin"))
-		{
-			int memberCoins = CheckMemberHaveConis(player);
+		else if (buypassOptions[0].equals("GetMemberCoin")) {
+			//bypass -h MyUtils_GetMemberCoin
+			int memberCoins = CheckMemberHaveCoins(player);
 			HtmTemplates tpls = HtmCache.getInstance().getTemplates("member/GetMemberCoin.htm", player);
-			html = tpls.get(0);
-			
-			if(buypassOptions.length ==2)
-			{
-				int getCoins =   Integer.parseInt(buypassOptions[1]);;
-				if ( getCoins > memberCoins)
-				{
-					String tmp = tpls.get(3);//輸入超出數額
-					html = html.replace("<?content?>", tmp);
-					sendHtmlMessage(player, html);
+			String page = tpls.get(0);
+
+			if (buypassOptions.length == 2) {
+				int getCoins = Integer.parseInt(buypassOptions[1]);
+
+				if (getCoins <= 0 || getCoins > memberCoins) {
+					String tmp = tpls.get(2);
+					page = page.replace("<?content?>", tmp);
+					sendHtmlMessage(player, page);
 					return;
-				}
-				if(UpdateMemberConis(player , -getCoins))
-				{
+				} //CheckMemberHaveCoins
+				if (UpdateMemberConis(player, -getCoins)) {
 					ItemFunctions.addItem(player, 29984, getCoins, true);
 				}
 				memberCoins = memberCoins - getCoins;
 			}
-			
-			if(memberCoins == 0)//顯示沒有贊助或領取完成
-			{
+
+			if (memberCoins == 0) {
 				String tmp = tpls.get(2);
-				html = html.replace("<?content?>", tmp);
-				sendHtmlMessage(player, html);
+				page = page.replace("<?content?>", tmp);
+				sendHtmlMessage(player, page);
 				return;
 			}
-			String tmp = tpls.get(1);//顯示會員幣數量
-			tmp  = tmp.replace("<$memberCoins$>", memberCoins+"");
-			html = html.replace("<?content?>", tmp);
-			sendHtmlMessage(player, html);
+			String tmp = tpls.get(1);
+			tmp = tmp.replace("<$memberCoins$>", memberCoins + "");
+			page = page.replace("<?content?>", tmp);
+			sendHtmlMessage(player, page);
 		}
 		else if(buypassOptions[0].equals("getEveryDay"))
 		{
@@ -3016,7 +3013,7 @@ public class MemberNPCInstance extends NpcInstance
 		}
 		return true;
 	}
-	private static int CheckMemberHaveConis(Player player)
+	private static int CheckMemberHaveCoins(Player player)
 	{
 		Connection con = null;
 		PreparedStatement statement = null;
