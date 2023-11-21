@@ -119,6 +119,7 @@ public abstract class Creature extends GameObject
 
 	private static final Logger _log = LoggerFactory.getLogger(Creature.class);
 
+	public static Set<String> targetTypes = new HashSet<>(Arrays.asList("RaidBoss", "QueenAnt", "Boss", "Orfen", "BaiumStone", "ReflectionBoss"));
 	public static final double HEADINGS_IN_PI = 10430.378350470452724949566316381;
 	public static final int INTERACTION_DISTANCE = 200;
 
@@ -1115,6 +1116,23 @@ public abstract class Creature extends GameObject
 		if(isTransformed() && !getTransform().isNormalAttackable())
 			return;
 
+		boolean isSetPvP = false;
+		String targetType = (String) target.getTemplate().getStatsSet().get("type");
+		for (String type : targetTypes) {
+			if (type.equalsIgnoreCase(targetType)) {
+				isSetPvP = true;
+				break;
+			}
+		}
+
+		if (this.isPlayer() && isSetPvP) {
+			if(System.currentTimeMillis() > (this.getPlayer().getLastPvPAttack() + 1000))
+			{
+				this.getPlayer().startPvPFlag(null);
+				this.getPlayer().setLastPvPAttack(System.currentTimeMillis() - Config.PVP_TIME + 21000);
+			}
+		}
+
 		getListeners().onAttack(target);
 
 		// Get the Attack Speed of the L2Character (delay (in milliseconds) before next attack)
@@ -1386,6 +1404,22 @@ public abstract class Creature extends GameObject
 
 	public boolean doCast(SkillEntry skillEntry, Creature target, boolean forceUse)
 	{
+		boolean isSetPvP = false;
+		String targetType = (String) target.getTemplate().getStatsSet().get("type");
+		for (String type : targetTypes) {
+			if (type.equalsIgnoreCase(targetType)) {
+				isSetPvP = true;
+				break;
+			}
+		}
+
+		if (this.isPlayer() && isSetPvP) {
+			if(System.currentTimeMillis() > (this.getPlayer().getLastPvPAttack() + 1000))
+			{
+				this.getPlayer().startPvPFlag(null);
+				this.getPlayer().setLastPvPAttack(System.currentTimeMillis() - Config.PVP_TIME + 21000);
+			}
+		}
 		if(getSkillCast(SkillCastingType.NORMAL).doCast(skillEntry, target, forceUse))	// Обычный каст
 			return true;
 		return getSkillCast(SkillCastingType.NORMAL_SECOND).doCast(skillEntry, target, forceUse);	// Дуал каст
