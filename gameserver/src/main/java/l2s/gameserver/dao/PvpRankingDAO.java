@@ -2,6 +2,8 @@ package l2s.gameserver.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import l2s.commons.dbutils.DbUtils;
 import l2s.gameserver.database.DatabaseFactory;
 import org.slf4j.Logger;
@@ -91,5 +93,32 @@ public class PvpRankingDAO
 		{
 			DbUtils.closeQuietly(con, statement);
 		}
+	}
+
+	public int selectById(int killerId) {
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		int count = 0;
+		try
+		{
+			con = DatabaseFactory.getInstance().getConnection();
+			statement = con.prepareStatement("select count(*) from pvp_ranking_data where obj_id=?");
+			statement.setInt(1, killerId);
+			resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				count = resultSet.getInt(1);
+			}
+			resultSet.close();
+		}
+		catch(final Exception e)
+		{
+			_log.error("PvpRankingDAO:updateWeek()", e);
+		}
+		finally
+		{
+			DbUtils.closeQuietly(con, statement);
+		}
+		return count;
 	}
 }

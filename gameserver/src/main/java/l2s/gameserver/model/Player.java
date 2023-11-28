@@ -11328,11 +11328,13 @@ public final class Player extends Playable implements PlayerGroup {
             }
         }
         if (!foundKiller) {
-            PvpRankingDAO.getInstance().insert(killerId, 1, 0, killerPoints);
+            if (PvpRankingDAO.getInstance().selectById(killerId) == 0) {
+                PvpRankingDAO.getInstance().insert(killerId, 1, 0, killerPoints);
+            }
         }
-        if (!foundSelf) {
-            PvpRankingDAO.getInstance().insert(getObjectId(), 0, 1, 0);
-        }
+//        if (!foundSelf) {
+//            PvpRankingDAO.getInstance().insert(getObjectId(), 0, 1, 0);
+//        }
     }
 
     private void resetRankHistory() {
