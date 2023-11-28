@@ -708,7 +708,7 @@ public class Party implements PlayerGroup
 			for(Player member : _members)
 				if(!member.isDead() && (member == player || player.isInRangeZ(member, Config.ALT_PARTY_DISTRIBUTION_RANGE))
 						&& ItemFunctions.canAddItem(player, item)
-						&& Math.abs(fromNpc.getLevel()-member.getLevel()) <= 9)
+						&& (fromNpc!=null && Math.abs(fromNpc.getLevel()-member.getLevel()) <= 9))
 					membersInRange.add(member);
 		}
 
