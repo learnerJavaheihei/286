@@ -1325,6 +1325,10 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 						{
 							if(!forceUse && !isForceUse() && player.getParty() != null && player.getParty() == pcTarget.getParty())
 								return SystemMsg.INVALID_TARGET;
+							if(!forceUse && !isForceUse() && player.isInParty() && player.getParty().getCommandChannel() != null && pcTarget.isInParty() && pcTarget.getParty().getCommandChannel() != null && player.getParty().getCommandChannel() == pcTarget.getParty().getCommandChannel())
+								return SystemMsg.INVALID_TARGET;
+							if(!forceUse && !isForceUse() && player.getClanId() != 0 && player.getClanId() == pcTarget.getClanId())
+								return SystemMsg.INVALID_TARGET;
 							return null; // Остальные условия на аренах и на олимпиаде проверять не требуется
 						}
 

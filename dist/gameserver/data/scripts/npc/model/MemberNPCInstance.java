@@ -62,35 +62,35 @@ public class MemberNPCInstance extends NpcInstance
 	private static final Logger _log = LoggerFactory.getLogger(MemberNPCInstance.class);
 
 	private static String[][] itemName = {
-			{ "UNK_133", "女僕(限定女)", "BranchSys3.icon1.g_co_cutie_maid" },
-			{ "UNK_134", "紅色泳裝", "BranchSys3.icon1.g_co_swimsuit_event_03" },
+			{ "RUNWAY_ARMOR5", "女僕(限定女)", "BranchSys3.icon1.g_co_cutie_maid" },
+			{ "RUNWAY_ARMOR6", "紅色泳裝", "BranchSys3.icon1.g_co_swimsuit_event_03" },
 			{ "UNK_178", "藍色步兵", "icon.armor_t2000_ul_i00" },
 			{ "WHITE_ASSASSIN_SUIT", "雪白刺客", "icon.skill1802" },
 			{ "DARK_ASSASSIN_SUIT", "黑暗刺客", "icon.skill1801" },
 			{ "PIRATE_SUIT", "劫掠者", "icon.skill1800" },
-			{ "UNK_179", "魔法師-紫紅色", "icon.armor_t2000_ul_i00" },
+			{ "RED_WIZARD_SUIT", "魔法師-紫紅色", "icon.armor_t2000_ul_i00" },
 			{ "UNK_180", "魔術師", "icon.armor_t2000_ul_i00" },
 			{ "HALLOWEEN_SUIT", "萬聖夜外型", "icon.ev_wp_halloween" },
-			{ "BLUE_DYNASTY", "藍色王朝", "icon.armor_t2000_ul_i00" },
-			{ "RED_ZUBEI", "紅色夏隆", "icon.armor_t2000_ul_i00" },
+			{ "UNK_191", "藍色王朝", "icon.armor_t2000_ul_i00" },
+			{ "UNK_192", "紅色夏隆", "icon.armor_t2000_ul_i00" },
 			{ "UNK_193", "紅色步兵衣裳", "icon.inquisitor_red" },
-			{ "DARK_KNIGHT", "黑暗騎士", "icon.armor_t2000_ul_i00" },
-			{ "HANBOK", "韓服", "icon.ev_kr_traditional_dress" },
-			{ "TEDDY_BEAR", "熊熊衣", "icon.gomdori_chest_change" },
-			{ "WHITE_KNIGHT", "雪白騎士", "icon.white_knight_suit" },
-			{ "KAT_THE_CATS", "戰鬥貓", "icon.cat_the_cat_change_0" },
-			{ "CAT", "貓咪娃娃", "icon.sayha2017_cat" },
-			{ "PANDA", "熊貓娃娃", "icon.sayha2017_panda" },
-			{ "DRAGON_BERSERKER", "狂龍戰士衣裳", "icon.bm2018_dragon_i01" },
-			{ "NINJA_ASSASSIN", "忍者刺客衣裳", "icon.bm2018_ninja_i01" },
-			{ "BLUE_MUSKETEER", "藍色步兵衣裳", "icon.bm2018_bluemusketeer_i01" },
-			{ "VALKYRIE", "女武神衣裳", "icon.valkyrie_chest_change_0" },
-			{ "WILD_WOLF", "野蠻狼衣裳", "icon.barbarian_chest_change_0" },
-			{ "PIRATE", "商隊衣裳", "icon.bm2018_pirate_i01" },
-			{ "PURPLE_COWBOY", "紫色牛仔衣裳", "icon.bm2018_cowboy_i01" },
-			{ "HIGH_PRIEST", "牧師衣裳", "icon.healer_chest_change" },
-			{ "BLOOD_NOBLESSE", "血色貴族衣裳", "icon.bm2018_rednoblesse_i01" },
-			{ "WHITE_NOBLESSE", "白色貴族衣裳", "icon.bm2018_whitenoblesse_i01" }
+			{ "HEROIC_HOLY_AVE", "黑暗騎士", "icon.armor_t2000_ul_i00" },
+			{ "CHANGESHAPE_TRANSFORM_5", "韓服", "icon.ev_kr_traditional_dress" },
+			{ "CHANGESHAPE_TRANSFORM_6", "熊熊衣", "icon.gomdori_chest_change" },
+			{ "CHANGESHAPE_TRANSFORM_7", "雪白騎士", "icon.white_knight_suit" },
+			{ "WHITE_CAT_SUIT", "戰鬥貓", "icon.cat_the_cat_change_0" },
+			{ "RED_CAT_SUIT", "貓咪娃娃", "icon.sayha2017_cat" },
+			{ "PANDA_SUIT", "熊貓娃娃", "icon.sayha2017_panda" },
+			{ "DRAGON_SUIT", "狂龍戰士衣裳", "icon.bm2018_dragon_i01" },
+			{ "NINJA_SUIT", "忍者刺客衣裳", "icon.bm2018_ninja_i01" },
+			{ "BLUE_MUSKETEER_SUIT", "藍色步兵衣裳", "icon.bm2018_bluemusketeer_i01" },
+			{ "VALKYRIE_SUIT", "女武神衣裳", "icon.valkyrie_chest_change_0" },
+			{ "WOLF_BARBARIAN_SUIT", "野蠻狼衣裳", "icon.barbarian_chest_change_0" },
+			{ "PIRATE_2_SUIT", "商隊衣裳", "icon.bm2018_pirate_i01" },
+			{ "RED_COWBOY_SUIT", "紫色牛仔衣裳", "icon.bm2018_cowboy_i01" },
+			{ "SUPREME_SUIT", "牧師衣裳", "icon.healer_chest_change" },
+			{ "RED_ROYAL_SUIT", "血色貴族衣裳", "icon.bm2018_rednoblesse_i01" },
+			{ "WHITE_ROYAL_SUIT", "白色貴族衣裳", "icon.bm2018_whitenoblesse_i01" }
 	};
 	private static Long[] Slot= {
 			ItemTemplate.SLOT_R_EAR,//右耳
@@ -1432,7 +1432,7 @@ public class MemberNPCInstance extends NpcInstance
 			int money = GetLevelMoney(player);
 			if(player.getInventory().getCountOf(29984) < money)
 			{
-				player.sendMessage("支付費用不足 " + money + " 個裸鑽.");// There are no classes over 136 id.
+				player.sendMessage("支付費用不足 " + money + " 個贊助幣.");// There are no classes over 136 id.
 				return;
 			}
 			for(Servitor servitor : player.getServitors())//包结宠物
@@ -1500,7 +1500,7 @@ public class MemberNPCInstance extends NpcInstance
 				player.sendMessage("似乎出現了一點問題。");
 				return ;
 			}
-			if(buypassOptions[1].equals("UNK_133"))//换装也限制女性才可以点 以免bug
+			if(buypassOptions[1].equals("RUNWAY_ARMOR5"))//换装也限制女性才可以点 以免bug
 			{
 				if(player.getSex().ordinal() == 0)
 				{
@@ -1532,7 +1532,7 @@ public class MemberNPCInstance extends NpcInstance
 		}
 		else if(buypassOptions[0].equals("BuySuite"))
 		{
-			if(buypassOptions[1].equals("UNK_133"))
+			if(buypassOptions[1].equals("RUNWAY_ARMOR5"))
 			{
 				if(player.getSex().ordinal() == 0)
 				{
@@ -1551,21 +1551,21 @@ public class MemberNPCInstance extends NpcInstance
 				player.sendMessage("已購購買,不可重複買.");
 				return ;
 			}
-			if(player.getInventory().getCountOf(29984) < 250)
+			if(player.getInventory().getCountOf(29984) < 150)
 			{
-				player.sendMessage("支付費用不足 250 裸鑽.");
+				player.sendMessage("支付費用不足 150 贊助幣.");
 				return ;
 			}
-			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("確定要購買「" +  buypassOptions[2] +"」？這將消耗 250 裸鑽"), new OnAnswerListener()
+			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("確定要購買「" +  buypassOptions[2] +"」？這將消耗 150 贊助幣"), new OnAnswerListener()
 			{
 				public void sayYes()
 				{
-					if(player.getInventory().getCountOf(29984) < 250) //再次判断 金币 100个
+					if(player.getInventory().getCountOf(29984) < 150) //再次判断 金币 100个
 					{
-						player.sendMessage("支付費用不足 250 裸鑽.");
+						player.sendMessage("支付費用不足 150 贊助幣.");
 						return;
 					}
-					ItemFunctions.deleteItem(player, 29984, 250, true);
+					ItemFunctions.deleteItem(player, 29984, 150, true);
 					InsertIntoCharacterSuite(player, buypassOptions[1]);
 				}
 
@@ -1581,7 +1581,7 @@ public class MemberNPCInstance extends NpcInstance
 				player.sendMessage("請試穿結束後再試穿下一套。");
 				return;
 			}
-			if(buypassOptions[1].equals("UNK_133"))
+			if(buypassOptions[1].equals("RUNWAY_ARMOR5"))
 			{
 				if(player.getSex().ordinal() == 0)
 				{
@@ -1599,7 +1599,7 @@ public class MemberNPCInstance extends NpcInstance
 			AbnormalEffect readyStatus = AbnormalEffect.valueOf(buypassOptions[1]);
 			if(player.canContainEffect(readyStatus))
 			{
-				if(player._myBuyEffect !=AbnormalEffect.NONE )
+				if(player._myBuyEffect != null && player._myBuyEffect !=AbnormalEffect.NONE )
 				{
 					player.stopAbnormalEffect(player._myBuyEffect);
 				}
@@ -1611,7 +1611,7 @@ public class MemberNPCInstance extends NpcInstance
 					{
 						player.stopAbnormalEffect(player._testEffect);
 						player._testEffect = AbnormalEffect.NONE;
-						if(player._myBuyEffect !=AbnormalEffect.NONE )
+						if(player._myBuyEffect != null && player._myBuyEffect !=AbnormalEffect.NONE )
 						{
 							player.startAbnormalEffect(player._myBuyEffect);
 						}
@@ -1637,7 +1637,7 @@ public class MemberNPCInstance extends NpcInstance
 			}
 			if(player.getInventory().getCountOf(29984) < 250)
 			{
-				player.sendMessage("支付費用不足 250 裸鑽.");
+				player.sendMessage("支付費用不足 250 贊助幣.");
 				return ;
 			}
 			if (CheckItemBuyWeapon(player.getObjectId(), VisualId))
@@ -1646,7 +1646,7 @@ public class MemberNPCInstance extends NpcInstance
 				return;
 			}
 
-			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("確定要購買「" +  Weapon.getName() +"」外型？這將消耗 250 裸鑽"), new OnAnswerListener()
+			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("確定要購買「" +  Weapon.getName() +"」外型？這將消耗 250 贊助幣"), new OnAnswerListener()
 			{
 				public void sayYes()
 				{
@@ -1664,7 +1664,7 @@ public class MemberNPCInstance extends NpcInstance
 					}
 					if(player.getInventory().getCountOf(29984) < 250)
 					{
-						player.sendMessage("支付費用不足 250 裸鑽.");
+						player.sendMessage("支付費用不足 250 贊助幣.");
 						return ;
 					}
 					if (CheckItemBuyWeapon(player.getObjectId(), VisualId))

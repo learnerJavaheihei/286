@@ -3229,7 +3229,7 @@ public abstract class Creature extends GameObject
 
 	public final void startAbnormalEffect(AbnormalEffect ae)
 	{
-		if(ae == AbnormalEffect.NONE)
+		if(ae == AbnormalEffect.NONE || ae == null)
 			return;
 
 		_abnormalEffects.add(ae);

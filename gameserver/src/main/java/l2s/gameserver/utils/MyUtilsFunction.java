@@ -656,12 +656,12 @@ public class MyUtilsFunction {
                 item157 = 10000;
                 sp57 = 200000;
             }
-            if (player.getLevel() >= 3000000 && player.getLevel() < 30000000) {
+            if (player.getSp() >= 3000000 && player.getSp() < 30000000) {
                 itemid1 = 80008;
                 item157 = 30000;
                 sp57 = 3000000;
             }
-            if (player.getLevel() >= 30000000) {
+            if (player.getSp() >= 30000000) {
                 itemid1 = 80009;
                 item157 = 50000;
                 sp57 = 30000000;
