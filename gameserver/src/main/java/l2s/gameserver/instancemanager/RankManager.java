@@ -4,13 +4,17 @@ import l2s.commons.dbutils.DbUtils;
 import l2s.gameserver.Config;
 import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.database.DatabaseFactory;
+import l2s.gameserver.model.GameObjectsStorage;
 import l2s.gameserver.model.Player;
+import l2s.gameserver.model.World;
+import l2s.gameserver.model.WorldRegion;
 import l2s.gameserver.model.base.*;
 import l2s.gameserver.model.entity.Hero;
 import l2s.gameserver.skills.SkillEntry;
 import l2s.gameserver.skills.SkillEntryType;
 import l2s.gameserver.tables.ClanTable;
 import l2s.gameserver.templates.StatsSet;
+import org.apache.commons.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +22,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import static sun.audio.AudioPlayer.player;
 
 /**
  * @author NviX
@@ -74,6 +84,8 @@ public class RankManager {
 	}
 
 	private synchronized void update() {
+		List<StatsSet> lastRaceRank1sts = _mainList.values().stream().filter(o -> (Integer) o.get("raceRank") == 1).collect(Collectors.toList());
+
 		// Load charIds All
 		_snapshotList = _mainList;
 		_mainList.clear();
@@ -135,6 +147,75 @@ public class RankManager {
 		}
 
 		LOGGER.info("RankManager: Restored " + _mainList.size() + " ranking data(s).");
+
+		try{
+			List<StatsSet> cRaceRank1sts = _mainList.values().stream().filter(o -> (Integer) o.get("raceRank") == 1).collect(Collectors.toList());
+
+			loop1:
+			for (StatsSet cRaceRank1st : cRaceRank1sts) {
+				Integer race = (Integer) cRaceRank1st.get("race");
+				Integer CharId = (Integer) cRaceRank1st.get("charId");
+				loop2:
+				for (StatsSet lastRaceRank1st : lastRaceRank1sts) {
+					Integer race1 = (Integer) lastRaceRank1st.get("race");
+					if (race.equals(race1)) {
+						Integer lastCharId = (Integer) lastRaceRank1st.get("charId");
+						if (CharId.equals(lastCharId)) {
+							break loop2;
+						}
+						Player lPlayer = GameObjectsStorage.getPlayer(lastCharId);
+						Player cPlayer = GameObjectsStorage.getPlayer(CharId);
+
+						if (race == Race.HUMAN.ordinal()) {
+							if (lPlayer!=null && lPlayer.isOnline())
+								lPlayer.getAbnormalList().stop(HUMAN_LEVEL_RANKING_1ST_CLASS, false);
+
+							if (cPlayer!=null && cPlayer.isOnline())
+								HUMAN_LEVEL_RANKING_1ST_CLASS.getEffects(cPlayer, cPlayer);
+
+						} else if (race == Race.ELF.ordinal()) {
+							if (lPlayer!=null && lPlayer.isOnline())
+								lPlayer.getAbnormalList().stop(ELF_LEVEL_RANKING_1ST_CLASS, false);
+
+							if (cPlayer!=null && cPlayer.isOnline())
+								ELF_LEVEL_RANKING_1ST_CLASS.getEffects(cPlayer, cPlayer);
+
+						} else if (race == Race.DARKELF.ordinal()) {
+							if (lPlayer!=null && lPlayer.isOnline())
+								lPlayer.getAbnormalList().stop(DARK_ELF_LEVEL_RANKING_1ST_CLASS, false);
+
+							if (cPlayer!=null && cPlayer.isOnline())
+								DARK_ELF_LEVEL_RANKING_1ST_CLASS.getEffects(cPlayer, cPlayer);
+
+						} else if (race == Race.ORC.ordinal()) {
+							if (lPlayer!=null && lPlayer.isOnline())
+								lPlayer.getAbnormalList().stop(ORC_LEVEL_RANKING_1ST_CLASS, false);
+
+							if (cPlayer!=null && cPlayer.isOnline())
+								ORC_LEVEL_RANKING_1ST_CLASS.getEffects(cPlayer, cPlayer);
+
+						} else if (race == Race.DWARF.ordinal()) {
+							if (lPlayer!=null && lPlayer.isOnline())
+								lPlayer.getAbnormalList().stop(DWARF_LEVEL_RANKING_1ST_CLASS, false);
+
+							if (cPlayer!=null && cPlayer.isOnline())
+								DWARF_LEVEL_RANKING_1ST_CLASS.getEffects(cPlayer, cPlayer);
+
+						} else if (race == Race.KAMAEL.ordinal()) {
+							if (lPlayer!=null && lPlayer.isOnline())
+								lPlayer.getAbnormalList().stop(KAMAEL_LEVEL_RANKING_1ST_CLASS, false);
+
+							if (cPlayer!=null && cPlayer.isOnline())
+								KAMAEL_LEVEL_RANKING_1ST_CLASS.getEffects(cPlayer, cPlayer);
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			LOGGER.error("RankManager: update raceRank buff", e);
+		}
+
 
 		// load olympiad data.
 		try {
