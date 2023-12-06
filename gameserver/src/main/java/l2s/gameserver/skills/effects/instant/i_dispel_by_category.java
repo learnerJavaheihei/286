@@ -83,18 +83,16 @@ public class i_dispel_by_category extends i_abstract_effect
 
 				if(effectSkill.getMagicLevel() <= 0)
 					continue;
+
+				if(_maxCount <= 0 || dispelled >= _maxCount)
+					break;
 				if(Rnd.chance(_dispelChance))
 				{
 					abnormal.exit();
-
+					dispelled++;
 					if(!abnormal.isHidden())
 						effected.sendPacket(new SystemMessagePacket(SystemMsg.THE_EFFECT_OF_S1_HAS_BEEN_REMOVED).addSkillName(effectSkill));
-					if(_maxCount > 0 && dispelled >= _maxCount)
-						break;
 				}
-				if(dispelled >= _maxCount)
-					break;
-				dispelled++;
 			}
 		}
 		else if(_abnormalCategory == AbnormalCategory.slot_buff && !effected.getAbnormalEffects().contains(AbnormalEffect.INVINCIBILITY))
@@ -124,18 +122,16 @@ public class i_dispel_by_category extends i_abstract_effect
 				if(effectSkill.getMagicLevel() <= 0)
 					continue;
 
+				if(_maxCount <= 0 || dispelled >= _maxCount)
+					break;
+
 				if(Formulas.calcCancelSuccess(effector, effected, _dispelChance, getSkill(), abnormal))
 				{
 					abnormal.exit();
-
+					dispelled++;
 					if(!abnormal.isHidden())
 						effected.sendPacket(new SystemMessagePacket(SystemMsg.THE_EFFECT_OF_S1_HAS_BEEN_REMOVED).addSkillName(effectSkill));
-					if(_maxCount > 0 && dispelled >= _maxCount)
-						break;
 				}
-				if(dispelled >= _maxCount)
-					break;
-				dispelled++;
 			}
 		}
 	}
