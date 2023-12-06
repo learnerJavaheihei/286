@@ -223,22 +223,6 @@ public class GameServer
 			_log.error("Could not read object IDs from DB. Please Check Your Data.");
 			throw new Exception("Could not initialize the ID factory");
 		}
-		if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
-			/** 检查是否更新了挂机时间 */
-			RestartServerHangUpTime.getInstance().checkIsRenewHangUpTime();
-
-			/** 开启定时更新挂机时间任务 */
-			TimerManager.getInstance().statImplement();
-		}
-
-		// 掉落公告初始化
-		DropSpecialItemAnnounce.getInstance();
-
-		// 重启自动检查
-		AutoCancelConsignmentGold.getInstance().checkConsignmentGold();
-
-		//
-		NewServerCompensationServiceImpl.getInstance().onLoad();
 
 		CacheManager.getInstance();
 
@@ -396,6 +380,23 @@ public class GameServer
 			statusServer = new TelnetServer();
 		else
 			_log.info("Telnet server is currently disabled.");
+
+		if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
+			/** 检查是否更新了挂机时间 */
+			RestartServerHangUpTime.getInstance().checkIsRenewHangUpTime();
+
+			/** 开启定时更新挂机时间任务 */
+			TimerManager.getInstance().statImplement();
+		}
+
+		// 掉落公告初始化
+		DropSpecialItemAnnounce.getInstance();
+
+		// 重启自动检查
+		AutoCancelConsignmentGold.getInstance().checkConsignmentGold();
+
+		// 补偿
+		NewServerCompensationServiceImpl.getInstance().onLoad();
 
 		_log.info("=================================================");
 		String memUsage = new StringBuilder().append(StatsUtils.getMemUsage()).toString();
