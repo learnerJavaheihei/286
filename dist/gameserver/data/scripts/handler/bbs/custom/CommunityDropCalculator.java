@@ -2,21 +2,26 @@ package handler.bbs.custom;
 
 import handler.bbs.ScriptsCommunityHandler;
 import handler.onshiftaction.commons.RewardListInfo;
+import l2s.commons.util.Rnd;
 import l2s.gameserver.cache.ImagesCache;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.NpcHolder;
+import l2s.gameserver.data.xml.holder.ZoneHolder;
 import l2s.gameserver.geometry.Location;
+import l2s.gameserver.listener.actor.player.OnAnswerListener;
+import l2s.gameserver.model.GameObject;
 import l2s.gameserver.model.GameObjectsStorage;
 import l2s.gameserver.model.Player;
+import l2s.gameserver.model.Zone;
 import l2s.gameserver.model.instances.NpcInstance;
 import l2s.gameserver.network.l2.components.ChatType;
-import l2s.gameserver.network.l2.s2c.RadarControlPacket;
-import l2s.gameserver.network.l2.s2c.SayPacket2;
-import l2s.gameserver.network.l2.s2c.ShowBoardPacket;
+import l2s.gameserver.network.l2.components.SystemMsg;
+import l2s.gameserver.network.l2.s2c.*;
 import l2s.gameserver.templates.item.ItemGrade;
 import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.templates.npc.NpcTemplate;
 import l2s.gameserver.utils.Language;
+import org.apache.velocity.runtime.directive.Break;
 import org.napile.primitive.maps.IntObjectMap;
 import org.napile.primitive.maps.impl.CHashIntObjectMap;
 import org.slf4j.Logger;
@@ -106,7 +111,30 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 					monsterId = Integer.parseInt(st.nextToken());
 					if (st.hasMoreTokens()) {
 						nextTokn = Integer.parseInt(st.nextToken());
-						manageButton(player, nextTokn, monsterId);
+						if (nextTokn == 2) {
+							List<NpcInstance> npc = GameObjectsStorage.getNpcs(true, monsterId);
+							if (!npc.isEmpty())
+								RewardListInfo.showInfo(player, npc.get(0), null, 1);
+						}
+						else if (nextTokn == 1) {
+							if (player.getPvpFlag()>0) {
+								player.sendMessage("紫名状态不能传送!");
+								showDropMonsterDetailsByName(player, monsterId);
+								return;
+							}
+							if (player.isInCombat()) {
+								player.sendMessage("战斗状态不能传送!");
+								showDropMonsterDetailsByName(player, monsterId);
+								return;
+							}
+							if (player.getKarma() < 0) {
+								player.sendMessage("红名状态不能传送!");
+								showDropMonsterDetailsByName(player, monsterId);
+								return;
+							}
+							teleportToMonster(player, monsterId);
+						}
+//						manageButton(player, nextTokn, monsterId);
 					}
 				} catch (Exception e) {
 					player.sendMessage("Error occured, try again later!");
@@ -132,7 +160,32 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 					chosenMobId = Integer.parseInt(st.nextToken());
 					if (st.hasMoreTokens()) {
 						int nexttkn = Integer.parseInt(st.nextToken());
-						manageButton(player, nexttkn, chosenMobId);
+						if (nexttkn == 2) {
+							List<NpcInstance> npc = GameObjectsStorage.getNpcs(true, chosenMobId);
+							if (!npc.isEmpty())
+								RewardListInfo.showInfo(player, npc.get(0), null, 1);
+						}
+						else if (nexttkn == 1) {
+							if (player.getPvpFlag()>0) {
+								player.sendMessage("紫名状态不能传送!");
+								showDropMonsterDetailsByName(player, chosenMobId);
+								return;
+							}
+							if (player.isInCombat()) {
+								player.sendMessage("战斗状态不能传送!");
+								showDropMonsterDetailsByName(player, chosenMobId);
+								return;
+							}
+							if (player.getKarma() < 0) {
+								player.sendMessage("红名状态不能传送!");
+								showDropMonsterDetailsByName(player, chosenMobId);
+								return;
+							}
+
+							teleportToMonster(player, chosenMobId);
+						}
+
+//						manageButton(player, nexttkn, chosenMobId);
 					}
 				} catch (Exception e) {
 					player.sendMessage("Error occured, try again later!");
@@ -144,6 +197,52 @@ public class CommunityDropCalculator extends ScriptsCommunityHandler {
 			default:
 				break;
 		}
+	}
+
+	private static void teleportToMonster(Player player, int chosenMobId) {
+		int count = 400;
+
+		List<NpcInstance> npcs = GameObjectsStorage.getNpcs(true, chosenMobId);
+		if (npcs.isEmpty()) {
+			player.sendMessage("没有找到存活的怪物,稍后再试!");
+			showDropMonsterDetailsByName(player, chosenMobId);
+			return;
+		}
+		NpcInstance npcInstance = Rnd.get(npcs);
+
+		if (npcInstance.isRaid() || npcInstance.isBoss() || npcInstance.isReflectionBoss()) {
+			player.sendMessage("目标是 BOSS 不能传送!");
+			showDropMonsterDetailsByName(player, chosenMobId);
+			return;
+		}
+		Location spawnedLoc = npcInstance.getSpawnedLoc();
+		Location targetLoc = new Location(spawnedLoc.getX() + Rnd.get(300), spawnedLoc.getY() + Rnd.get(300), spawnedLoc.getZ());
+		Zone zone = npcInstance.getZone(Zone.ZoneType.battle_zone);
+		if (zone != null) {
+			player.sendMessage("目标处于战场不能传送!");
+			showDropMonsterDetailsByName(player, chosenMobId);
+			return;
+		}
+
+		final int id = chosenMobId;
+		player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("确定传送至["+npcInstance.getTemplate().getName(player)+"]身边？\n将花费 ["+count+"] Lcoin 币!"), new OnAnswerListener() {
+			@Override
+			public void sayYes() {
+				if (!player.getInventory().destroyItemByItemId(91663,count)) {
+					player.sendMessage("lcoin 币 不足!");
+					showDropMonsterDetailsByName(player, id);
+					return;
+				}
+
+				player.teleToLocation(targetLoc, true);
+			}
+
+			@Override
+			public void sayNo() {
+				showDropMonsterDetailsByName(player, id);
+				return;
+			}
+		});
 	}
 
 	private static void showMainPage(Player player) {
