@@ -10764,6 +10764,10 @@ public final class Player extends Playable implements PlayerGroup {
             if (zone.getTemplate().getBlockedActions() != null)
                 unblockActions(zone.getTemplate().getBlockedActions());
         }
+
+        if (zone.getLeavePvpFlag()) {
+            startPvPFlag(this);
+        }
     }
 
     @Override

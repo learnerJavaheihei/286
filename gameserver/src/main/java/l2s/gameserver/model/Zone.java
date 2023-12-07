@@ -279,6 +279,11 @@ public class Zone extends EventOwner
 		return getTemplate().getEnteringMessageId();
 	}
 
+	public boolean getLeavePvpFlag(){
+		return getTemplate().getParams().get("pvpFlagOnAlive") != null && (boolean) getTemplate().getParams().get("pvpFlagOnAlive");
+	}
+
+
 	public final int getLeavingMessageId()
 	{
 		return getTemplate().getLeavingMessageId();

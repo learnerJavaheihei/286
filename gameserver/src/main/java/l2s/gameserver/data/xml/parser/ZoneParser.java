@@ -169,6 +169,11 @@ public class ZoneParser extends StatParser<ZoneHolder>
 				else
 					territory.addBanned(shape);
 			}
+			else if("pvpFlagOnAlive".equals(n.getName())){
+				String text = n.getText();
+				boolean b = Boolean.parseBoolean(text);
+				zoneDat.set("pvpFlagOnAlive", b);
+			}
 		}
 
 		if(territory == null || territory.getTerritories().isEmpty())
