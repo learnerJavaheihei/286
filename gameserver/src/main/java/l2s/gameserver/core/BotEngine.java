@@ -36,7 +36,7 @@ public class BotEngine
     public static boolean runtimeHuangUpTimeLock = false;
     private Timer timer;
     // 挂机时间递减任务
-    private  Map<Integer, ScheduledFuture<?>> timeTasks;
+//    private  Map<Integer, ScheduledFuture<?>> timeTasks;
 
     // 连续未攻击时长
     private  Map<Integer, ScheduledFuture<?>> increaseAttackRadiusTasks;
@@ -52,7 +52,7 @@ public class BotEngine
     protected BotEngine()
     {
         tasks = new HashMap<Integer, ScheduledFuture<?>>();
-        timeTasks = new HashMap<Integer, ScheduledFuture<?>>();
+//        timeTasks = new HashMap<Integer, ScheduledFuture<?>>();
         increaseAttackRadiusTasks = new HashMap<Integer, ScheduledFuture<?>>();
         switchLock = new ReentrantLock();
         configs = new HashMap<Integer, BotConfig>();
@@ -135,43 +135,43 @@ public class BotEngine
                 // 每5分钟将挂机剩余时间更新到数据库
                 TimerManager.getInstance().startRenewCacheTime(player);
 
-            ScheduledFuture<?> checkTimeTask = timeTasks.get(player.getObjectId());
-            if(checkTimeTask == null){
-                checkTimeTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
-                            Integer time = Integer.valueOf(BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId())));
-                            if (player._isInPlugIn && time > 0) {
-                                time--;
-                                /** 存储剩余时间的map 中更新时间 */
-                                BotEngine.leftTimeMap.put(String.valueOf(player.getObjectId()), String.valueOf(time));
-                            }
-                            if (time == 0) {
-                                BotEngine.getInstance().stopTask(player);
-                                BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
-                                botConfig.setAbort(true, "");
-                                return;
-                            }
-                        }
-
-                        /* 当前角色所在组的队长是否死亡，死亡 并且队长停止挂机时 停止挂机 */
-                        if (!player.isDead()) {
-                            Party party = player.getParty();
-                            if (party != null) {
-                                Player leader = party.getPartyLeader();
-                                if (leader != null && leader.isDead() && !leader._isInPlugIn) {
-                                    BotEngine.getInstance().stopTask(player);
-                                    BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
-                                    botConfig.setAbort(true, "队长死亡状态下，不能开启内挂");
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }, 0, 1000L, TimeUnit.MILLISECONDS);
-                timeTasks.put(player.getObjectId(), checkTimeTask);
-            }
+//            ScheduledFuture<?> checkTimeTask = timeTasks.get(player.getObjectId());
+//            if(checkTimeTask == null){
+//                checkTimeTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
+//                            Integer time = Integer.valueOf(BotEngine.leftTimeMap.get(String.valueOf(player.getObjectId())));
+//                            if (player._isInPlugIn && time > 0) {
+//                                time--;
+//                                /** 存储剩余时间的map 中更新时间 */
+//                                BotEngine.leftTimeMap.put(String.valueOf(player.getObjectId()), String.valueOf(time));
+//                            }
+//                            if (time == 0) {
+//                                BotEngine.getInstance().stopTask(player);
+//                                BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
+//                                botConfig.setAbort(true, "");
+//                                return;
+//                            }
+//                        }
+//
+//                        /* 当前角色所在组的队长是否死亡，死亡 并且队长停止挂机时 停止挂机 */
+//                        if (!player.isDead()) {
+//                            Party party = player.getParty();
+//                            if (party != null) {
+//                                Player leader = party.getPartyLeader();
+//                                if (leader != null && leader.isDead() && !leader._isInPlugIn) {
+//                                    BotEngine.getInstance().stopTask(player);
+//                                    BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
+//                                    botConfig.setAbort(true, "队长死亡状态下，不能开启内挂");
+//                                    return;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }, 0, 1000L, TimeUnit.MILLISECONDS);
+//                timeTasks.put(player.getObjectId(), checkTimeTask);
+//            }
             BotConfig botConfig = BotEngine.getInstance().getBotConfig(player);
 
             timer.scheduleAtFixedRate(new TimerTask() {
@@ -200,7 +200,7 @@ public class BotEngine
             }
 			int objectId = player.getObjectId();
 			Future<?> task = tasks.get(player.getObjectId());
-            Future<?> timeTask = timeTasks.get(player.getObjectId());
+//            Future<?> timeTask = timeTasks.get(player.getObjectId());
             Future<?> increaseAttackRadiusTask = increaseAttackRadiusTasks.get(player.getObjectId());
 			player._isInPlugIn = false;/*關閉內掛減少收益*/
 
@@ -208,16 +208,16 @@ public class BotEngine
 			{
 				task.cancel(true);
 			}
-            if(timeTask != null)
-            {
-                timeTask.cancel(false);
-            }
+//            if(timeTask != null)
+//            {
+//                timeTask.cancel(false);
+//            }
             if(increaseAttackRadiusTask != null)
             {
                 increaseAttackRadiusTask.cancel(false);
             }
 			tasks.remove(objectId);
-            timeTasks.remove(objectId);
+//            timeTasks.remove(objectId);
             increaseAttackRadiusTasks.remove(objectId);
 			player.sendMessage("「关闭」自動狩獵 - " + BotEngine.getInstance().getBotConfig(player).getAbortReason());
 			player.broadcastCharInfo();
