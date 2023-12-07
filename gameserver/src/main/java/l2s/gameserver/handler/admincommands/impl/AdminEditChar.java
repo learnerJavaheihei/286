@@ -693,7 +693,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		replyMSG.append("</tr></table><br>");
 
 		replyMSG.append("<table width=270>");
-		replyMSG.append("<tr><td width=100>帳號/IP:</td><td>" + player.getAccountName() + "/" +   "<a action=\"bypass -h admin_show_ip" + player.getIP() + "\">" + player.getIP() + "</a></td></tr>");//新增顯示IP
+		replyMSG.append("<tr><td width=100>帳號/IP:</td><td>" + player.getAccountName() + "/" +   "<a action=\"bypass -h admin_show_ip " + player.getIP() + "\">" + player.getIP() + "</a></td></tr>");//新增顯示IP
 		replyMSG.append("<tr><td width=100>名稱/等級:</td><td>" + player.getName() + "/" + player.getLevel() + "</td></tr>");
 		replyMSG.append("<tr><td width=100>職業/Id:</td><td>" + HtmlUtils.htmlClassName(player.getClassId().getId()) + "/" + player.getClassId().getId() + "</td></tr>");
 		replyMSG.append("<tr><td width=100>血盟/等級:</td><td>" + clanName + "</td></tr>");
