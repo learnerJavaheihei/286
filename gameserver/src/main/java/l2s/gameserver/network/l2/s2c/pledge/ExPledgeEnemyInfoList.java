@@ -34,12 +34,12 @@ public class ExPledgeEnemyInfoList extends L2GameServerPacket
 		for (ClanWar war : playerClan.getWars().valueCollection())
 		{
 			final Clan clan = war.getOpposingClan(playerClan);
-			if (war.isAttacker(clan))
-			{
+//			if (war.isAttacker(clan))
+//			{
 				pointDiff[count] = war.getPointDiff(playerClan);
 				attackedClans.put(count, clan);
 				count++;
-			}
+//			}
 		}
 		
 		writeD(count);
