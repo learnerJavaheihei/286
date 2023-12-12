@@ -70,6 +70,7 @@ public class ItemHandler extends AbstractHolder
 		registerItemHandler(new NameColorItemHandler());
 		registerItemHandler(new RollingDiceItemHandler());
 		registerItemHandler(new WorldMapItemHandler());
+		registerItemHandler(new AddClanExpHandler());
 	}
 
 	public void registerItemHandler(IItemHandler handler)
