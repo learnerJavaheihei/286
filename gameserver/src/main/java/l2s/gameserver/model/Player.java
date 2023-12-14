@@ -2059,6 +2059,89 @@ public final class Player extends Playable implements PlayerGroup {
             getListeners().onExpReceive(addToExp, bonusAddExp >= 0);
             _receivedExp += addToExp;
         }
+        long exp = getExp();
+        if (exp > RankManager.rankLastExp && !isGM()) {
+            StatsSet statsSet = RankManager.rankLimit150.get(getName());
+            if (statsSet != null) {
+                String name = getName();
+                statsSet.put("charId", getObjectId());
+                statsSet.put("name", name);
+                int clanId = getClan() != null ? getClan().getClanId() : 0;
+                if (clanId > 0) {
+                    statsSet.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+                } else {
+                    statsSet.set("clanName", "");
+                }
+                ClassId classId = getClassId();
+                statsSet.put("classId", classId.getId());
+                statsSet.put("level", getLevel());
+                statsSet.put("exp", exp);
+                final int race = classId.getRace().ordinal();
+                statsSet.put("race", race);
+                RankManager.rankLimit150.put(name,statsSet);
+            }
+            else {
+                StatsSet set = new StatsSet();
+                String name = getName();
+                set.put("charId", getObjectId());
+                set.put("name", name);
+                int clanId = getClan() != null ? getClan().getClanId() : 0;
+                if (clanId > 0) {
+                    set.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+                } else {
+                    set.set("clanName", "");
+                }
+                ClassId classId = getClassId();
+                set.put("classId", classId.getId());
+                set.put("level", getLevel());
+                set.put("exp", exp);
+                final int race = classId.getRace().ordinal();
+                set.put("race", race);
+
+                RankManager.rankLimit150.put(name,set);
+            }
+        }
+        int race = getRace().ordinal();
+        if (exp> RankManager._raceRankLastExp[race] && !isGM()) {
+            Map<Integer, StatsSet> setMap = RankManager._raceRankList.get(race);
+            StatsSet statsSet = setMap.get(getObjectId());
+            if (statsSet != null) {
+                int clanId = getClan() != null ? getClan().getClanId() : 0;
+                if (clanId > 0) {
+                    statsSet.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+                } else {
+                    statsSet.set("clanName", "");
+                }
+                ClassId classId = getClassId();
+                statsSet.put("classId", classId.getId());
+                statsSet.put("level", getLevel());
+                statsSet.put("exp", exp);
+                final int race1 = classId.getRace().ordinal();
+                statsSet.put("race", race1);
+
+            }
+            else{
+                StatsSet set = new StatsSet();
+                String name = getName();
+                set.put("charId", getObjectId());
+                set.put("name", name);
+                int clanId = getClan() != null ? getClan().getClanId() : 0;
+                if (clanId > 0) {
+                    set.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+                } else {
+                    set.set("clanName", "");
+                }
+                ClassId classId = getClassId();
+                set.put("classId", classId.getId());
+                set.put("level", getLevel());
+                set.put("exp", exp);
+                final int race1 = classId.getRace().ordinal();
+                set.put("race", race1);
+                setMap.put(getObjectId(),set);
+
+            }
+            RankManager._raceRankList.put(race,setMap);
+        }
 
         if (sendMsg) {
             if ((addToExp > 0 || addToSp > 0) && bonusAddExp >= 0 && bonusAddSp >= 0)

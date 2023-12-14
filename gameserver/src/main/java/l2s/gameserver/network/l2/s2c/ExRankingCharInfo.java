@@ -33,7 +33,7 @@ public class ExRankingCharInfo extends L2GameServerPacket
 				if (player.getInteger("charId") == _player.getObjectId())
 				{
 					writeD(id); // server rank
-					writeD(player.getInteger("raceRank")); // race rank
+					writeD(player.getInteger("raceRank",0)); // race rank
 					
 					for (Integer id2 : _snapshotList.keySet())
 					{
@@ -41,7 +41,7 @@ public class ExRankingCharInfo extends L2GameServerPacket
 						if (player.getInteger("charId") == snapshot.getInteger("charId"))
 						{
 							writeD(id2); // server rank snapshot
-							writeD(snapshot.getInteger("raceRank")); // race rank snapshot
+							writeD(snapshot.getInteger("raceRank",0)); // race rank snapshot
 							writeD(0); // class rank
 							writeD(0); // class rank snapshot
 							return;
