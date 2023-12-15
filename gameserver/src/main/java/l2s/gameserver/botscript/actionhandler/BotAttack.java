@@ -348,7 +348,7 @@ public class BotAttack implements IBotActionHandler
 		if(actor.getDistance(config.getStartX(), config.getStartY(), config.getStartZ()) < 5000.0)
 		{
 			actor.standUp();
-			actor.getMovement().moveToLocation(config.getStartX(), config.getStartY(), config.getStartZ(), 100, !actor.getVarBoolean("no_pf"), true, false);
+			actor.getMovement().moveToLocation(config.getStartX(), config.getStartY(), config.getStartZ(), 0, !actor.getVarBoolean("no_pf"), true, false);
 		}
 	}
 
