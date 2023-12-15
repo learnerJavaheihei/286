@@ -2,11 +2,13 @@ package l2s.gameserver.network.l2.c2s.teleport;
 
 import l2s.gameserver.Config;
 import l2s.gameserver.instancemanager.ServerVariables;
+import l2s.gameserver.listener.actor.player.OnAnswerListener;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.actor.variables.PlayerVariables;
 import l2s.gameserver.model.items.ItemInstance;
 import l2s.gameserver.network.l2.c2s.L2GameClientPacket;
 import l2s.gameserver.network.l2.components.SystemMsg;
+import l2s.gameserver.network.l2.s2c.ConfirmDlgPacket;
 import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.templates.item.ItemTemplate;
@@ -30,7 +32,50 @@ public class RequestExSharedPositionTeleport extends L2GameClientPacket
 		if (_allow == 1)
 		{
 			Player player = getClient().getActiveChar();
-			
+			if (player.isInCombat()) {
+				player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("战斗状态无法传送!"), new OnAnswerListener() {
+					@Override
+					public void sayYes() {
+
+					}
+
+					@Override
+					public void sayNo() {
+
+					}
+				});
+				return;
+			}
+			if (player.getPvpFlag()>0) {
+				player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("紫名状态无法传送!"), new OnAnswerListener() {
+					@Override
+					public void sayYes() {
+
+					}
+
+					@Override
+					public void sayNo() {
+
+					}
+				});
+				return;
+			}
+			if (player.getKarma() < 0) {
+				player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("红名状态无法传送!"), new OnAnswerListener() {
+					@Override
+					public void sayYes() {
+
+					}
+
+					@Override
+					public void sayNo() {
+
+					}
+				});
+				return;
+			}
+
+
 			int previousRank = player.getPreviousPvpRank();
 			boolean allowFree = false;
 			

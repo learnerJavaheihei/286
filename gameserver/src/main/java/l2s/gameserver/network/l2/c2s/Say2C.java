@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import l2s.gameserver.data.xml.holder.ItemHolder;
+import l2s.gameserver.listener.actor.player.OnAnswerListener;
+import l2s.gameserver.network.l2.s2c.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import l2s.commons.ban.BanBindType;
@@ -27,10 +29,6 @@ import l2s.gameserver.model.matching.MatchingRoom;
 import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.CustomMessage;
 import l2s.gameserver.network.l2.components.SystemMsg;
-import l2s.gameserver.network.l2.s2c.ActionFailPacket;
-import l2s.gameserver.network.l2.s2c.SayPacket2;
-import l2s.gameserver.network.l2.s2c.SystemMessage;
-import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.utils.ChatUtils;
 import l2s.gameserver.utils.Log;
@@ -321,6 +319,35 @@ public class Say2C extends L2GameClientPacket
 		{
 			if (activeChar.isInOlympiadMode() || activeChar.getReflectionId() != 0)
 				return;
+			if (activeChar.isInZoneBattle()) {
+				activeChar.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("「战场」无法共享位置!"), new OnAnswerListener() {
+					@Override
+					public void sayYes() {
+
+					}
+
+					@Override
+					public void sayNo() {
+
+					}
+				});
+				return;
+			}
+			if (activeChar.isInSiegeZone()) {
+				activeChar.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("「攻城区域」无法共享位置!"), new OnAnswerListener() {
+					@Override
+					public void sayYes() {
+
+					}
+
+					@Override
+					public void sayNo() {
+
+					}
+				});
+				return;
+			}
+
 			ItemInstance l2coin = activeChar.getInventory().getItemByItemId(ItemTemplate.ITEM_ID_MONEY_L);
 			
 			int previousRank = activeChar.getPreviousPvpRank();
