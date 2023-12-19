@@ -112,7 +112,7 @@ public class BotAttack implements IBotActionHandler
 								continue;
 							}
 
-							if(!monster.isDead() && !monster.isSpoiled())
+							if(monster!=null && !monster.isDead() && !monster.isSpoiled())
 							{
 								actor.getMovement().moveToLocation(player.getLoc(), config.getFollowInstance(), !actor.getVarBoolean("no_pf"));
 								return false;
@@ -124,20 +124,24 @@ public class BotAttack implements IBotActionHandler
 
 			//礼仪模式
 			AutoFarm autoFarm = actor.getAutoFarm();
-			if (autoFarm.isPoliteFarm()&& !actor.isInPeaceZone()) {
+			if (autoFarm.isPoliteFarm()) {
 				MonsterInstance target = (MonsterInstance)actor.getTarget();
 				if (target!=null) {
-					List<Creature> aroundCharacters = World.getAroundCharacters(actor, 4500, 500);
+					List<Creature> aroundCharacters = World.getAroundCharacters(actor, config.getFindMobMaxDistance(), config.getFindMobMaxHeight());
 					for (Creature aroundCharacter : aroundCharacters) {
 						if (aroundCharacter.isPlayer() && !aroundCharacter.isDead()) {
-							if (aroundCharacter.getTarget() == target && !actor.isAttackingNow() && aroundCharacter.getPlayer().isInSameParty(actor)) {
+							if (aroundCharacter.getPlayer().isInSameParty(actor)) {
+								continue;
+							}
+							if (aroundCharacter.getTarget() == target && !actor.isAttackingNow()) {
+								if (monster == null)
+									continue;
 								config.addBlockTargetId(monster.getObjectId());
 								actor.setTarget(null);
 								ThreadPoolManager.getInstance().schedule(new Runnable() {
 									@Override
 									public void run() {
 										config.releaseMemory(actor);
-
 									}
 								}, 60 * 1000L, TimeUnit.MILLISECONDS);
 
@@ -150,6 +154,9 @@ public class BotAttack implements IBotActionHandler
 
 			if(!GeoEngine.canSeeTarget(actor, monster))
 			{
+				if (monster == null)
+					return false;
+
 				actor.getMovement().moveToLocation(monster.getLoc(), 0, !actor.getVarBoolean("no_pf"), true, false);
 				if(monster.getObjectId() != config.getCurrentTargetObjectId())
 				{
