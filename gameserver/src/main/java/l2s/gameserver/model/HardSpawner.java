@@ -85,7 +85,7 @@ public class HardSpawner extends Spawner
 		mob.setSpawnRange(range);
 		Location randomLoc = null;
 		if(!Config.MONSTER_RANDOM_SPAWN){
-			if(getFirstSpawn()){
+			if(getFirstSpawn() || mob.getNpcId() == 30204){
 				randomLoc = range.getRandomLoc(getReflection().getGeoIndex(), mob.isFlying());
 			}else
 				randomLoc = mob.getSpawnedLoc();
