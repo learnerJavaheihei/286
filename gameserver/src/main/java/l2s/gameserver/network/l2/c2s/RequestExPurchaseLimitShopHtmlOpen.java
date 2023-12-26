@@ -21,11 +21,11 @@ public class RequestExPurchaseLimitShopHtmlOpen extends L2GameClientPacket
 		if(player == null)
 			return;
 
-		if(player.isInJail())
-		{
-			player.sendActionFailed();
-			return;
-		}
+//		if(player.isInJail())
+//		{
+//			player.sendActionFailed();
+//			return;
+//		}
 
 		switch (_type)
 		{
