@@ -517,7 +517,7 @@ public class RankManager {
 			List<StatsSet> statsSets = new LinkedList<>(kindList);
 			statsSets.sort((o1, o2) -> {
                 if (o2.getLong("exp") == o1.getLong("exp")) {
-                    return Long.compare(o1.getLong("createtime"), o2.getLong("createtime"));
+                    return Long.compare(o1.getLong("createtime",0), o2.getLong("createtime",0));
                 }
                 return Long.compare(o2.getLong("exp"), o1.getLong("exp"));
             });
@@ -550,7 +550,7 @@ public class RankManager {
 		List<StatsSet> list = new LinkedList<>(values);
 		Collections.sort(list, (o1, o2) -> {
             if (o2.getLong("exp") == o1.getLong("exp")) {
-                return Long.compare(o1.getLong("createtime"), o2.getLong("createtime"));
+                return Long.compare(o1.getLong("createtime",0), o2.getLong("createtime",0));
             }
             return Long.compare(o2.getLong("exp"), o1.getLong("exp"));
         });
