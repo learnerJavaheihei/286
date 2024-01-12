@@ -21,7 +21,7 @@ public class BotPickUpItem implements IBotActionHandler
 	@Override
 	public boolean doAction(Player actor, BotConfig config, boolean isSitting, boolean checkMovable, boolean checkActionDisable)
 	{
-		MonsterInstance mob;
+		/* MonsterInstance mob;
 		if(!config.isPickUpItem())
 		{
 			return false;
@@ -49,7 +49,7 @@ public class BotPickUpItem implements IBotActionHandler
 				continue;
 			actor.getAI().setIntention(CtrlIntention.AI_INTENTION_PICK_UP, item, null);
 			return true;
-		}
+		} */
 		return false;
 	}
 }

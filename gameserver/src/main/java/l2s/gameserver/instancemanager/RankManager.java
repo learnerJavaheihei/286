@@ -58,7 +58,7 @@ public class RankManager {
 	
 	private static final SkillEntry PVP_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 52019, 1);
 
-	public static final int PLAYER_BASIC_LIMIT = 150;
+	public static final int PLAYER_BASIC_LIMIT = 100;
 	public static final int PLAYER_LIMIT = 100;
 
 	private static final String SELECT_CHARACTERS = "SELECT c.obj_Id,c.char_name,c.clanid,cs.class_id,cs.level FROM character_subclasses AS cs LEFT JOIN characters AS c ON cs.char_obj_id=c.obj_Id WHERE cs.type=? ORDER BY cs.exp DESC";

@@ -17,8 +17,8 @@ import manager.HeavenlyRift;
 **/
 public class Bomb extends NpcAI
 {
-	private static int[] ITEM_DROP_1 = { 49756, 49762, 49763 };
-	private static int[] ITEM_DROP_2 = { 49760, 49761 };
+	private static int[] ITEM_DROP_1 = { 49756, 49670, 49671 };
+	private static int[] ITEM_DROP_2 = { 49672, 49673 };
 	
 	public Bomb(NpcInstance actor)
 	{

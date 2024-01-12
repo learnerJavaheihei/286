@@ -56,12 +56,12 @@ public class LairOfAntharasEvent extends Event
 	protected static final int RAID_BOSS_NPC_ID = 18007;	// Captain of Blood Knights
 
 	private static final int[] MAIN_REWARD = { 
-		49762,	// Armor Ingredient Box - A-grade
-		49763	// Ornament Ingredient Box - A-grade
+		49670,	// Armor Ingredient Box - A-grade
+		49671	// Ornament Ingredient Box - A-grade
 	};
 	private static final int[] RAID_REWARD = {
-		49760,	// Armor Supply Box (A-grade)
-		49761	// Ornament Supply Box (A-grade)
+		49672,	// Armor Supply Box (A-grade)
+		49673	// Ornament Supply Box (A-grade)
 	};
 
 	// Event variables

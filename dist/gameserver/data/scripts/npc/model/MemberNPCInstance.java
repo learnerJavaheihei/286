@@ -90,7 +90,8 @@ public class MemberNPCInstance extends NpcInstance
 			{ "RED_COWBOY_SUIT", "紫色牛仔衣裳", "icon.bm2018_cowboy_i01" },
 			{ "SUPREME_SUIT", "牧師衣裳", "icon.healer_chest_change" },
 			{ "RED_ROYAL_SUIT", "血色貴族衣裳", "icon.bm2018_rednoblesse_i01" },
-			{ "WHITE_ROYAL_SUIT", "白色貴族衣裳", "icon.bm2018_whitenoblesse_i01" }
+			{ "WHITE_ROYAL_SUIT", "白色貴族衣裳", "icon.bm2018_whitenoblesse_i01" },
+			{ "LITTLE_DEMON_COSTUME", "吸血鬼衣服", "BranchSys3.iconArmar.g_co_vampiric_u_i00" }
 	};
 	private static Long[] Slot= {
 			ItemTemplate.SLOT_R_EAR,//右耳

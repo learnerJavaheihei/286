@@ -589,14 +589,14 @@ public class CreatureMovement
 					return false;
 				}
 			}
-			if (Config.enablePremiumAccountPeaceZone && _actor.isPlayer()  && _actor.getLevel() > 20) {
+			if (Config.enablePremiumAccountPeaceZone && _actor.isPlayer()  && _actor.getLevel() > 44) {
 				if (!MyUtilsFunction.isPremiumAccountPeaceZone(_actor.getPlayer(),loc)){
 					first += 1;
 					String[] msgs =new String[4];
 					if (first==1) {
 						_actor.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_LEFT_THE_PEACEFUL_ZONE));
 						for (int i = 0; i<=3; i++) {
-							msgs[i] = "角色等级超过20级的非会员将不能在非安全区移动,你将在「"+ (3-i) +"」秒后传送回附近的城镇！";
+							msgs[i] = "角色等级超过45级的非会员将不能在非安全区移动,你将在「"+ (3-i) +"」秒后传送回附近的城镇！";
 							int finalI = i;
 							ScheduledFuture<?> schedule = ThreadPoolManager.getInstance().schedule(new Runnable() {
 								@Override

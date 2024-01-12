@@ -600,12 +600,12 @@ public class MyUtilsFunction {
                 item57 = 40000;
                 exp57 = 30000000;
             }
-            if (player.getLevel() >= 70 && player.getLevel() < 75) {
+            if (player.getLevel() >= 70 && player.getLevel() < 76) {
                 itemid = 80003;
                 item57 = 50000;
                 exp57 = 100000000;
             }
-            if (player.getLevel() >= 75 && player.getLevel() < 80) {
+            if (player.getLevel() >= 76 && player.getLevel() < 80) {
                 itemid = 80004;
                 item57 = 60000;
                 exp57 = 10000000000L;
@@ -1169,8 +1169,8 @@ public class MyUtilsFunction {
             return;
         }
 
-        if (Config.enablePremiumAccountPeaceZone && !isPremiumAccountPeaceZone(player, loc)  && player.getLevel() > 20) {
-            String msg = "非会员，20级后不能传送到非安全区区域！";
+        if (Config.enablePremiumAccountPeaceZone && !isPremiumAccountPeaceZone(player, loc)  && player.getLevel() > 44) {
+            String msg = "非会员，45级后不能传送到非安全区区域！";
             player.sendMessage(msg);
             return;
         }

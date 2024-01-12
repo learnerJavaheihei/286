@@ -25,9 +25,9 @@ public class _10966_ATripBegins extends Quest
 	};
 	
 	// Items
-	private static final int IMPROVED_SOE = 49087;
+	/* private static final int IMPROVED_SOE = 49087; */
 	private static final int TALISMAN_OF_ADEN = 91745;
-	private static final int SCROLL_ENCHANT_TALISMAN_ADEN = 91756;
+	/* private static final int SCROLL_ENCHANT_TALISMAN_ADEN = 91756; */
 	private static final int ADVENTURER_BRACELET = 91934;
 	
 	// Etc
@@ -66,9 +66,9 @@ public class _10966_ATripBegins extends Quest
 			case "bathis_q10966_05.htm":
 			{
 				st.addExpAndSp(50_000, 1_500);
-				st.giveItems(IMPROVED_SOE, 10);
+				/* st.giveItems(IMPROVED_SOE, 10); */
 				st.giveItems(TALISMAN_OF_ADEN, 1);
-				st.giveItems(SCROLL_ENCHANT_TALISMAN_ADEN, 1);
+				/* st.giveItems(SCROLL_ENCHANT_TALISMAN_ADEN, 1); */
 				st.giveItems(ADVENTURER_BRACELET, 1);
 				st.finishQuest();
 				break;

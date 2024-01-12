@@ -49,7 +49,7 @@ public class LcoinDrop implements OnInitScriptListener
 			CHANCE = 1.5;
 			}
 			if (monster.getLevel() >= 46  &&  monster.getLevel() < 66) {
-			CHANCE = 2.;
+			CHANCE = 2.5;
 			}
 			if (monster.getLevel() >= 66  &&  monster.getLevel() < 77) {
 			CHANCE = 2.5;
@@ -61,7 +61,7 @@ public class LcoinDrop implements OnInitScriptListener
 				CHANCE = 3.5;
 			}
 
-			if (topDamager.getPlayer().getInventory().getCountOf(91694) >= 1) {
+			if (topDamager.getPlayer().getInventory().getCountOf(91694) >= 1 || topDamager.getPlayer().getInventory().getCountOf(91692) >= 1) {
 				CHANCE *= 2; // 如果背包中有道具91694，将概率乘以2
 				itemCount *= 2; // 如果背包中有道具91694，将数量乘以2
 			}

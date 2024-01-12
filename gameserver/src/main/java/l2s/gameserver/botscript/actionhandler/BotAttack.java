@@ -35,10 +35,10 @@ public class BotAttack implements IBotActionHandler
 		{
 			return false;
 		}
-		if(actor.isInPeaceZone())
+		/* if(actor.isInPeaceZone())
 		{
 			return false;
-		}
+		} */
 		if(actor.isSitting())
 		{
 			return false;
@@ -199,10 +199,10 @@ public class BotAttack implements IBotActionHandler
 		{
 			return false;
 		}
-		if(actor.isInPeaceZone())
+		/* if(actor.isInPeaceZone())
 		{
 			return false;
-		}
+		} */
 		SummonInstance pet = actor.getSummon();
 		if(pet == null || pet.isActionsDisabled())
 		{

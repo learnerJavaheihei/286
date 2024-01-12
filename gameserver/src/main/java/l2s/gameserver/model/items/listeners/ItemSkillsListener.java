@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//祝福卷轴效果
+
 public final class ItemSkillsListener extends AbstractSkillListener
 {
 	private static final ItemSkillsListener _instance = new ItemSkillsListener();
@@ -32,12 +34,18 @@ public final class ItemSkillsListener extends AbstractSkillListener
 	private static final SkillEntry DAGGER_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50402, 1);
 	private static final SkillEntry DUAL_FIST_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50403, 1);
 	private static final SkillEntry POLE_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50405, 1);
-	private static final SkillEntry A_16_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50421, 1);
-	private static final SkillEntry A_20_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50422, 1);
-	private static final SkillEntry A_25_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50423, 1);
-	private static final SkillEntry S_16_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50424, 1);
-	private static final SkillEntry S_20_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50425, 1);
-	private static final SkillEntry S_25_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50426, 1);
+	private static final SkillEntry C_7_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 46020, 1);
+	private static final SkillEntry C_12_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 46021, 1);
+	private static final SkillEntry C_15_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 46022, 1);
+	private static final SkillEntry B_7_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 46023, 1);
+	private static final SkillEntry B_12_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 46024, 1);
+	private static final SkillEntry B_15_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 46025, 1);
+	private static final SkillEntry A_7_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50421, 1);
+	private static final SkillEntry A_12_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50422, 1);
+	private static final SkillEntry A_15_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50423, 1);
+	private static final SkillEntry S_7_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50424, 1);
+	private static final SkillEntry S_12_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50425, 1);
+	private static final SkillEntry S_15_SKILL = SkillEntry.makeSkillEntry(SkillEntryType.ITEM, 50426, 1);
 
 	public static ItemSkillsListener getInstance()
 	{
@@ -220,23 +228,41 @@ public final class ItemSkillsListener extends AbstractSkillListener
 			else if (item.getItemType() == WeaponType.POLE)
 				player.addSkill(POLE_SKILL);
 			
+			if (item.getGrade() == ItemGrade.C)
+			{
+				if (item.getEnchantLevel() >= 7)
+					player.addSkill(C_7_SKILL);
+				if (item.getEnchantLevel() >= 12)
+					player.addSkill(C_12_SKILL);
+				if (item.getEnchantLevel() >= 15)
+					player.addSkill(C_15_SKILL);
+			}
+			if (item.getGrade() == ItemGrade.B)
+			{
+				if (item.getEnchantLevel() >= 7)
+					player.addSkill(B_7_SKILL);
+				if (item.getEnchantLevel() >= 12)
+					player.addSkill(B_12_SKILL);
+				if (item.getEnchantLevel() >= 15)
+					player.addSkill(B_15_SKILL);
+			}
 			if (item.getGrade() == ItemGrade.A)
 			{
-				if (item.getEnchantLevel() >= 16)
-					player.addSkill(A_16_SKILL);
-				if (item.getEnchantLevel() >= 20)
-					player.addSkill(A_20_SKILL);
-				if (item.getEnchantLevel() >= 25)
-					player.addSkill(A_25_SKILL);
+				if (item.getEnchantLevel() >= 7)
+					player.addSkill(A_7_SKILL);
+				if (item.getEnchantLevel() >= 12)
+					player.addSkill(A_12_SKILL);
+				if (item.getEnchantLevel() >= 15)
+					player.addSkill(A_15_SKILL);
 			}
 			if (item.getGrade() == ItemGrade.S)
 			{
-				if (item.getEnchantLevel() >= 16)
-					player.addSkill(S_16_SKILL);
-				if (item.getEnchantLevel() >= 20)
-					player.addSkill(S_20_SKILL);
-				if (item.getEnchantLevel() >= 25)
-					player.addSkill(S_25_SKILL);
+				if (item.getEnchantLevel() >= 7)
+					player.addSkill(S_7_SKILL);
+				if (item.getEnchantLevel() >= 12)
+					player.addSkill(S_12_SKILL);
+				if (item.getEnchantLevel() >= 15)
+					player.addSkill(S_15_SKILL);
 			}
 		}
 	}
@@ -251,11 +277,17 @@ public final class ItemSkillsListener extends AbstractSkillListener
 		player.removeSkill(DAGGER_SKILL, false);
 		player.removeSkill(DUAL_FIST_SKILL, false);
 		player.removeSkill(POLE_SKILL, false);
-		player.removeSkill(A_16_SKILL, false);
-		player.removeSkill(A_20_SKILL, false);
-		player.removeSkill(A_25_SKILL, false);
-		player.removeSkill(S_16_SKILL, false);
-		player.removeSkill(S_20_SKILL, false);
-		player.removeSkill(S_25_SKILL, false);
+		player.removeSkill(C_7_SKILL, false);
+		player.removeSkill(C_12_SKILL, false);
+		player.removeSkill(C_15_SKILL, false);
+		player.removeSkill(B_7_SKILL, false);
+		player.removeSkill(B_12_SKILL, false);
+		player.removeSkill(B_15_SKILL, false);
+		player.removeSkill(A_7_SKILL, false);
+		player.removeSkill(A_12_SKILL, false);
+		player.removeSkill(A_15_SKILL, false);
+		player.removeSkill(S_7_SKILL, false);
+		player.removeSkill(S_12_SKILL, false);
+		player.removeSkill(S_15_SKILL, false);
 	}
 }

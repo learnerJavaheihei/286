@@ -38,7 +38,7 @@ public class AutoFarm
 	private int _unkParam2 = 0;
 
 	private boolean _farmActivate = false;
-	private boolean _autoPickUpItems = false;
+	private boolean _autoPickUpItems = true;
 	private boolean _meleeAttackMode = false;
 	private int _healPercent = 0;
 	private boolean _politeFarm = false;
@@ -177,7 +177,8 @@ public class AutoFarm
 	{
 		if(isAutoPickUpItems())
 		{
-			List<ItemInstance> items = World.getAroundItems(_owner, 2000, 500);
+			return null;
+			/* List<ItemInstance> items = World.getAroundItems(_owner, 2000, 500);
 			items.sort(_distanceComparator);
 			for(ItemInstance item : items)
 			{
@@ -190,7 +191,7 @@ public class AutoFarm
 				if(!GeoEngine.canMoveToCoord(_owner, item))
 					continue;
 				return item;
-			}
+			} */
 		}
 
 		List<NpcInstance> npcs = World.getAroundNpc(_owner, 2000, 500);

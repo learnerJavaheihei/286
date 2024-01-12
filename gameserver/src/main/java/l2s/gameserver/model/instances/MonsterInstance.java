@@ -440,7 +440,8 @@ public class MonsterInstance extends NpcInstance
 		if(topDamager != null && topDamager.isPlayable())
 		{
 			// 相差 9级 以内
-			if (Math.abs(getLevel()-topDamager.getLevel()) <= 9) {
+			if (Math.abs(getLevel()-topDamager.getLevel()) <= 9) 
+			{
 				for(RewardList rewardList : getRewardLists())
 					rollRewards(rewardList, lastAttacker, topDamager);
 
@@ -462,8 +463,22 @@ public class MonsterInstance extends NpcInstance
 					if(getChampion() > 0 && Config.SPECIAL_ITEM_ID > 0 && Config.SPECIAL_ITEM_COUNT > 0 && Math.abs(getLevel() - player.getLevel()) < 9 && Rnd.chance(Config.SPECIAL_ITEM_DROP_CHANCE))
 						ItemFunctions.addItem(player, Config.SPECIAL_ITEM_ID, Config.SPECIAL_ITEM_COUNT);
 				}
+				// 怪物掉落BOSS首饰
+				int lv = getLevel();
+				
+				if (lv > 59) 
+				{
+					double chance = 0.000005; // 0.001% 
+					int counts = 1; // 1个道具
+					int itemsl = 93254; // 道具ID
+					double random = Rnd.nextDouble();
+				
+					if (random < chance) 
+					{
+						ItemFunctions.addItem(player, itemsl, Rnd.get(1, counts));
+					}
+				}
 			}
-
 		}
 		
 		if ((killer.getClan() != null) && !(killer.getLevel() > (getLevel() + 15)))

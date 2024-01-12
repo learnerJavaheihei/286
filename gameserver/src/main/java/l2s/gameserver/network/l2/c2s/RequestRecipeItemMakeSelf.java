@@ -25,6 +25,7 @@ import l2s.gameserver.templates.item.data.ItemData;
 import l2s.gameserver.utils.DropSpecialItemAnnounce;
 import l2s.gameserver.utils.ItemFunctions;
 import l2s.gameserver.utils.LogGeneral;
+import l2s.gameserver.templates.item.ItemGrade;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -180,20 +181,29 @@ public class RequestRecipeItemMakeSelf extends L2GameClientPacket
 					itemsCount++;
 				}
 				//TODO [G1ta0] добавить проверку на перевес
-				/*製作裝備隨機強化--*/
+				 /*製作裝備隨機強化--*/
 				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
-				if(item.isWeapon())//武器 装备 饰品
+				ItemGrade itemGrade = item.getGrade();
+				if (item.isWeapon() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
 					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
 				}
-				else if(item.isArmor() || item.isAccessory())//武器 装备 饰品
+				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
 					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
+				}
+				else if (item.isWeapon() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
+				{
+					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(5), true); //这样子会强化 0~7
+				}
+				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
+				{
+					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
 				}
 				else
 				{
 					ItemFunctions.addItem(activeChar, itemId, itemsCount, true);
-				}
+				} 	
 				/*--製作裝備隨機強化*/
 				/*原始ItemFunctions.addItem(activeChar, itemId, itemsCount, true);*/
 				success = 1;

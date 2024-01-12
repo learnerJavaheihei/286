@@ -26,6 +26,7 @@ import l2s.gameserver.utils.DropSpecialItemAnnounce;
 import l2s.gameserver.utils.ItemFunctions;
 import l2s.gameserver.utils.LogGeneral;
 import l2s.gameserver.utils.TradeHelper;
+import l2s.gameserver.templates.item.ItemGrade;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +36,7 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 	private int _manufacturerId;
 	private int _recipeId;
 	private long _price;
+
 
 	@Override
 	protected boolean readImpl()
@@ -210,15 +212,24 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 					//TODO maybe msg?
 					itemsCount++;
 				}
-				/*製作裝備隨機強化--*/
+				 /*製作裝備隨機強化--*/
 				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
-				if(item.isWeapon())//武器 装备 饰品
+				ItemGrade itemGrade = item.getGrade();
+				if (item.isWeapon() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
 					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
 				}
-				else if(item.isArmor() || item.isAccessory())//武器 装备 饰品
+				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
 					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
+				}
+				else if (item.isWeapon() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
+				{
+					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(5), true); //这样子会强化 0~7
+				}
+				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
+				{
+					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
 				}
 				else
 				{

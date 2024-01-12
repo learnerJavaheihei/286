@@ -635,6 +635,7 @@ public final class Player extends Playable implements PlayerGroup {
         listAbnormalEffect.add(AbnormalEffect.WHITE_ASSASSIN_SUIT);
         listAbnormalEffect.add(AbnormalEffect.DARK_ASSASSIN_SUIT);
         listAbnormalEffect.add(AbnormalEffect.PIRATE_SUIT);
+		listAbnormalEffect.add(AbnormalEffect.LITTLE_DEMON_COSTUME);//新添加吸血鬼
         INSTANCE_IDS = new int[]{182, 183, 184, 195, 196, 197, 198};
         dateFormat = new SimpleDateFormat("HH:mm:ss");
 
