@@ -615,7 +615,7 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 	private final boolean _isNecessaryToggle;
 	private final boolean _isNotDispelOnSelfBuff;
 
-	private final int _abnormalTime;
+	private int _abnormalTime;
 	private final int _abnormalLvl;
 	private final AbnormalType _abnormalType;
 	private final AbnormalEffect[] _abnormalEffects;
@@ -3678,6 +3678,9 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 	public int getAbnormalTime()
 	{
 		return _abnormalTime;
+	}
+	public void setAbnormalTime(int newTime){
+		_abnormalTime = newTime;
 	}
 
 	public int getAbnormalLvl()

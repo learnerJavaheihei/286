@@ -12,6 +12,7 @@ import l2s.gameserver.network.l2.s2c.ExCostumeExtract;
 import l2s.gameserver.network.l2.s2c.ExSendCostumeList;
 import l2s.gameserver.skills.AbnormalType;
 import l2s.gameserver.skills.SkillEntry;
+import l2s.gameserver.stats.Stats;
 import l2s.gameserver.templates.CostumeTemplate;
 import l2s.gameserver.templates.item.data.ItemData;
 import l2s.gameserver.utils.ItemFunctions;
@@ -182,8 +183,13 @@ public class CostumeList implements Iterable<Costume> {
 			//costume.setCount(costume.getCount() - 1);
 			//CharacterCostumesDAO.getInstance().update(owner, costume);
 
-			if (skill.getReuseDelay() > 10)
-				owner.disableSkill(skill, skill.getReuseDelay());
+			if (skill.getReuseDelay() > 10){
+				long calcReuseDelay = (long) owner.getStat().calc(Stats.TRANSFORMER_SKILL_REUSE, skill.getReuseDelay(), null, skill);
+				owner.disableSkill(skill, calcReuseDelay);
+			}
+			int abnormalTime = skill.getAbnormalTime();
+			int calcAbnormalTime = (int)owner.getStat().calc(Stats.TRANSFORMER_SKILL_ADD_HIT_TIME, abnormalTime, null, skill);
+			skill.setAbnormalTime(calcAbnormalTime);
 			owner.forceUseSkill(skillEntry, owner);
 			owner.sendPacket(new ExSendCostumeList(owner));
 			return true;

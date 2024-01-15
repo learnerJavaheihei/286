@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!ELEMENT list (costumes_suit_list|mul_collect)*>
+        <!ELEMENT costumes_suit_list (suit)*>
+            <!ELEMENT suit (costumeId)*>
+            <!ATTLIST suit
+                    num CDATA #REQUIRED>
+                <!ELEMENT costumeId (#PCDATA)>
+        <!ELEMENT mul_collect (skillList)*>
+        <!ATTLIST mul_collect
+                id CDATA #REQUIRED>
+            <!ELEMENT skillList (skill)*>
+                <!ELEMENT skill (#PCDATA)>
+                <!ATTLIST skill
+                        id CDATA #REQUIRED
+                        level CDATA #REQUIRED>

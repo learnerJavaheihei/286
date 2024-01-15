@@ -1,0 +1,2114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE list SYSTEM "skill.dtd">
+
+<list>
+	<skill id="59300" levels="1" name="Noblesse - White" nameEn="Noblesse - White">
+		<set name="icon" value="icon.bm2018_whitenoblesse_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="BRIGHT_KING_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<triggers>
+					<trigger id="59302" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59302" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59302" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59301" levels="1" name="Noblesse - White" nameEn="Noblesse - White">
+		<set name="icon" value="icon.bm2018_whitenoblesse_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="BRIGHT_KING_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<triggers>
+					<trigger id="59302" level="3" type="ATTACK" chance="5.0" />	
+					<trigger id="59302" level="3" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59302" level="3" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59302" levels="3" name="Noblesse White - Curse Gloom" nameEn="Noblesse White - Curse Gloom" nameCn="貴族白色-暗影詛咒">
+		<table name="#stat">0.87 0.7 0.6</table>
+		<table name="#reuseDelay">180000 80000 30000</table>
+		<set name="debuff" value="true" />
+		<set name="effectPoint" value="-5" />
+		<set name="icon" value="icon.bm2018_whitenoblesse_i01" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="castRange" value="900" />
+		<set name="abnormal_time" value="10" />
+		<set name="abnormal_level" value="3" />
+		<set name="magicLevel" value="85" />
+		<set name="target" value="TARGET_ONE" />
+		<set name="skillType" value="DEBUFF" />
+		<set name="operate_type" value="A2" />
+		<for>
+			<effect>
+				<mul stat="pDef" value="#stat" />
+			</effect>
+		</for>
+	</skill>
+	<skill id="59303" levels="1" name="Cowboy - Purple" nameEn="Cowboy - Purple" nameCn="牛仔-紫色">
+		<set name="icon" value="icon.bm2018_cowboy_i01" />
+		<set name="reuseDelay" value="10800000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="WILD_WEST_SHERIFF_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.2" />
+				<mul stat="pAtk" value="1.1" />
+				<mul stat="mAtk" value="1.1" />
+				<p_magic_critical_dmg value="5" type="PER" />
+				<p_critical_damage value="5" type="PER" />
+				<add stat="runSpd" value="5" />
+				<triggers>
+					<trigger id="59306" level="1" type="ATTACK" chance="5.0" />	
+					<trigger id="59306" level="1" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59306" level="1" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59304" levels="1" name="Cowboy - Purple" nameEn="Cowboy - Purple">
+		<set name="icon" value="icon.bm2018_cowboy_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="WILD_WEST_SHERIFF_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<triggers>
+					<trigger id="59306" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59306" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59306" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59305" levels="1" name="Cowboy - Purple" nameEn="Cowboy - Purple">
+		<set name="icon" value="icon.bm2018_cowboy_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="WILD_WEST_SHERIFF_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<triggers>
+					<trigger id="59306" level="3" type="ATTACK" chance="5.0" />	
+					<trigger id="59306" level="3" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59306" level="3" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59306" levels="3" name="Cowboy Purple - Physical Attack" nameEn="Cowboy Purple - Physical Attack" nameCn="牛仔紫色-物理攻擊">
+		<table name="#power">3939 6000 8000</table>
+		<table name="#reuseDelay">180000 80000 30000</table>
+		<set name="effectPoint" value="-5" />
+		<set name="icon" value="icon.bm2018_cowboy_i01" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="castRange" value="900" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="85" />
+		<set name="power" value="#power" />
+		<set name="hitCancelTime" value="500" />
+		<set name="target_type" value="ENEMY" />
+		<set name="affect_scope" value="SINGLE" />
+		<set name="affect_object" value="FRIEND" />
+		<set name="target" value="TARGET_ONE" />
+		<set name="skillType" value="PDAM" />
+		<set name="operate_type" value="A2" />
+	</skill>
+	<skill id="59307" levels="1" name="Musketeer - Blue" nameEn="Musketeer - Blue" nameCn="步兵-藍色">
+		<set name="icon" value="icon.bm2018_bluemusketeer_i01" />
+		<set name="reuseDelay" value="10800000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="MUSHKETEER_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.2" />
+				<mul stat="pAtk" value="1.1" />
+				<mul stat="mAtk" value="1.1" />
+				<p_magic_critical_dmg value="5" type="PER" />
+				<p_critical_damage value="5" type="PER" />
+				<add stat="runSpd" value="5" />
+				<triggers>
+					<trigger id="59310" level="1" type="ATTACK" chance="5.0" />	
+					<trigger id="59310" level="1" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59310" level="1" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59308" levels="1" name="Musketeer - Blue" nameEn="Musketeer - Blue">
+		<set name="icon" value="icon.bm2018_bluemusketeer_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="MUSHKETEER_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<triggers>
+					<trigger id="59310" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59310" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59310" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59309" levels="1" name="Musketeer - Blue" nameEn="Musketeer - Blue">
+		<set name="icon" value="icon.bm2018_bluemusketeer_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="MUSHKETEER_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<triggers>
+					<trigger id="59310" level="3" type="ATTACK" chance="5.0" />	
+					<trigger id="59310" level="3" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59310" level="3" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59310" levels="3" name="Musketeer Blue - Stun" nameEn="Musketeer Blue - Stun" nameCn="步兵藍色-衝擊">
+		<table name="#reuseDelay">180000 80000 30000</table>
+		<set name="debuff" value="true" />
+		<set name="effectPoint" value="-5" />
+		<set name="icon" value="icon.bm2018_bluemusketeer_i01" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="castRange" value="900" />
+		<set name="trait" value="SHOCK" />
+		<set name="ride_state" value="NONE" />
+		<set name="abnormal_effect" value="STUN" />
+		<set name="abnormal_time" value="5" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="stun" />
+		<set name="magicLevel" value="85" />
+		<set name="hitCancelTime" value="500" />
+		<set name="activateRate" value="100" />
+		<set name="lv_bonus_rate" value="1" />
+		<set name="basic_property" value="physical_abnormal_resist" />
+		<set name="target" value="TARGET_ONE" />
+		<set name="skillType" value="STUN" />
+		<set name="operate_type" value="A2" />
+		<for>
+			<effect name="Stun" />
+		</for>
+	</skill>
+	<skill id="59311" levels="1" name="Dragon Berserker" nameEn="Dragon Berserker">
+		<set name="icon" value="icon.bm2018_dragon_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="RED_MOB_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<triggers>
+					<trigger id="59313" level="1" type="ATTACK" chance="5.0" />	
+					<trigger id="59313" level="1" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59313" level="1" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59312" levels="1" name="Dragon Berserker" nameEn="Dragon Berserker">
+		<set name="icon" value="icon.bm2018_dragon_i01" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="RED_MOB_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<triggers>
+					<trigger id="59313" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59313" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59313" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59313" levels="2" name="Berserker Soul" nameEn="Berserker Soul">
+		<table name="#stat1">1.50 1.70</table>
+		<table name="#stat2">15 20</table>
+		<table name="#reuseDelay">290000 190000</table>
+		<set name="effectPoint" value="20" />
+		<set name="icon" value="icon.bm2018_dragon_i01" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="abnormal_time" value="30" /> 
+		<set name="abnormal_level" value="3" />
+		<for>
+			<effect>
+				<mul stat="pAtk" value="#stat1" />
+				<mul stat="mAtk" value="#stat1" />
+				<mul stat="pAtkSpd" value="#stat1" />
+				<mul stat="mAtkSpd" value="#stat1" />
+				<add stat="reflectDam" value="#stat2" />
+				<add stat="reflectBowDam" value="#stat2" />
+				<add stat="reflectPSkillDam" value="#stat2" />
+				<add stat="reflectMSkillDam" value="#stat2" />
+			</effect>
+		</for>
+	</skill>
+	<skill id="59314" levels="1" name="Zaken" nameEn="Zaken" nameCn="札肯">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_zaken" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="ZAKEN_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<mul stat="pDef" value="1.25" />
+				<mul stat="mDef" value="1.25" />
+				<triggers>
+					<trigger id="59316" level="1" type="ATTACK" chance="5.0" />	
+					<trigger id="59316" level="1" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59316" level="1" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59315" levels="1" name="Zaken" nameEn="Zaken">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_zaken" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="ZAKEN_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<mul stat="pDef" value="1.40" />
+				<mul stat="mDef" value="1.40" />
+				<triggers>
+					<trigger id="59316" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59316" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59316" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59316" levels="2" name="Zaken Soul" nameEn="Zaken Soul" nameCn="札肯靈">
+		<table name="#stat1">1.3 1.5</table>
+		<table name="#reuseDelay">100000 60000</table>
+		<set name="effectPoint" value="20" />
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_zaken" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="abnormal_time" value="30" /> 
+		<set name="abnormal_level" value="3" />
+		<set name="target_type" value="SELF" />
+		<set name="affect_scope" value="PARTY" />
+		<set name="affect_object" value="FRIEND" />
+		<set name="target" value="TARGET_PARTY" />
+		<set name="affect_range" value="1000" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<for>
+			<effect>
+				<mul stat="runSpd" value="#stat1" />
+				<mul stat="pAtkSpd" value="#stat1" />
+				<mul stat="mAtkSpd" value="#stat1" />
+			</effect>
+		</for>
+	</skill>
+	<skill id="59317" levels="1" name="Anakim" nameEn="Anakim" nameCn="亞納">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_anakim" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="STRANGE_SILVER_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<triggers>
+					<trigger id="59319" level="1" type="ATTACK" chance="5.0" />	
+					<trigger id="59319" level="1" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59319" level="1" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59318" levels="1" name="Anakim" nameEn="Anakim">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_anakim" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="STRANGE_SILVER_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<triggers>
+					<trigger id="59319" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59319" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59319" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59319" levels="2" name="Anakim Soul" nameEn="Anakim Soul" nameCn="亞納靈">
+		<table name="#time">3 5</table>
+		<table name="#reuseDelay">100000 60000</table>
+		<set name="debuff" value="true" />
+		<set name="effectPoint" value="-5" />
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_anakim" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="abnormal_effect" value="SILENCE" />
+		<set name="abnormal_time" value="#time" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="silence_all" />
+		<set name="magicLevel" value="85" />
+		<set name="hitCancelTime" value="500" />
+		<set name="basic_property" value="magic_abnormal_resist" />
+		<set name="target_type" value="ENEMY_ONLY" />
+		<set name="affect_scope" value="SINGLE" />
+		<set name="affect_object" value="FRIEND" />
+		<set name="target" value="TARGET_ONE" />
+		<set name="skillType" value="MUTE" />
+		<set name="operate_type" value="A2" />
+		<set name="trait" value="DERANGEMENT" />
+		<for>
+			<effect name="MuteAll" />
+		</for>
+	</skill>
+	<skill id="59320" levels="1" name="Lilith" nameEn="Lilith" nameCn="莉莉絲">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_lilith" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="DARK_KING_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="mpConsumePhysical" value="0.75"/>
+				<mul stat="mpConsum" value="0.75"/>
+				<mul stat="mpDanceConsume" value="0.75"/>
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<triggers>
+					<trigger id="59322" level="1" type="ATTACK" chance="5.0" />	
+					<trigger id="59322" level="1" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59322" level="1" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59321" levels="1" name="Lilith" nameEn="Lilith">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_lilith" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="DARK_KING_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="mpConsumePhysical" value="0.60"/>
+				<mul stat="mpConsum" value="0.60"/>
+				<mul stat="mpDanceConsume" value="0.60"/>
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<triggers>
+					<trigger id="59322" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59322" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59322" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59322" levels="2" name="Lilith Soul" nameEn="Lilith Soul" nameCn="莉莉絲靈">
+		<table name="#stat1">30 50</table>
+		<table name="#time">5 10</table>
+		<table name="#reuseDelay">100000 60000</table>
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_lilith" />
+		<set name="effectPoint" value="20" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="abnormal_time" value="#time" /> 
+		<set name="abnormal_level" value="3" />
+		<set name="target_type" value="SELF" />
+		<set name="affect_scope" value="PARTY" />
+		<set name="affect_object" value="FRIEND" />
+		<set name="target" value="TARGET_PARTY" />
+		<set name="affect_range" value="1000" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="buff_slot_type" value="-1" />
+		<for>
+			<effect>
+				<p_magic_critical_dmg value="#stat1" type="PER" />
+				<p_critical_damage value="#stat1" type="PER" />
+			</effect>
+		</for>
+	</skill>
+	<skill id="59323" levels="1" name="Freya" nameEn="Freya" nameCn="芙蕾雅">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_freya" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="WEALTHY_BLUE_TUNIC_1_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.3" />
+				<mul stat="pAtk" value="1.15" />
+				<mul stat="mAtk" value="1.15" />
+				<p_magic_critical_dmg value="10" type="PER" />
+				<p_critical_damage value="10" type="PER" />
+				<add stat="runSpd" value="10" />
+				<mul stat="pvpPhysDefenceBonus" value="1.10" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.10" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.10" />
+				<p_vampiric_attack value="10" chance="50" />
+				<p_mp_vampiric_attack value="5" chance="50" />
+				<triggers>
+					<trigger id="59325" level="1" type="ATTACK" chance="5.0" />	
+					<trigger id="59325" level="1" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59325" level="1" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59324" levels="1" name="Freya" nameEn="Freya">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_freya" />
+		<set name="reuseDelay" value="7200000" />
+		<set name="autouse_type" value="APPEARANCE" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="isPreservedOnDeath" value="true" />
+		<set name="isSelfDispellable" value="false"/>
+		<set name="buff_slot_type" value="-1" />
+		<set name="abnormal_time" value="3600" />
+		<set name="abnormal_level" value="1" />
+		<set name="abnormal_type" value="appearance_transform" />
+		<set name="abnormal_effect" value="WEALTHY_BLUE_TUNIC_2_COSTUME" />
+		<for>
+			<effect>
+				<add stat="exp_rate_multiplier" value="0.5" />
+				<mul stat="pAtk" value="1.2" />
+				<mul stat="mAtk" value="1.2" />
+				<p_magic_critical_dmg value="15" type="PER" />
+				<p_critical_damage value="15" type="PER" />
+				<add stat="runSpd" value="20" />
+				<mul stat="pvpPhysDefenceBonus" value="1.20" />
+				<mul stat="pvpPhysSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDefenceBonus" value="1.20" />
+				<mul stat="pvpMagicSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysSkillDmgBonus" value="1.1" />
+				<mul stat="pvpPhysDmgBonus" value="1.1" />
+				<p_vampiric_attack value="15" chance="50" />
+				<p_mp_vampiric_attack value="10" chance="50" />
+				<triggers>
+					<trigger id="59325" level="2" type="ATTACK" chance="5.0" />	
+					<trigger id="59325" level="2" type="SUPPORT_MAGICAL_SKILL_USE" chance="5"/>
+					<trigger id="59325" level="2" type="OFFENSIVE_MAGICAL_SKILL_USE" chance="5"/>
+				</triggers>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59325" levels="2" name="Freya Soul" nameEn="Freya Soul" nameCn="芙蕾雅靈">
+		<table name="#reuseDelay">100000 60000</table>
+		<set name="effectPoint" value="-5" />
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_freya" />
+		<set name="reuseDelay" value="#reuseDelay" />
+		<set name="castRange" value="900" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="85" />
+		<set name="hitCancelTime" value="500" />
+		<set name="isCancel" value="true" />
+		<set name="target_type" value="ENEMY_ONLY" />
+		<set name="affect_scope" value="SINGLE" />
+		<set name="affect_object" value="FRIEND" />
+		<set name="target" value="TARGET_ONE" />
+		<set name="skillType" value="DEBUFF" />
+		<set name="operate_type" value="A2" />
+		<set name="reflectable" value="false" />
+		<for>
+			<effect name="i_dispel_by_category">
+				<def name="abnormal_category" value="slot_buff" />
+				<def name="dispel_chance" value="100" />
+				<def name="max_count" value="1" />
+			</effect>
+		</for>
+	</skill>
+	<skill id="59326" levels="1" name="Brilliant Jewelry Box" nameEn="Brilliant Jewelry Box" nameCn="燦爛寶石盒">
+		<set name="icon" value="icon.skill0000" />
+		<set name="reuseDelay" value="1000" />
+		<set name="coolTime" value="500" />
+		<set name="hitTime" value="500" />
+		<set name="magicLevel" value="1"/>
+		<set name="magicType" value="SPECIAL"/>
+		<set name="itemConsumeId" value="91355"/>
+		<set name="itemConsumeCount" value="1"/>
+		<set name="target" value="TARGET_SELF"/>
+		<set name="skillType" value="RESTORATION"/>
+		<set name="operate_type" value="A2"/>
+		<set name="isHandler" value="true"/>
+		<restoration level="1">
+			<group chance="9.090909">
+				<item id="90370" min_count="1" max_count="1"/> <!--Garnet Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90373" min_count="1" max_count="1"/> <!--Sapphire Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90374" min_count="1" max_count="1"/> <!--Diamond Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90375" min_count="1" max_count="1"/> <!--Pearl Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90376" min_count="1" max_count="1"/> <!--Vital Stone Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90936" min_count="1" max_count="1"/> <!--Aquamarine Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90371" min_count="1" max_count="1"/> <!--Jade Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90372" min_count="1" max_count="1"/> <!--Ruby Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90369" min_count="1" max_count="1"/> <!--Topaz Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="90940" min_count="1" max_count="1"/> <!--Cat's Eye Chest-->
+			</group>
+			<group chance="9.090909">
+				<item id="71435" min_count="1" max_count="1"/> <!--Emerald Box-->
+			</group>
+		</restoration>
+	</skill>
+	<skill id="59327" levels="1" name="Shining Jewel Box" nameEn="Shining Jewel Box" nameCn="閃耀的寶石禮盒">
+		<set name="icon" value="icon.skill0000" />
+		<set name="reuseDelay" value="1000" />
+		<set name="coolTime" value="500" />
+		<set name="hitTime" value="500" />
+		<set name="itemConsumeId" value="71437" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="RESTORATION" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<restoration level="1">
+			<group chance="14">
+				<item id="70461" min_count="1" max_count="1" />
+			</group>
+			<group chance="14">
+				<item id="70441" min_count="1" max_count="1" />
+			</group>
+			<group chance="14">
+				<item id="70466" min_count="1" max_count="1" />
+			</group>
+			<group chance="14">
+				<item id="70471" min_count="1" max_count="1" />
+			</group>
+			<group chance="14">
+				<item id="70446" min_count="1" max_count="1" />
+			</group>
+			<group chance="14">
+				<item id="70451" min_count="1" max_count="1" />
+			</group>
+			<group chance="16">
+				<item id="70456" min_count="1" max_count="1" />
+			</group>
+		</restoration>
+	</skill>
+	<skill id="59328" levels="4" name="Clan Luck" nameEn="Clan Luck">
+		<set name="icon" value="icon.skill0390" />
+		<table name="#items_lost_chance">0.5 0.25 0.2 0</table>
+		<set name="operate_type" value="P" />
+		<for>
+			<mul stat="items_lost_chance" value="#items_lost_chance" />
+		</for>
+	</skill>
+	<skill id="59329" levels="1" name="Cute Animal Friends" nameEn="Cute Animal Friends" nameCn="可愛動物朋友們">
+		<table name="#cp">80</table>
+		<table name="#regCp">1</table>
+		<table name="#magicLevel">20</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="magicLevel" value="#magicLevel" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="maxCp" value="#cp" />
+			<mul stat="regCp" value="#regCp" />
+		</for>
+	</skill>
+	<skill id="59330" levels="1" name="Special Season" nameEn="Special Season" nameCn="特別的季節">
+		<table name="#Hp">80</table>
+		<table name="#regHp">1</table>
+		<table name="#magicLevel">20</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="magicLevel" value="#magicLevel" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="maxHp" value="#Hp" />
+			<mul stat="regHp" value="#regHp" />
+		</for>
+	</skill>
+	<skill id="59331" levels="1" name="Striking Elegance" nameEn="Striking Elegance" nameCn="無法隱藏的高雅">
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="pAtk" value="10" />
+			<add stat="mAtk" value="10" />
+		</for>
+	</skill>
+	<skill id="59332" levels="1" name="Wow! It's Summer!" nameEn="Wow! It's Summer!" nameCn="哇！夏天來了！">
+		<table name="#Hp">200</table>
+		<table name="#Mp">200</table>
+		<table name="#Cp">200</table>
+		<table name="#regHp">1</table>
+		<table name="#regMp">1</table>
+		<table name="#regCp">1</table>
+		<table name="#magicLevel">20</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="magicLevel" value="#magicLevel" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="maxHp" value="#Hp" />
+			<mul stat="regHp" value="#regHp" />
+			<add stat="maxMp" value="#Mp" />
+			<mul stat="regMp" value="#regMp" />
+			<add stat="maxCp" value="#Cp" />
+			<mul stat="regCp" value="#regCp" />
+		</for>
+	</skill>
+	<skill id="59333" levels="1" name="Uncontrollable Power" nameEn="Uncontrollable Power" nameCn="無法抑制的力量">
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="pAtk" value="50" />
+		</for>
+	</skill>
+	<skill id="59334" levels="1" name="Overflowing Magic" nameEn="Overflowing Magic" nameCn="滿溢的魔力">
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="mAtk" value="50" />
+		</for>
+	</skill>
+	<skill id="59335" levels="1" name="Rarity Collector" nameEn="Rarity Collector" nameCn="珍品收藏家">
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="pAtk" value="100" />
+			<add stat="mAtk" value="100" />
+		</for>
+	</skill>
+	<skill id="59336" levels="1" name="Highly Durable!" nameEn="Highly Durable!" nameCn="非常堅固！">
+		<!-- 主動技能 -->
+		<!-- 10秒內吸收1500傷害 -->
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="skillType" value="NOTUSED" />
+		<set name="operate_type" value="P" />
+	</skill>
+	<skill id="59337" levels="1" name="Very Strong!" nameEn="Very Strong!" nameCn="非常強悍！">
+		<!-- Lv 01 妨礙目標的技能施展。PVP時，額外加以無視CP並受到威力1350的固定傷害。 -->
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="skillType" value="NOTUSED" />
+		<set name="operate_type" value="P" />
+	</skill>
+	<skill id="59338" levels="1" name="Very Quick!" nameEn="Very Quick!" nameCn="非常敏捷！">
+		<!-- Lv 01 移動至目標後方後解除目標。 -->
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="skillType" value="NOTUSED" />
+		<set name="operate_type" value="P" />
+	</skill>
+	<skill id="59339" levels="1" name="I Am Legend" nameEn="I Am Legend" nameCn="我是傳說">
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<table name="#Hp">200</table>
+		<table name="#Mp">200</table>
+		<table name="#Cp">200</table>
+		<table name="#regHp">1</table>
+		<table name="#regMp">1</table>
+		<table name="#regCp">1</table>
+		<table name="#magicLevel">20</table>
+		<set name="target" value="TARGET_NONE" />
+		<set name="skillType" value="NOTUSED" />
+		<set name="operate_type" value="P" />
+		<set name="target" value="TARGET_SELF" />
+		<for>
+			<add stat="pAtk" value="250" />
+			<add stat="mAtk" value="250" />
+			<add stat="maxHp" value="#Hp" />
+			<mul stat="regHp" value="#regHp" />
+			<add stat="maxMp" value="#Mp" />
+			<mul stat="regMp" value="#regMp" />
+			<add stat="maxCp" value="#Cp" />
+			<mul stat="regCp" value="#regCp" />
+		</for>
+	</skill>
+	<skill id="59340" levels="1" name="No Pain, No Gain" nameEn="No Pain, No Gain" nameCn="苦盡甘來">
+		<!-- Lv 01 施展伊娃的祝福恢復所有的HP/MP/CP， 在10秒內呈現無敵狀態。 -->
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="reuseDelay" value="1200000"/>
+		<set name="castRange" value="400"/>
+		<set name="hitTime" value="3000"/>
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF"/>
+		<set name="magicLevel" value="80"/>
+		<set name="magicType" value="MAGIC"/>
+		<set name="hitCancelTime" value="500"/>
+		<set name="target_type" value="TARGET"/>
+		<set name="affect_scope" value="SINGLE"/>
+		<set name="affect_object" value="FRIEND"/>
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF"/>
+		<set name="operate_type" value="A2"/>
+		<set name="effectPoint" value="668"/><!-- 插入少寫 -->
+		<for>
+			<effect instant="true" name="RestoreHP" value="100">
+				<def name="percent" value="true"/>
+			</effect>
+			<effect instant="true" name="RestoreMP" value="100">
+				<def name="percent" value="true"/>
+			</effect>
+			<effect instant="true" name="RestoreCP" value="100">
+				<def name="percent" value="true"/>
+			</effect>
+			<effect name="Invulnerable"/>
+		</for>
+	</skill>
+	<skill id="59341" levels="1" name="Collector Power" nameEn="Collector Power" nameCn="收藏家能量">
+		<!-- <set name="icon" value="BranchIcon.Icon.s_g_bm_collection_active" /> -->
+		<!-- <set name="reuseDelay" value="90000" /> -->
+		<!-- <set name="coolTime" value="500" /> -->
+		<!-- <set name="target" value="TARGET_NONE" /> -->
+		<!-- <set name="skillType" value="NOTUSED" /> -->
+		<!-- <set name="operate_type" value="P" /> -->
+		<table name="#damage_block_count">1500</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="target" value="TARGET_SELF" />
+		<set name="reuseDelay" value="90000"/>
+		<set name="coolTime" value="500"/>
+		<set name="hitTime" value="0"/>
+		<set name="skillType" value="BUFF"/>
+		<set name="operate_type" value="A2" />
+		<set name="abnormal_time" value="10"/>
+		<set name="abnormal_level" value="1"/>
+		<set name="abnormal_type" value="barrier"/>
+		<set name="isReuseDelayPermanent" value="true"/>
+		<set name="target" value="TARGET_SELF"/>
+		<set name="effectPoint" value="867"/>
+		<for>
+			<effect name="damage_block_count" value="#damage_block_count">
+				<!-- <add stat="damage_block_count" value="#damage_block_count"/> -->
+			</effect>
+		</for>
+	</skill>
+	<skill id="59342" levels="1" name="Collector Power" nameEn="Collector Power" nameCn="收藏家能量">
+		<!-- <set name="effectPoint" value="-1000" /> -->
+		<!-- <set name="icon" value="BranchIcon.Icon.s_g_bm_collection_active" /> -->
+		<!-- <set name="reuseDelay" value="30000" /> -->
+		<!-- <set name="coolTime" value="500" /> -->
+		<!-- <set name="castRange" value="600" /> -->
+		<!-- <set name="hitTime" value="1000" /> -->
+		<!-- <set name="target" value="TARGET_NONE" /> -->
+		<!-- <set name="skillType" value="NOTUSED" /> -->
+		<!-- <set name="operate_type" value="P" /> -->
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<table name="#power">1350</table>
+		<set name="reuseDelay" value="30000"/>
+		<set name="coolTime" value="500"/>
+		<set name="castRange" value="600"/>
+		<set name="hitTime" value="1000"/>
+		<set name="effectPoint" value="1000"/><!-- 插入少寫 -->
+		<set name="target" value="TARGET_ONE"/>
+		<set name="skillType" value="PDAM"/>
+		<set name="power" value="#power"/>
+		<set name="static" value="true"/>
+		<set name="directHp" value="true"/>
+		<set name="operate_type" value="A2"/>
+		<set name="magicType" value="SPECIAL"/>
+		<set name="useSS" value="false"/>
+		<set name="isSkillTimePermanent" value="true"/>
+		<set name="isReuseDelayPermanent" value="true"/>
+		<set name="abnormal_time" value="1"/>
+		<set name="reflectable" value="false"/>
+		<set name="is_olympiad_can_use" value="false"/>
+		<for>
+			<effect name="MuteAll"/>
+		</for>
+	</skill>
+	<skill id="59343" levels="1" name="Collector Power" nameEn="Collector Power" nameCn="收藏家能量">
+		<!-- <set name="debuff" value="true" /> -->
+		<!-- <set name="effectPoint" value="-687" /> -->
+		<!-- <set name="icon" value="BranchIcon.Icon.s_g_bm_collection_active" /> -->
+		<!-- <set name="reuseDelay" value="60000" /> -->
+		<!-- <set name="coolTime" value="200" /> -->
+		<!-- <set name="hitTime" value="800" /> -->
+		<!-- <set name="target" value="TARGET_NONE" /> -->
+		<!-- <set name="skillType" value="NOTUSED" /> -->
+		<!-- <set name="operate_type" value="P" /> -->
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="reuseDelay" value="60000"/>
+		<set name="coolTime" value="200"/>
+		<set name="castRange" value="-1"/>
+		<set name="hitTime" value="800"/>
+		<set name="abnormal_time" value="1"/>
+		<set name="abnormal_effect" value="STUN"/>
+		<set name="abnormal_type" value="stun"/>
+		<set name="ride_state" value="NONE"/>
+		<set name="hitCancelTime" value="500"/>
+		<set name="target_type" value="ENEMY"/>
+		<set name="affect_scope" value="SINGLE"/>
+		<set name="affect_object" value="FRIEND"/>
+		<set name="target" value="TARGET_ONE"/>
+		<set name="magicType" value="MAGIC"/>
+		<set name="operate_type" value="A2"/>
+		<set name="fly_type" value="DUMMY"/>
+		<set name="fly_radius" value="600"/>
+		<set name="fly_position_degree" value="180"/>
+		<set name="fly_depends_on_heading" value="true"/>
+		<set name="isOffensive" value="true"/>
+		<for>
+			<effect name="i_target_cancel">
+				<def name="stop_target" value="true"/>
+			</effect>
+		</for>
+	</skill>
+	<skill id="59344" levels="1" name="Collector Power" nameEn="Collector Power" nameCn="收藏家能量">
+		<!-- <table name="#hitTime">500 0</table> -->
+		<!-- <table name="#reuseDelay">600000 0</table> -->
+		<!-- <set name="effectPoint" value="867" /> -->
+		<!-- <set name="icon" value="BranchIcon.Icon.s_g_bm_collection_active" /> -->
+		<!-- <set name="reuseDelay" value="#reuseDelay" /> -->
+		<!-- <set name="hitTime" value="#hitTime" /> -->
+		<!-- <set name="target" value="TARGET_NONE" /> -->
+		<!-- <set name="skillType" value="NOTUSED" /> -->
+		<!-- <set name="operate_type" value="P" /> -->
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_passive" />
+		<set name="reuseDelay" value="60000"/>
+		<set name="coolTime" value="0"/>
+		<set name="castRange" value="-1"/>
+		<set name="hitTime" value="500"/>
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF"/>
+		<set name="magicLevel" value="80"/>
+		<set name="hitCancelTime" value="500"/>
+		<set name="target_type" value="TARGET"/>
+		<set name="affect_scope" value="SINGLE"/>
+		<set name="affect_object" value="FRIEND"/>
+		<set name="target" value="TARGET_SELF" />
+		<set name="skillType" value="BUFF"/>
+		<set name="operate_type" value="A2"/>
+		<set name="effectPoint" value="867"/><!-- 插入少寫 -->
+		<set name="abnormal_time" value="10"/>
+		<for>
+			<effect instant="true" name="RestoreHP" value="100">
+				<def name="percent" value="true"/>
+			</effect>
+			<effect instant="true" name="RestoreMP" value="100">
+				<def name="percent" value="true"/>
+			</effect>
+			<effect instant="true" name="RestoreCP" value="100">
+				<def name="percent" value="true"/>
+			</effect>
+			<effect name="Invulnerable"/>
+		</for>
+	</skill>
+	<skill id="59345" levels="6" name="Transformation Cooldown Decrease" nameEn="Transformation Cooldown Decrease" nameCn="變身再使用時間減少">
+		<table name="#reuse">0.975 0.95 0.925 0.9 0.875 0.85</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_bonus_reuse" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<mul stat="transformerSkillReuse" value="#reuse"/>
+		</for>
+	</skill>
+	<skill id="59346" levels="6" name="Transformation Duration Increase" nameEn="Transformation Duration Increase" nameCn="變身持續時間增加">
+		<table name="#add">1.15 1.2 1.25 1.3 1.35 1.425</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_bonus_timeup" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<mul stat="transformerSkillAddHitTime" value="#add"/>
+		</for>
+	</skill>
+	<skill id="59347" levels="3" name="Skill XP Increase" nameEn="Skill XP Increase">
+		<table name="#add">10 20 30</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_bonus_elemental_exp" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="fire_elemental_exp_rate" value="#add"/>
+			<add stat="water_elemental_exp_rate" value="#add"/>
+			<add stat="wind_elemental_exp_rate" value="#add"/>
+			<add stat="earth_elemental_exp_rate" value="#add"/>
+		</for>
+	</skill>
+	<skill id="59348" levels="3" name="Attribute Damage Increase" nameEn="Attribute Damage Increase" nameCn="屬性傷害增加">
+		<table name="#add">15 30 45</table>
+		<set name="icon" value="BranchIcon.Icon.s_g_bm_collection_bonus_elemental_dmg" />
+		<set name="target" value="TARGET_NONE" />
+		<set name="operate_type" value="P" />
+		<for>
+			<add stat="fire_elemental_attack" value="#add"/>
+			<add stat="water_elemental_attack" value="#add"/>
+			<add stat="wind_elemental_attack" value="#add"/>
+			<add stat="earth_elemental_attack" value="#add"/>
+		</for>
+	</skill>
+	<skill id="59349" levels="1" name="Santa Sealbook - Standard" nameEn="Santa Sealbook - Standard" nameCn="聖誕刻印書-一般">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_santa" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71478" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="1" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="1" />
+		</for>
+	</skill>
+	<skill id="59350" levels="1" name="Santa Sealbook - High-grade" nameEn="Santa Sealbook - High-grade" nameCn="聖誕刻印書-高級">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_santa" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71479" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="2" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="2" />
+		</for>
+	</skill>
+	<skill id="59351" levels="1" name="Santa Sealbook - Rare" nameEn="Santa Sealbook - Rare" nameCn="聖誕刻印書-稀有">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_santa" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71480" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="3" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="3" />
+		</for>
+	</skill>
+	<skill id="59352" levels="1" name="Santa Sealbook - Legendary" nameEn="Santa Sealbook - Legendary" nameCn="聖誕刻印書-傳說">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_santa" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71481" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="4" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="4" />
+		</for>
+	</skill>
+	<skill id="59353" levels="1" name="Santa Sealbook - Mythic" nameEn="Santa Sealbook - Mythic" nameCn="聖誕刻印書-神話">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_santa" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71482" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="5" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="5" />
+		</for>
+	</skill>
+	<skill id="59354" levels="1" name="School Uniform A Sealbook - Standard" nameEn="School Uniform A Sealbook - Standard" nameCn="校服A刻印書-一般">
+		<set name="icon" value="BranchSys3.icon1.Br_schoollook" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71483" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="6" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="6" />
+		</for>
+	</skill>
+	<skill id="59355" levels="1" name="School Uniform A Sealbook - High-grade" nameEn="School Uniform A Sealbook - High-grade" nameCn="校服A刻印書-高級">
+		<set name="icon" value="BranchSys3.icon1.Br_schoollook" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71484" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="7" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="7" />
+		</for>
+	</skill>
+	<skill id="59356" levels="1" name="School Uniform A Sealbook - Rare" nameEn="School Uniform A Sealbook - Rare" nameCn="校服A刻印書-稀有">
+		<set name="icon" value="BranchSys3.icon1.Br_schoollook" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71485" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="8" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="8" />
+		</for>
+	</skill>
+	<skill id="59357" levels="1" name="School Uniform A Sealbook - Legendary" nameEn="School Uniform A Sealbook - Legendary" nameCn="校服A刻印書-傳說">
+		<set name="icon" value="BranchSys3.icon1.Br_schoollook" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71486" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="9" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="9" />
+		</for>
+	</skill>
+	<skill id="59358" levels="1" name="School Uniform A Sealbook - Mythic" nameEn="School Uniform A Sealbook - Mythic" nameCn="校服A刻印書-神話">
+		<set name="icon" value="BranchSys3.icon1.Br_schoollook" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71487" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="10" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="10" />
+		</for>
+	</skill>
+	<skill id="59359" levels="1" name="Beach Swimsuit Sealbook - Standard" nameEn="Beach Swimsuit Sealbook - Standard" nameCn="海灘泳裝刻印書-一般">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_swimsuit_a" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71488" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="11" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="11" />
+		</for>
+	</skill>
+	<skill id="59360" levels="1" name="Beach Swimsuit Sealbook - High-grade" nameEn="Beach Swimsuit Sealbook - High-grade" nameCn="海灘泳裝刻印書-高級">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_swimsuit_a" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71489" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="12" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="12" />
+		</for>
+	</skill>
+	<skill id="59361" levels="1" name="Beach Swimsuit Sealbook - Rare" nameEn="Beach Swimsuit Sealbook - Rare" nameCn="海灘泳裝刻印書-稀有">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_swimsuit_a" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71490" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="13" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="13" />
+		</for>
+	</skill>
+	<skill id="59362" levels="1" name="Beach Swimsuit Sealbook - Legendary" nameEn="Beach Swimsuit Sealbook - Legendary" nameCn="海灘泳裝刻印書-傳說">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_swimsuit_a" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71491" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="14" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="14" />
+		</for>
+	</skill>
+	<skill id="59363" levels="1" name="Beach Swimsuit Sealbook - Mythic" nameEn="Beach Swimsuit Sealbook - Mythic" nameCn="海灘泳裝刻印書-神話">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_swimsuit_a" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71492" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="15" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="15" />
+		</for>
+	</skill>
+	<skill id="59364" levels="1" name="Teddy Bear Sealbook - Standard" nameEn="Teddy Bear Sealbook - Standard" nameCn="熊熊娃刻印書-一般">
+		<set name="icon" value="icon.gomdori_chest_change" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71493" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="16" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="16" />
+		</for>
+	</skill>
+	<skill id="59365" levels="1" name="Teddy Bear Sealbook - High-grade" nameEn="Teddy Bear Sealbook - High-grade" nameCn="熊熊娃刻印書-高級">
+		<set name="icon" value="icon.gomdori_chest_change" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71494" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="17" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="17" />
+		</for>
+	</skill>
+	<skill id="59366" levels="1" name="Teddy Bear Sealbook - Rare" nameEn="Teddy Bear Sealbook - Rare" nameCn="熊熊娃刻印書-稀有">
+		<set name="icon" value="icon.gomdori_chest_change" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71495" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="18" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="18" />
+		</for>
+	</skill>
+	<skill id="59367" levels="1" name="Teddy Bear Sealbook - Legendary" nameEn="Teddy Bear Sealbook - Legendary" nameCn="熊熊娃刻印書-傳說">
+		<set name="icon" value="icon.gomdori_chest_change" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71496" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="19" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="19" />
+		</for>
+	</skill>
+	<skill id="59368" levels="1" name="Teddy Bear Sealbook - Mythic" nameEn="Teddy Bear Sealbook - Mythic" nameCn="熊熊娃刻印書-神話">
+		<set name="icon" value="icon.gomdori_chest_change" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71497" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="20" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="20" />
+		</for>
+	</skill>
+	<skill id="59369" levels="1" name="Kitty Plushy Sealbook - Standard" nameEn="Kitty Plushy Sealbook - Standard" nameCn="貓咪娃娃刻印書-一般">
+		<set name="icon" value="icon.sayha2017_cat" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71498" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="21" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="21" />
+		</for>
+	</skill>
+	<skill id="59370" levels="1" name="Kitty Plushy Sealbook - High-grade" nameEn="Kitty Plushy Sealbook - High-grade" nameCn="貓咪娃娃刻印書-高級">
+		<set name="icon" value="icon.sayha2017_cat" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71499" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="22" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="22" />
+		</for>
+	</skill>
+	<skill id="59371" levels="1" name="Kitty Plushy Sealbook - Rare" nameEn="Kitty Plushy Sealbook - Rare" nameCn="貓咪娃娃刻印書-稀有">
+		<set name="icon" value="icon.sayha2017_cat" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71500" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="23" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="23" />
+		</for>
+	</skill>
+	<skill id="59372" levels="1" name="Kitty Plushy Sealbook - Legendary" nameEn="Kitty Plushy Sealbook - Legendary" nameCn="貓咪娃娃刻印書-傳說">
+		<set name="icon" value="icon.sayha2017_cat" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71501" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="24" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="24" />
+		</for>
+	</skill>
+	<skill id="59373" levels="1" name="Kitty Plushy Sealbook - Mythic" nameEn="Kitty Plushy Sealbook - Mythic" nameCn="貓咪娃娃刻印書-神話">
+		<set name="icon" value="icon.sayha2017_cat" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71502" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="25" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="25" />
+		</for>
+	</skill>
+	<skill id="59374" levels="1" name="Panda Plushy Sealbook - Standard" nameEn="Panda Plushy Sealbook - Standard" nameCn="熊貓娃娃刻印書-一般">
+		<set name="icon" value="icon.sayha2017_panda" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71503" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="26" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="26" />
+		</for>
+	</skill>
+	<skill id="59375" levels="1" name="Panda Plushy Sealbook - High-grade" nameEn="Panda Plushy Sealbook - High-grade" nameCn="熊貓娃娃刻印書-高級">
+		<set name="icon" value="icon.sayha2017_panda" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71504" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="27" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="27" />
+		</for>
+	</skill>
+	<skill id="59376" levels="1" name="Panda Plushy Sealbook - Rare" nameEn="Panda Plushy Sealbook - Rare" nameCn="熊貓娃娃刻印書-稀有">
+		<set name="icon" value="icon.sayha2017_panda" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71505" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="28" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="28" />
+		</for>
+	</skill>
+	<skill id="59377" levels="1" name="Panda Plushy Sealbook - Legendary" nameEn="Panda Plushy Sealbook - Legendary" nameCn="熊貓娃娃刻印書-傳說">
+		<set name="icon" value="icon.sayha2017_panda" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71506" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="29" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="29" />
+		</for>
+	</skill>
+	<skill id="59378" levels="1" name="Panda Plushy Sealbook - Mythic" nameEn="Panda Plushy Sealbook - Mythic" nameCn="熊貓娃娃刻印書-神話">
+		<set name="icon" value="icon.sayha2017_panda" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71507" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="30" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="30" />
+		</for>
+	</skill>
+	<skill id="59379" levels="1" name="Baseball Uniform Sealbook - Standard" nameEn="Baseball Uniform Sealbook - Standard" nameCn="棒球服刻印書-一般">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_baseball" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71508" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="31" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="31" />
+		</for>
+	</skill>
+	<skill id="59380" levels="1" name="Baseball Uniform Sealbook - High-grade" nameEn="Baseball Uniform Sealbook - High-grade" nameCn="棒球服刻印書-高級">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_baseball" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71509" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="32" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="32" />
+		</for>
+	</skill>
+	<skill id="59381" levels="1" name="Baseball Uniform Sealbook - Rare" nameEn="Baseball Uniform Sealbook - Rare" nameCn="棒球服刻印書-稀有">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_baseball" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71510" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="33" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="33" />
+		</for>
+	</skill>
+	<skill id="59382" levels="1" name="Baseball Uniform Sealbook - Legendary" nameEn="Baseball Uniform Sealbook - Legendary" nameCn="棒球服刻印書-傳說">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_baseball" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71511" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="34" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="34" />
+		</for>
+	</skill>
+	<skill id="59383" levels="1" name="Baseball Uniform Sealbook - Mythic" nameEn="Baseball Uniform Sealbook - Mythic" nameCn="棒球服刻印書-神話">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_baseball" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71512" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="35" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="35" />
+		</for>
+	</skill>
+	<skill id="59384" levels="1" name="Seductive Swimsuit Sealbook - Standard" nameEn="Seductive Swimsuit Sealbook - Standard" nameCn="誘人泳裝刻印書-一般">
+		<set name="icon" value="BranchSys3.icon1.g_co_swimsuit_event_03" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71513" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="36" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="36" />
+		</for>
+	</skill>
+	<skill id="59385" levels="1" name="Seductive Swimsuit Sealbook - High-grade" nameEn="Seductive Swimsuit Sealbook - High-grade" nameCn="誘人泳裝刻印書-高級">
+		<set name="icon" value="BranchSys3.icon1.g_co_swimsuit_event_03" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71514" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="37" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="37" />
+		</for>
+	</skill>
+	<skill id="59386" levels="1" name="Seductive Swimsuit Sealbook - Rare" nameEn="Seductive Swimsuit Sealbook - Rare" nameCn="誘人泳裝刻印書-稀有">
+		<set name="icon" value="BranchSys3.icon1.g_co_swimsuit_event_03" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71515" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="38" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="38" />
+		</for>
+	</skill>
+	<skill id="59387" levels="1" name="Seductive Swimsuit Sealbook - Legendary" nameEn="Seductive Swimsuit Sealbook - Legendary" nameCn="誘人泳裝刻印書-傳說">
+		<set name="icon" value="BranchSys3.icon1.g_co_swimsuit_event_03" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71516" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="39" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="39" />
+		</for>
+	</skill>
+	<skill id="59388" levels="1" name="Seductive Swimsuit Sealbook - Mythic" nameEn="Seductive Swimsuit Sealbook - Mythic" nameCn="誘人泳裝刻印書-神話">
+		<set name="icon" value="BranchSys3.icon1.g_co_swimsuit_event_03" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71517" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="40" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="40" />
+		</for>
+	</skill>
+	<skill id="59389" levels="1" name="School Uniform B Sealbook - Standard" nameEn="School Uniform B Sealbook - Standard" nameCn="校服B刻印書-一般">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_schoollook_b" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71518" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="41" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="41" />
+		</for>
+	</skill>
+	<skill id="59390" levels="1" name="School Uniform B Sealbook - High-grade" nameEn="School Uniform B Sealbook - High-grade" nameCn="校服B刻印書-高級">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_schoollook_b" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71519" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="42" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="42" />
+		</for>
+	</skill>
+	<skill id="59391" levels="1" name="School Uniform B Sealbook - Rare" nameEn="School Uniform B Sealbook - Rare" nameCn="校服B刻印書-稀有">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_schoollook_b" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71520" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="43" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="43" />
+		</for>
+	</skill>
+	<skill id="59392" levels="1" name="School Uniform B Sealbook - Legendary" nameEn="School Uniform B Sealbook - Legendary" nameCn="校服B刻印書-傳說">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_schoollook_b" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71521" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="44" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="44" />
+		</for>
+	</skill>
+	<skill id="59393" levels="1" name="School Uniform B Sealbook - Mythic" nameEn="School Uniform B Sealbook - Mythic" nameCn="校服B刻印書-神話">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_schoollook_b" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71522" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="45" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="45" />
+		</for>
+	</skill>
+	<skill id="59394" levels="1" name="Hanbok Sealbook - Standard" nameEn="Hanbok Sealbook - Standard" nameCn="韓服刻印書-一般">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_korea_traditional" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71523" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="46" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="46" />
+		</for>
+	</skill>
+	<skill id="59395" levels="1" name="Hanbok Sealbook - High-grade" nameEn="Hanbok Sealbook - High-grade" nameCn="韓服刻印書-高級">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_korea_traditional" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71524" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="47" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="47" />
+		</for>
+	</skill>
+	<skill id="59396" levels="1" name="Hanbok Sealbook - Rare" nameEn="Hanbok Sealbook - Rare" nameCn="韓服刻印書-稀有">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_korea_traditional" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71525" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="48" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="48" />
+		</for>
+	</skill>
+	<skill id="59397" levels="1" name="Hanbok Sealbook - Legendary" nameEn="Hanbok Sealbook - Legendary" nameCn="韓服刻印書-傳說">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_korea_traditional" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71526" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="49" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="49" />
+		</for>
+	</skill>
+	<skill id="59398" levels="1" name="Hanbok Sealbook - Mythic" nameEn="Hanbok Sealbook - Mythic" nameCn="韓服刻印書-神話">
+		<set name="icon" value="BranchIcon.Icon.g_bm_costume_korea_traditional" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71527" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="50" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="50" />
+		</for>
+	</skill>
+	<skill id="59399" levels="1" name="Metal Suit Sealbook - Standard" nameEn="Metal Suit Sealbook - Standard" nameCn="金屬套裝刻印書-一般">
+		<set name="icon" value="BranchSys3.icon1.g_co_sf_u" />
+		<set name="hitTime" value="500" />
+		<set name="ride_state" value="NONE;STRIDER;WYVERN;WOLF" />
+		<set name="magicLevel" value="1" />
+		<set name="magicType" value="SPECIAL" />
+		<set name="itemConsumeId" value="71528" />
+		<set name="itemConsumeCount" value="1" />
+		<set name="operate_type" value="A2" />
+		<set name="isHandler" value="true" />
+		<cond msgId="113" addName="1">
+			<player can_get_costume="51" />
+		</cond>
+		<for>
+			<effect name="i_get_costume" value="51" />
+		</for>
+	</skill>
+</list>

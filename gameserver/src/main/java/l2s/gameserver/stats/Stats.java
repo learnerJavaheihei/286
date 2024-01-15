@@ -33,6 +33,7 @@ public enum Stats
 	MAGIC_ATTACK_BY_PHYSIC("mAtkByPAtk"),
 
 	MAGIC_REUSE_RATE("mReuse"),
+	TRANSFORMER_SKILL_REUSE("transformerSkillReuse"),
 	PHYSIC_REUSE_RATE("pReuse"),
 	MUSIC_REUSE_RATE("musicReuse"),
 	ATK_REUSE("atkReuse"),
@@ -376,7 +377,8 @@ public enum Stats
 	DEFENCE_TRAIT_CHANGEBODY("defence_trait_changebody", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
 	ATTACK_TRAIT_TWOHANDCROSSBOW("attack_trait_twohandcrossbow", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
 	DEFENCE_TRAIT_TWOHANDCROSSBOW("defence_trait_twohandcrossbow", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
-	P_DAMAGE_ATTACK_MUL("p_damage_attack_mul",1.0,Double.NEGATIVE_INFINITY,1.0);
+	P_DAMAGE_ATTACK_MUL("p_damage_attack_mul",1.0,Double.NEGATIVE_INFINITY,1.0),
+	TRANSFORMER_SKILL_ADD_HIT_TIME("transformerSkillAddHitTime");
 
 	public static final Stats[] VALUES = values();
 	public static final int NUM_STATS = VALUES.length;

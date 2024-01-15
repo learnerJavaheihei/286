@@ -96,5 +96,7 @@ public abstract class Parsers
 		// Fake players
 		FakeItemParser.getInstance().load();
 		FakePlayersParser.getInstance().load();
+
+		CostumesMulCollectParser.getInstance().load();
 	}
 }
