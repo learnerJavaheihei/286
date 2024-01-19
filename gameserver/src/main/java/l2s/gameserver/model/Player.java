@@ -2662,6 +2662,7 @@ public final class Player extends Playable implements PlayerGroup {
     }
 
     public void broadcastUserInfo(boolean force) {
+        updateStatBonus();
         sendUserInfo(force);
 
         if (!isVisible())
