@@ -1,6 +1,7 @@
 package l2s.gameserver.model.actor.instances.player;
 
 import l2s.gameserver.Config;
+import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.dao.CharacterCostumesDAO;
 import l2s.gameserver.data.xml.holder.CostumesHolder;
 import l2s.gameserver.model.Player;
@@ -192,6 +193,12 @@ public class CostumeList implements Iterable<Costume> {
 			skill.setAbnormalTime(calcAbnormalTime);
 			owner.forceUseSkill(skillEntry, owner);
 			owner.sendPacket(new ExSendCostumeList(owner));
+			ThreadPoolManager.getInstance().schedule(new Runnable() {
+				@Override
+				public void run() {
+					skill.setAbnormalTime(abnormalTime);
+				}
+			},calcAbnormalTime * 1000L);
 			return true;
 		} finally {
 			lock.unlock();
