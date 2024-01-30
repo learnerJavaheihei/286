@@ -616,6 +616,7 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 	private final boolean _isNotDispelOnSelfBuff;
 
 	private int _abnormalTime;
+	private int _abnormalTimeFinal;
 	private final int _abnormalLvl;
 	private final AbnormalType _abnormalType;
 	private final AbnormalEffect[] _abnormalEffects;
@@ -692,6 +693,7 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 		_baseValues = set.getString("baseValues", null);
 
 		_abnormalTime = set.getInteger("abnormal_time", -1);
+		_abnormalTimeFinal = _abnormalTime;
 		_abnormalLvl = set.getInteger("abnormal_level", 0);
 
 		_abnormalType = AbnormalType.valueOf(set.getString("abnormal_type", AbnormalType.NONE.toString()).toUpperCase());
@@ -3682,7 +3684,10 @@ public class Skill extends StatTemplate implements SkillInfo, Cloneable
 	public void setAbnormalTime(int newTime){
 		_abnormalTime = newTime;
 	}
-
+	public int getAbnormalTimeFinal()
+	{
+		return _abnormalTimeFinal;
+	}
 	public int getAbnormalLvl()
 	{
 		return _abnormalLvl;
