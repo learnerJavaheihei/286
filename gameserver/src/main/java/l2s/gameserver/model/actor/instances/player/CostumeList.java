@@ -161,15 +161,15 @@ public class CostumeList implements Iterable<Costume> {
 
 			Skill skill = skillEntry.getTemplate();
 			AbnormalType abnormalType = skill.getAbnormalType();
-//			if (abnormalType != AbnormalType.NONE && skill.getAbnormalLvl() <= owner.getAbnormalList().getAbnormalLevel(abnormalType)) {
-//				owner.sendPacket(SystemMsg.TRANSFORMATION_IS_NOT_AVAILABLE_AT_THE_MOMENT_TRY_AGAIN_LATER);
-//				return false;
-//			}‘
+			if (abnormalType != AbnormalType.NONE && skill.getAbnormalLvl() <= owner.getAbnormalList().getAbnormalLevel(abnormalType)) {
+				owner.sendPacket(SystemMsg.TRANSFORMATION_IS_NOT_AVAILABLE_AT_THE_MOMENT_TRY_AGAIN_LATER);
+				return false;
+			}
 
-//			if (owner.isSkillDisabled(skill)) {
-//				owner.sendPacket(SystemMsg.TRANSFORMATION_IS_NOT_AVAILABLE_AT_THE_MOMENT_TRY_AGAIN_LATER);
-//				return false;
-//			}
+			if (owner.isSkillDisabled(skill)) {
+				owner.sendPacket(SystemMsg.TRANSFORMATION_IS_NOT_AVAILABLE_AT_THE_MOMENT_TRY_AGAIN_LATER);
+				return false;
+			}
 
 			IBroadcastPacket condMsg = checkCondition(true, false, false);
 			if (condMsg != null) {
