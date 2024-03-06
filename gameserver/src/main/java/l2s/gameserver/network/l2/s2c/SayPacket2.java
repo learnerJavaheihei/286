@@ -5,6 +5,8 @@ import l2s.gameserver.instancemanager.RankManager;
 import l2s.gameserver.instancemanager.ServerVariables;
 import l2s.gameserver.model.GameObjectsStorage;
 import l2s.gameserver.model.Player;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingCategory;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingManager;
 import l2s.gameserver.model.pledge.Clan;
 import l2s.gameserver.network.l2.components.ChatType;
 import l2s.gameserver.network.l2.components.NpcString;
@@ -128,8 +130,8 @@ public class SayPacket2 extends NpcStringContainer
 				break;
 		}
 
-		final int rank = RankManager.getInstance().getPlayerGlobalRank(_objectId);
-		
+		int rank = PlayerRankingManager.getInstance().getCurrentRank(PlayerRankingCategory.ALL, _objectId);
+
 		writeC(rank); // Char global rank
 		writeC(castleId); // Castle ID
 		Player player = GameObjectsStorage.getPlayer(_objectId);
@@ -152,7 +154,7 @@ public class SayPacket2 extends NpcStringContainer
 				player.getListeners().onChatMessageReceive(_type, _charName, _text);
 		}
 	}
-	
+
 	private void manageTeleport(Player player, boolean free)
 	{
 		if (player.getAntiFlood().canLocationShare() && player.getInventory().destroyItemByItemId(ItemTemplate.ITEM_ID_MONEY_L, Config.SHARE_POSITION_COST))
@@ -166,7 +168,7 @@ public class SayPacket2 extends NpcStringContainer
 			System.out.println("name: " + player.getName() + " tpId: " + tpId + " x: " + player.getX() + " y: " + player.getY() + " z: " + player.getZ());
 			writeC(1);
 			writeH(tpId);
-			
+
 			if (!free)
 			{
 				player.sendPacket(SystemMessagePacket.removeItems(ItemTemplate.ITEM_ID_MONEY_L, Config.SHARE_POSITION_COST));

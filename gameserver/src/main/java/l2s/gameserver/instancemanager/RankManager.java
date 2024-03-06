@@ -34,7 +34,7 @@ import static sun.audio.AudioPlayer.player;
 /**
  * @author NviX
  */
- //排名系統 排行榜
+//排名系統 排行榜
 public class RankManager {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RankManager.class);
 
@@ -55,7 +55,7 @@ public class RankManager {
 	private static final SkillEntry RACE_ORC_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54209, 1);
 	private static final SkillEntry RACE_DWARF_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54212, 1);
 	private static final SkillEntry RACE_KAMAEL_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 54205, 1);
-	
+
 	private static final SkillEntry PVP_RANKING_BENEFIT = SkillEntry.makeSkillEntry(SkillEntryType.NONE, 52019, 1);
 
 	public static final int PLAYER_BASIC_LIMIT = 100;
@@ -65,11 +65,11 @@ public class RankManager {
 
 	private static final String GET_CURRENT_CYCLE_DATA = "SELECT c.obj_Id,c.char_name,c.clanid,cs.level,cs.class_id,op.olympiad_points,op.competitions_win,op.competitions_loose FROM olympiad_participants AS op LEFT JOIN character_subclasses AS cs ON op.char_id=cs.char_obj_id AND cs.type=? LEFT JOIN characters AS c ON op.char_id=c.obj_Id ORDER BY op.olympiad_points DESC LIMIT " + PLAYER_LIMIT;
 	private static final String GET_CHARACTERS_BY_CLASS = "SELECT cs.char_obj_id FROM character_subclasses AS cs, olympiad_participants AS op WHERE cs.char_obj_id = op.char_id AND cs.type=? AND cs.class_id=? ORDER BY op.olympiad_points DESC LIMIT " + PLAYER_LIMIT;
-	
+
 	private static final String GET_PREVIOUS_OLY_DATA = "SELECT characters.sex, character_subclasses.class_id, character_subclasses.level, olympiad_participants_old.char_id, olympiad_participants_old.olympiad_points, olympiad_participants_old.competitions_win, olympiad_participants_old.competitions_loose FROM characters, character_subclasses, olympiad_participants_old WHERE characters.obj_Id = character_subclasses.char_obj_id AND character_subclasses.char_obj_id = olympiad_participants_old.char_id ORDER BY olympiad_points DESC";
 
 	private static final String SELECT_PVP_RANKING = "SELECT c.obj_Id,c.char_name,c.clanid,cs.class_id,cs.level,prd.kills,prd.deaths,prd.points FROM character_subclasses AS cs LEFT JOIN characters AS c ON cs.char_obj_id=c.obj_Id LEFT JOIN pvp_ranking_data AS prd ON prd.obj_Id = cs.char_obj_id WHERE prd.week=? ORDER BY prd.points DESC LIMIT " + PLAYER_BASIC_LIMIT;
-	
+
 	private final Map<Integer, StatsSet> _mainList = new ConcurrentHashMap<>();
 	private Map<Integer, StatsSet> _snapshotList = new ConcurrentHashMap<>();
 	private final Map<Integer, StatsSet> _mainOlyList = new ConcurrentHashMap<>();
@@ -216,9 +216,9 @@ public class RankManager {
 	}
 
 	private synchronized void update() {
-		List<StatsSet> _lastRaceRank1sts = _mainList.values().stream().filter(o -> 
+		List<StatsSet> _lastRaceRank1sts = _mainList.values().stream().filter(o ->
 				o.getInteger("raceRank",0) == 1).collect(Collectors.toList());
-		List<StatsSet> _lastRaceRank123 = _mainList.values().stream().filter(o -> 
+		List<StatsSet> _lastRaceRank123 = _mainList.values().stream().filter(o ->
 				o.getInteger("raceRank",0) > 0 && o.getInteger("raceRank",0)< 4).collect(Collectors.toList());
 
 		// Load charIds All
@@ -340,7 +340,7 @@ public class RankManager {
 		}
 
 		LOGGER.info("RankManager: Restored " + _mainOlyList.size() + " olympiad ranking data(s).");
-		
+
 		// load previous month oly data
 		_previousOlyList.clear();
 		try
@@ -352,7 +352,7 @@ public class RankManager {
 			while (rset.next())
 			{
 				final StatsSet player = new StatsSet();
-				
+
 				player.set("objId", rset.getInt("olympiad_participants_old.char_id"));
 				player.set("classId", rset.getInt("character_subclasses.class_id"));
 				player.set("sex", rset.getInt("characters.sex"));
@@ -400,16 +400,16 @@ public class RankManager {
 					if (playerAccess != null && playerAccess.IsGM)
 						continue;
 				}
-				
+
 				final StatsSet player = new StatsSet();
 				player.set("charId", charId);
 				player.set("name", rset.getString("c.char_name"));
 				final int clanId = rset.getInt("c.clanid");
-				if (clanId > 0) 
+				if (clanId > 0)
 				{
 					player.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
-				} 
-				else 
+				}
+				else
 				{
 					player.set("clanName", "");
 				}
@@ -420,24 +420,24 @@ public class RankManager {
 				player.set("kills", rset.getInt("prd.kills"));
 				player.set("deaths", rset.getInt("prd.deaths"));
 				player.set("points", rset.getInt("prd.points"));
-				
+
 //				loadRaceRank(charId, race, player);
-				
+
 				_mainPvpList.put(i, player);
 				i++;
 			}
 		}
-		catch (SQLException e) 
+		catch (SQLException e)
 		{
 			LOGGER.error("RankManager: Could not load pvp rank data: " + this + " - " + e.getMessage(), e);
-		} 
-		finally 
+		}
+		finally
 		{
 			DbUtils.closeQuietly(con, statement, rset);
 		}
-		
+
 		LOGGER.info("RankManager: Restored " + _mainPvpList.size() + " pvp ranking data(s) this week.");
-		
+
 		// load pvp ranking data previous week
 		try
 		{
@@ -465,16 +465,16 @@ public class RankManager {
 					if (playerAccess != null && playerAccess.IsGM)
 						continue;
 				}
-				
+
 				final StatsSet player = new StatsSet();
 				player.set("charId", charId);
 				player.set("name", rset.getString("c.char_name"));
 				final int clanId = rset.getInt("c.clanid");
-				if (clanId > 0) 
+				if (clanId > 0)
 				{
 					player.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
-				} 
-				else 
+				}
+				else
 				{
 					player.set("clanName", "");
 				}
@@ -485,22 +485,22 @@ public class RankManager {
 				player.set("kills", rset.getInt("prd.kills"));
 				player.set("deaths", rset.getInt("prd.deaths"));
 				player.set("points", rset.getInt("prd.points"));
-				
+
 //				loadRaceRank(charId, race, player);
-				
+
 				_oldPvpList.put(i, player);
 				i++;
 			}
 		}
-		catch (SQLException e) 
+		catch (SQLException e)
 		{
 			LOGGER.error("RankManager: Could not load pvp rank data: " + this + " - " + e.getMessage(), e);
-		} 
-		finally 
+		}
+		finally
 		{
 			DbUtils.closeQuietly(con, statement, rset);
 		}
-		
+
 		LOGGER.info("RankManager: Restored " + _oldPvpList.size() + " pvp ranking data(s) previous week.");
 	}
 
@@ -516,11 +516,11 @@ public class RankManager {
 
 			List<StatsSet> statsSets = new LinkedList<>(kindList);
 			statsSets.sort((o1, o2) -> {
-                if (o2.getLong("exp") == o1.getLong("exp")) {
-                    return Long.compare(o1.getLong("createtime",0), o2.getLong("createtime",0));
-                }
-                return Long.compare(o2.getLong("exp"), o1.getLong("exp"));
-            });
+				if (o2.getLong("exp") == o1.getLong("exp")) {
+					return Long.compare(o1.getLong("createtime",0), o2.getLong("createtime",0));
+				}
+				return Long.compare(o2.getLong("exp"), o1.getLong("exp"));
+			});
 
 			statsSets = statsSets.subList(0, Math.min(statsSets.size(), PLAYER_LIMIT));
 			Map<Integer, StatsSet> map = new HashMap<>();
@@ -549,11 +549,11 @@ public class RankManager {
 
 		List<StatsSet> list = new LinkedList<>(values);
 		Collections.sort(list, (o1, o2) -> {
-            if (o2.getLong("exp") == o1.getLong("exp")) {
-                return Long.compare(o1.getLong("createtime",0), o2.getLong("createtime",0));
-            }
-            return Long.compare(o2.getLong("exp"), o1.getLong("exp"));
-        });
+			if (o2.getLong("exp") == o1.getLong("exp")) {
+				return Long.compare(o1.getLong("createtime",0), o2.getLong("createtime",0));
+			}
+			return Long.compare(o2.getLong("exp"), o1.getLong("exp"));
+		});
 		list = list.subList(0, Math.min(list.size(),PLAYER_BASIC_LIMIT));
 		rankLastExp = list.get(Math.max(0,list.size() -1)).getLong("exp");
 		rankLimit150.clear();
@@ -998,17 +998,17 @@ public class RankManager {
 	public Map<Integer, StatsSet> getSnapshotOlyList() {
 		return _snapshotOlyList;
 	}
-	
+
 	public Map<Integer, StatsSet> getPreviousOlyList()
 	{
 		return _previousOlyList;
 	}
-	
+
 	public Map<Integer, StatsSet> getPvpRankList()
 	{
 		return _mainPvpList;
 	}
-	
+
 	public Map<Integer, StatsSet> getOldPvpRankList()
 	{
 		return _oldPvpList;
@@ -1112,14 +1112,14 @@ public class RankManager {
 				player.addSkill(RACE_ORC_RANKING_BENEFIT, false);
 			else if(player.getRace() == Race.DWARF)
 				player.addSkill(RACE_DWARF_RANKING_BENEFIT, false);
-			
+
 			int pvpRank = player.getPreviousPvpRank();
 			if ((pvpRank > 0) && (pvpRank < 4))
 			{
 				PVP_RANKING_BENEFIT.getEffects(player, player);
 			}
 		}
-		if(raceRank == 2 || raceRank == 3) 
+		if(raceRank == 2 || raceRank == 3)
 		{
 			if (player.getRace() == Race.KAMAEL)
 				player.addSkill(RACE_KAMAEL_RANKING_BENEFIT, false);

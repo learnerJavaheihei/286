@@ -39,6 +39,8 @@ import l2s.gameserver.network.l2.s2c.*;
 import l2s.gameserver.network.l2.s2c.olympiad.ExOlympiadInfo;
 import l2s.gameserver.network.l2.s2c.randomcraft.ExCraftInfo;
 import l2s.gameserver.network.l2.s2c.updatetype.NpcInfoType;
+import l2s.gameserver.model.entity.ranking.player.PlayerRanking;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingManager;
 import l2s.gameserver.skills.AbnormalEffect;
 import l2s.gameserver.skills.SkillCastingType;
 import l2s.gameserver.skills.SkillEntry;
@@ -236,7 +238,6 @@ public class EnterWorld extends L2GameClientPacket
 
 		if(first) {
 			activeChar.getListeners().onEnter();
-			RankManager.getInstance().onPlayerEnter(activeChar);
 		}
 
 		activeChar.checkAndDeleteOlympiadItems();
@@ -477,7 +478,12 @@ public class EnterWorld extends L2GameClientPacket
 					AuthServerCommunication.getInstance().sendPacket(new ChangeAllowedHwid(activeChar.getAccountName(), client.getHWID()));
 			}
 		}
+		
+		PlayerRanking ranking = PlayerRankingManager.getInstance().getRanking(activeChar.getObjectId());
+		if (ranking != null)
+			ranking.checkRewards();
 
+		activeChar.checkRankingRewards();
 		activeChar.getInventory().checkItems();
 	}
 

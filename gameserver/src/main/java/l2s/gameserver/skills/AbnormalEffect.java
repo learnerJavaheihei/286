@@ -470,6 +470,11 @@ public enum AbnormalEffect
 	/*461*/UNK_461,
 	/*462*/UNK_462,
 	/*463*/UNK_463,
+	/*481*/H_SY_BOARD_RANKER_DECO,
+	/*482*/H_SY_BOARDD_DECO,
+	/*483*/H_SY_BOARDC_DECO,
+	/*484*/H_SY_BOARDB_DECO,
+	/*485*/H_SY_BOARDA_DECO,
 
 	BR_POWER_OF_EVA(0), //TODO: Подобрать ID.
 	VP_KEEP(29), //TODO: Подобрать ID.

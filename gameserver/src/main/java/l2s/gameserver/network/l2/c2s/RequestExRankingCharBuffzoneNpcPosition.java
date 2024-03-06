@@ -3,6 +3,7 @@ package l2s.gameserver.network.l2.c2s;
 import l2s.gameserver.instancemanager.RankManager;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.network.l2.s2c.ExRankingCharBuffzoneNpcInfo;
+import l2s.gameserver.network.l2.s2c.ExRankingCharBuffzoneNpcPosition;
 
 
 public class RequestExRankingCharBuffzoneNpcPosition extends L2GameClientPacket
@@ -17,12 +18,9 @@ public class RequestExRankingCharBuffzoneNpcPosition extends L2GameClientPacket
 	protected void runImpl()
 	{
 		Player activeChar = getClient().getActiveChar();
-		if(activeChar == null)
+		if (activeChar == null)
 			return;
-		
-		if (RankManager.getInstance().getPlayerGlobalRank(activeChar) != 1)
-			return;
-		
-		activeChar.sendPacket(new ExRankingCharBuffzoneNpcInfo());
+
+		activeChar.sendPacket(new ExRankingCharBuffzoneNpcPosition());
 	}
 }

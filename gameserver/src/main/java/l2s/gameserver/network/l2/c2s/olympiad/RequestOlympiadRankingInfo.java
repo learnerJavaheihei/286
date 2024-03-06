@@ -18,7 +18,7 @@ public class RequestOlympiadRankingInfo extends L2GameClientPacket {
 	protected boolean readImpl() {
 		_tabId = readC();
 		_rankingType = readC();
-		_unk = readC();
+		_unk = readC(); // bCurrentSeason
 		_classId = readD();
 		_serverId = readD();
 		return true;

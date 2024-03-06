@@ -478,6 +478,18 @@ public class MonsterInstance extends NpcInstance
 						ItemFunctions.addItem(player, itemsl, Rnd.get(1, counts));
 					}
 				}
+				if (lv > 69) 
+				{
+					double chance = 0.000001; // 0.001% 
+					int counts = 1; // 1个道具
+					int itemsl = 90763; // 道具ID
+					double random = Rnd.nextDouble();
+				
+					if (random < chance) 
+					{
+						ItemFunctions.addItem(player, itemsl, Rnd.get(1, counts));
+					}
+				}
 			}
 		}
 		

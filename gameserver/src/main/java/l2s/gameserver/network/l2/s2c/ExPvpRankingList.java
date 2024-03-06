@@ -25,12 +25,12 @@ public class ExPvpRankingList extends L2GameServerPacket
 	public ExPvpRankingList(Player player, int season, int group, int scope, int race)
 	{
 		_player = player;
-		
+
 		_season = season;
 		_group = group;
 		_scope = scope;
 		_race = race;
-		
+
 		_playerList = RankManager.getInstance().getPvpRankList();
 		_snapshotList = RankManager.getInstance().getOldPvpRankList();
 	}
@@ -42,7 +42,7 @@ public class ExPvpRankingList extends L2GameServerPacket
 		writeC(_group);
 		writeC(_scope);
 		writeD(_race);
-		
+
 		Map<Integer, StatsSet> plrList;
 		if (_season == 1)
 		{
@@ -52,7 +52,7 @@ public class ExPvpRankingList extends L2GameServerPacket
 		{
 			plrList = _snapshotList;
 		}
-		
+
 		if (plrList.size() > 0)
 		{
 			switch (_group)
@@ -62,20 +62,20 @@ public class ExPvpRankingList extends L2GameServerPacket
 					if (_scope == 0) // all
 					{
 						final int count = plrList.size() > 150 ? 150 : plrList.size();
-						
+
 						writeD(count);
-						
+
 						for (int id : plrList.keySet())
 						{
 							final StatsSet player = plrList.get(id);
-							
+
 							writeString(player.getString("name"));
 							writeString(player.getString("clanName"));
 							writeD(player.getInteger("level"));
 							writeD(player.getInteger("race"));
 							writeD(player.getInteger("classId"));
-							writeD(player.getInteger("points"));
-							writeD(0); // unk
+							writeQ(player.getInteger("points"));
+//							writeD(0); // wrong structure!  right - ssdddqdddd
 							writeD(id); // server rank
 							writeD(0); // previous server rank, idk why 0
 							writeD(player.getInteger("kills"));
@@ -88,7 +88,7 @@ public class ExPvpRankingList extends L2GameServerPacket
 						for (int id : plrList.keySet())
 						{
 							final StatsSet player = plrList.get(id);
-							
+
 							if (player.getInteger("charId") == _player.getObjectId())
 							{
 								found = true;
@@ -97,8 +97,8 @@ public class ExPvpRankingList extends L2GameServerPacket
 								writeD(player.getInteger("level"));
 								writeD(player.getInteger("race"));
 								writeD(player.getInteger("classId"));
-								writeD(player.getInteger("points"));
-								writeD(0); // unk
+								writeQ(player.getInteger("points"));
+//								writeD(0); // unk
 								writeD(id); // server rank
 								writeD(0); // previous server rank, idk why 0
 								writeD(player.getInteger("kills"));
@@ -117,7 +117,7 @@ public class ExPvpRankingList extends L2GameServerPacket
 					if (_scope == 0) // all
 					{
 						int count = 0;
-						
+
 						for (int i = 1; i <= plrList.size(); i++)
 						{
 							final StatsSet player = plrList.get(i);
@@ -127,12 +127,12 @@ public class ExPvpRankingList extends L2GameServerPacket
 							}
 						}
 						writeD(count > 100 ? 100 : count);
-					
+
 						int i = 1;
 						for (int id : plrList.keySet())
 						{
 							final StatsSet player = plrList.get(id);
-							
+
 							if (_race == player.getInteger("race"))
 							{
 								writeString(player.getString("name"));
@@ -140,8 +140,8 @@ public class ExPvpRankingList extends L2GameServerPacket
 								writeD(player.getInteger("level"));
 								writeD(player.getInteger("race"));
 								writeD(player.getInteger("classId"));
-								writeD(player.getInteger("points"));
-								writeD(0); // unk
+								writeQ(player.getInteger("points"));
+//								writeD(0); // unk
 								writeD(i); // server rank
 								writeD(0); // previous server rank, idk why 0
 								writeD(player.getInteger("kills"));
@@ -153,24 +153,24 @@ public class ExPvpRankingList extends L2GameServerPacket
 					else
 					{
 						boolean found = false;
-						
+
 						final Map<Integer, StatsSet> raceList = new ConcurrentHashMap<>();
 						int i = 1;
 						for (int id : plrList.keySet())
 						{
 							final StatsSet set = plrList.get(id);
-							
+
 							if (_player.getRace().ordinal() == set.getInteger("race"))
 							{
 								raceList.put(i, plrList.get(id));
 								i++;
 							}
 						}
-						
+
 						for (int id : raceList.keySet())
 						{
 							final StatsSet player = raceList.get(id);
-							
+
 							if (player.getInteger("charId") == _player.getObjectId())
 							{
 								found = true;
@@ -179,8 +179,8 @@ public class ExPvpRankingList extends L2GameServerPacket
 								writeD(player.getInteger("level"));
 								writeD(player.getInteger("race"));
 								writeD(player.getInteger("classId"));
-								writeD(player.getInteger("points"));
-								writeD(0); // unk
+								writeQ(player.getInteger("points"));
+//								writeD(0); // unk
 								writeD(id); // server rank
 								writeD(0); // previous server rank, idk why 0
 								writeD(player.getInteger("kills"));
@@ -203,27 +203,27 @@ public class ExPvpRankingList extends L2GameServerPacket
 						for (int id : plrList.keySet())
 						{
 							final StatsSet set = plrList.get(id);
-							
+
 							if (_player.getClan().getName() == set.getString("clanName"))
 							{
 								clanList.put(i, plrList.get(id));
 								i++;
 							}
 						}
-						
+
 						writeD(clanList.size());
-						
+
 						for (int id : clanList.keySet())
 						{
 							final StatsSet player = clanList.get(id);
-							
+
 							writeString(player.getString("name"));
 							writeString(player.getString("clanName"));
 							writeD(player.getInteger("level"));
 							writeD(player.getInteger("race"));
 							writeD(player.getInteger("classId"));
-							writeD(player.getInteger("points"));
-							writeD(0); // unk
+							writeQ(player.getInteger("points"));
+//							writeD(0); // unk
 							writeD(id); // server rank
 							writeD(0); // previous server rank, idk why 0
 							writeD(player.getInteger("kills"));
@@ -234,7 +234,7 @@ public class ExPvpRankingList extends L2GameServerPacket
 					{
 						writeD(0);
 					}
-					
+
 					break;
 				}
 				case 3: // friend
@@ -256,9 +256,9 @@ public class ExPvpRankingList extends L2GameServerPacket
 							}
 						}
 						friendList.add(_player.getObjectId());
-					
+
 						writeD(count);
-					
+
 						for (int id : plrList.keySet())
 						{
 							final StatsSet player = plrList.get(id);
@@ -270,8 +270,8 @@ public class ExPvpRankingList extends L2GameServerPacket
 								writeD(player.getInteger("level"));
 								writeD(player.getInteger("race"));
 								writeD(player.getInteger("classId"));
-								writeD(player.getInteger("points"));
-								writeD(0); // unk
+								writeQ(player.getInteger("points"));
+//								writeD(0); // unk
 								writeD(i); // server rank
 								writeD(0); // previous server rank, idk why 0
 								writeD(player.getInteger("kills"));
@@ -295,9 +295,9 @@ public class ExPvpRankingList extends L2GameServerPacket
 									writeD(player.getInteger("level"));
 									writeD(player.getInteger("race"));
 									writeD(player.getInteger("classId"));
-									writeD(player.getInteger("points"));
-									writeD(0); // unk
-									writeD(1); // server rank
+									writeQ(player.getInteger("points"));
+//									writeD(0); // unk
+									writeD(1); // server rank // why 1?
 									writeD(0); // previous server rank, idk why 0
 									writeD(player.getInteger("kills"));
 									writeD(player.getInteger("deaths"));

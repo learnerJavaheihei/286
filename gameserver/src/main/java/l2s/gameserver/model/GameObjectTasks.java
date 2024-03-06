@@ -5,7 +5,9 @@ import l2s.gameserver.Config;
 import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.ai.CtrlEvent;
 import l2s.gameserver.ai.CtrlIntention;
+import l2s.gameserver.network.l2.s2c.ExBowActionTo;
 import l2s.gameserver.network.l2.s2c.SystemMessage;
+import l2s.gameserver.skills.SkillCastingType;
 
 public class GameObjectTasks
 {
@@ -291,4 +293,36 @@ public class GameObjectTasks
 			character.getAI().notifyEvent(_evt, _agr0, _agr1, _agr2);
 		}
 	}
+
+//	public static class BowTask implements Runnable {
+//		private final int _obj_id;
+//
+//		public BowTask(int obj_id) {
+//			_obj_id = obj_id;
+//		}
+//
+//		@Override
+//		public void run() {
+//			Player player = World.getPlayer(_obj_id);
+//			if (player == null)
+//				return;
+//
+//			if (!player.isInPeaceZone() || !player.isTopRank()) {
+//				player.stopRankerBowTask();
+//				return;
+//			}
+//
+//			player.sendPacket(new ExBowActionTo(player));
+//
+//			for (Player around : World.getAroundPlayers(player, 1000, 200)) {
+//				if (around == null || !around.isInPeaceZone() || around.isImmobilized() || around.isOutOfControl() || around.isTransformed() || around.isActionsDisabled() || around.getPrivateStoreType() != Player.STORE_PRIVATE_NONE || around.isProcessingRequest()) {
+//					continue;
+//				}
+//				if (around.getSkillCast(SkillCastingType.NORMAL).isCastingNow()) {
+//					continue;
+//				}
+//				around.sendPacket(new ExBowActionTo(player)); //bow
+//			}
+//		}
+//	}
 }

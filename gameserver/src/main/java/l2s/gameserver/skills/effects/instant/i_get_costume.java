@@ -70,6 +70,6 @@ public final class i_get_costume extends i_abstract_effect {
 		player.getCostumeList().add(costumeTemplate);
 		player.sendPacket(new ExCostumeUseItem(true, costumeTemplate.getId())); // TODO: Нужен ли он здесь?
 		player.sendPacket(new ExSendCostumeList(player));
-
+		
 	}
 }

@@ -15,6 +15,7 @@ import l2s.gameserver.model.GameObjectsStorage;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.entity.Hero;
 import l2s.gameserver.model.entity.olympiad.OlympiadDatabase;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingManager;
 import l2s.gameserver.model.pledge.Clan;
 import l2s.gameserver.network.authcomm.AuthServerCommunication;
 import l2s.gameserver.network.l2.components.SystemMsg;
@@ -311,6 +312,9 @@ public class Shutdown extends Thread
 		{
 			e.printStackTrace();
 		}
+
+		System.out.println("Saving Rankings...");
+		PlayerRankingManager.getInstance().saveAllToDb();
 
 		try
 		{

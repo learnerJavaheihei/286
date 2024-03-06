@@ -40,6 +40,10 @@ public class ExCharInfo extends L2GameServerPacket {
 			Inventory.PAPERDOLL_DHAIR
 	};
 
+	public static boolean isVisiblePaperdoll(int paperdollId) {
+		return !(paperdollId == Inventory.PAPERDOLL_REAR || paperdollId == Inventory.PAPERDOLL_LEAR || paperdollId == Inventory.PAPERDOLL_NECK || paperdollId == Inventory.PAPERDOLL_RFINGER || paperdollId == Inventory.PAPERDOLL_LFINGER || paperdollId == Inventory.PAPERDOLL_RBRACELET || paperdollId == Inventory.PAPERDOLL_LBRACELET || paperdollId == Inventory.PAPERDOLL_DECO1 || paperdollId == Inventory.PAPERDOLL_DECO2 || paperdollId == Inventory.PAPERDOLL_DECO3 || paperdollId == Inventory.PAPERDOLL_DECO4 || paperdollId == Inventory.PAPERDOLL_DECO5 || paperdollId == Inventory.PAPERDOLL_DECO6 || paperdollId == Inventory.PAPERDOLL_BELT || paperdollId == Inventory.PAPERDOLL_HEAD);
+	}
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExCharInfo.class);
 
 	private boolean canWrite = false;
@@ -218,7 +222,13 @@ public class ExCharInfo extends L2GameServerPacket {
 		curCp = (int) player.getCurrentCp();
 		showHeadAccessories = !player.hideHeadAccessories();
 		armorSetEnchant = player.getArmorSetEnchant();
-		ranking = RankManager.getInstance().getPlayerGlobalRank(player) == 1 ? 1 : RankManager.getInstance().getPlayerRaceRank(player) == 1 ? 2 : 0;
+		int rank = 0;
+		if (player.isTopRank())
+			rank |= 1 << 0;
+		if (player.isTopRaceRank())
+			rank |= 1 << 1;
+
+		ranking = rank;
 		canWrite = true;
 	}
 

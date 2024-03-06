@@ -38,10 +38,10 @@ public class ExOlympiadRankingInfo extends L2GameServerPacket {
 	protected void writeImpl() {
 		writeC(_tabId); // Tab id
 		writeC(_rankingType); // ranking type
-		writeC(_unk); // unk, shows 1 all time
+		writeC(_unk); // unk, shows 1 all time bCurrentSeason
 		writeD(_classId); // class id (default 148) or caller class id for personal rank
 		writeD(_serverId); // 0 - all servers, server id - for caller server
-		writeD(933); // unk, 933 all time
+		writeD(100); // unk, 933 all time ( TODO: nTotalUser)
 
 		if (_playerList.size() > 0)
 		{
@@ -76,7 +76,7 @@ public class ExOlympiadRankingInfo extends L2GameServerPacket {
 								writeD(id);
 							}
 
-							writeD(Config.REQUEST_ID);// server id
+							writeD(1);// server id
 							writeD(player.getInteger("level"));// level
 							writeD(player.getInteger("classId"));// class id
 							writeD(player.getInteger("clanLevel"));// clan level
@@ -130,7 +130,7 @@ public class ExOlympiadRankingInfo extends L2GameServerPacket {
 										writeD(id2);
 									}
 
-									writeD(Config.REQUEST_ID);
+									writeD(1);
 									writeD(plr.getInteger("level"));
 									writeD(plr.getInteger("classId"));
 									writeD(plr.getInteger("clanLevel"));// clan level
@@ -200,7 +200,7 @@ public class ExOlympiadRankingInfo extends L2GameServerPacket {
 									writeD(i);
 								}
 
-								writeD(Config.REQUEST_ID);
+								writeD(1);
 								writeD(player.getInteger("level"));
 								writeD(player.getInteger("classId"));
 								writeD(player.getInteger("clanLevel"));// clan level
@@ -251,7 +251,7 @@ public class ExOlympiadRankingInfo extends L2GameServerPacket {
 									writeString(plr.getString("clanName"));
 									writeD(id2); // class rank
 									writeD(id2);
-									writeD(Config.REQUEST_ID);
+									writeD(1);
 									writeD(player.getInteger("level"));
 									writeD(player.getInteger("classId"));
 									writeD(player.getInteger("clanLevel"));// clan level

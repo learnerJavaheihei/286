@@ -6,22 +6,21 @@ import l2s.gameserver.network.l2.s2c.ExRankingCharHistory;
 /**
  * @author nexvill
  */
-public class RequestExRankingCharHistory extends L2GameClientPacket
-{
+public class RequestExRankingCharHistory extends L2GameClientPacket {
+	private int unk;
+
 	@Override
-	protected boolean readImpl()
-	{
-		readC(); // unused
+	protected boolean readImpl() {
+		unk = readC(); //atm returns 8 all the time
 		return true;
 	}
 
 	@Override
-	protected void runImpl()
-	{
+	protected void runImpl() {
 		Player activeChar = getClient().getActiveChar();
-		if(activeChar == null)
+		if (activeChar == null)
 			return;
-		
-		activeChar.sendPacket(new ExRankingCharHistory(activeChar));
+
+		activeChar.sendPacket(new ExRankingCharHistory(activeChar, unk));
 	}
 }

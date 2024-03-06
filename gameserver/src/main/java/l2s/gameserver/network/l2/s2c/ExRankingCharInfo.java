@@ -4,6 +4,10 @@ import java.util.Map;
 
 import l2s.gameserver.instancemanager.RankManager;
 import l2s.gameserver.model.Player;
+import l2s.gameserver.model.entity.ranking.player.PlayerRanking;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingCategory;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingManager;
+import l2s.gameserver.network.l2.ServerPacketOpcodes;
 import l2s.gameserver.templates.StatsSet;
 
 /**
@@ -11,59 +15,30 @@ import l2s.gameserver.templates.StatsSet;
  */
 public class ExRankingCharInfo extends L2GameServerPacket
 {
-	private final Player _player;
-	private final Map<Integer, StatsSet> _playerList;
-	private final Map<Integer, StatsSet> _snapshotList;
+	private final int currentRank, currentRaceRank, prevRank, prevRaceRank;
 
-	public ExRankingCharInfo(Player player)
-	{
-		_player = player;
-		_playerList = RankManager.getInstance().getRankList();
-		_snapshotList = RankManager.getInstance().getSnapshotList();
+	public ExRankingCharInfo(Player player, int unk) {
+		PlayerRanking rankingInfo = PlayerRankingManager.getInstance().getRanking(player.getObjectId());
+		if (rankingInfo != null) {
+			currentRank = rankingInfo.getCurrRank(PlayerRankingCategory.ALL);
+			currentRaceRank = rankingInfo.getCurrRank(PlayerRankingCategory.RACE);
+			prevRank = rankingInfo.getCurrRank(PlayerRankingCategory.ALL);
+			prevRaceRank = rankingInfo.getCurrRank(PlayerRankingCategory.RACE);
+		} else {
+			currentRank = 0;
+			currentRaceRank = 0;
+			prevRank = 0;
+			prevRaceRank = 0;
+		}
 	}
 
 	@Override
-	protected final void writeImpl()
-	{
-		if (_playerList.size() > 0)
-		{
-			for (Integer id : _playerList.keySet())
-			{
-				final StatsSet player = _playerList.get(id);
-				if (player.getInteger("charId") == _player.getObjectId())
-				{
-					writeD(id); // server rank
-					writeD(player.getInteger("raceRank",0)); // race rank
-					
-					for (Integer id2 : _snapshotList.keySet())
-					{
-						final StatsSet snapshot = _snapshotList.get(id2);
-						if (player.getInteger("charId") == snapshot.getInteger("charId"))
-						{
-							writeD(id2); // server rank snapshot
-							writeD(snapshot.getInteger("raceRank",0)); // race rank snapshot
-							writeD(0); // class rank
-							writeD(0); // class rank snapshot
-							return;
-						}
-					}
-				}
-			}
-			writeD(0); // server rank
-			writeD(0); // race rank
-			writeD(0); // server rank snapshot
-			writeD(0); // race rank snapshot
-			writeD(0); // class rank
-			writeD(0); // class rank snapshot
-		}
-		else
-		{
-			writeD(0); // server rank
-			writeD(0); // race rank
-			writeD(0); // server rank snapshot
-			writeD(0); // race rank snapshot
-			writeD(0); // class rank
-			writeD(0); // class rank snapshot
-		}
+	protected final void writeImpl() {
+		writeD(currentRank); //current rank server
+		writeD(currentRaceRank); //current rank race
+		writeD(prevRank); //old rank server (calcs difference between old and new can be negative)
+		writeD(prevRaceRank); //old rank race (calcs difference between old and new can be negative)
+		writeD(0); // current class rank
+		writeD(0); // old class rank
 	}
 }

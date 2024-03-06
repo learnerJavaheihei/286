@@ -10,6 +10,7 @@ import l2s.commons.dao.JdbcEntityState;
 import l2s.commons.dbutils.DbUtils;
 import l2s.commons.lang.reference.HardReference;
 import l2s.commons.lang.reference.HardReferences;
+import l2s.commons.math.SafeMath;
 import l2s.commons.time.cron.SchedulingPattern;
 import l2s.commons.util.Rnd;
 import l2s.commons.util.concurrent.atomic.AtomicState;
@@ -98,6 +99,8 @@ import l2s.gameserver.network.l2.s2c.timerestrictfield.ExTimeRestrictFieldUserAl
 import l2s.gameserver.network.l2.s2c.timerestrictfield.ExTimeRestrictFieldUserExit;
 import l2s.gameserver.network.l2.s2c.updatetype.IUpdateTypeComponent;
 import l2s.gameserver.network.l2.s2c.updatetype.UserInfoType;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingCategory;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingManager;
 import l2s.gameserver.skills.*;
 import l2s.gameserver.skills.skillclasses.Summon;
 import l2s.gameserver.stats.Formulas;
@@ -547,7 +550,7 @@ public final class Player extends Playable implements PlayerGroup {
     private boolean _onlyGainPoints = false;
     private LimitedShopContainer _limitedShop = null;
 
-    private ScheduledFuture<?> _bowTask = null;
+//    private ScheduledFuture<?> _bowTask = null;
     /**
      * 固定初始挂机时间
      */
@@ -1852,6 +1855,7 @@ public final class Player extends Playable implements PlayerGroup {
         if (_matchingRoom != null)
             _matchingRoom.broadcastPlayerUpdate(this);
         sendClassChangeAlert();
+	PlayerRankingManager.getInstance().updateRank(this);
         return true;
     }
 
@@ -2061,88 +2065,89 @@ public final class Player extends Playable implements PlayerGroup {
             _receivedExp += addToExp;
         }
         long exp = getExp();
-        if (exp > RankManager.rankLastExp && !isGM()) {
-            StatsSet statsSet = RankManager.rankLimit150.get(getName());
-            if (statsSet != null) {
-                String name = getName();
-                statsSet.put("charId", getObjectId());
-                statsSet.put("name", name);
-                int clanId = getClan() != null ? getClan().getClanId() : 0;
-                if (clanId > 0) {
-                    statsSet.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
-                } else {
-                    statsSet.set("clanName", "");
-                }
-                ClassId classId = getClassId();
-                statsSet.put("classId", classId.getId());
-                statsSet.put("level", getLevel());
-                statsSet.put("exp", exp);
-                final int race = classId.getRace().ordinal();
-                statsSet.put("race", race);
-                RankManager.rankLimit150.put(name,statsSet);
-            }
-            else {
-                StatsSet set = new StatsSet();
-                String name = getName();
-                set.put("charId", getObjectId());
-                set.put("name", name);
-                int clanId = getClan() != null ? getClan().getClanId() : 0;
-                if (clanId > 0) {
-                    set.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
-                } else {
-                    set.set("clanName", "");
-                }
-                ClassId classId = getClassId();
-                set.put("classId", classId.getId());
-                set.put("level", getLevel());
-                set.put("exp", exp);
-                final int race = classId.getRace().ordinal();
-                set.put("race", race);
+//        if (exp > RankManager.rankLastExp && !isGM()) {
+//            StatsSet statsSet = RankManager.rankLimit150.get(getName());
+//            if (statsSet != null) {
+//                String name = getName();
+//                statsSet.put("charId", getObjectId());
+//                statsSet.put("name", name);
+//                int clanId = getClan() != null ? getClan().getClanId() : 0;
+//                if (clanId > 0) {
+//                    statsSet.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+//                } else {
+//                    statsSet.set("clanName", "");
+//                }
+//                ClassId classId = getClassId();
+//                statsSet.put("classId", classId.getId());
+//                statsSet.put("level", getLevel());
+//                statsSet.put("exp", exp);
+//                final int race = classId.getRace().ordinal();
+//                statsSet.put("race", race);
+//                RankManager.rankLimit150.put(name,statsSet);
+//            }
+//            else {
+//                StatsSet set = new StatsSet();
+//                String name = getName();
+//                set.put("charId", getObjectId());
+//                set.put("name", name);
+//                int clanId = getClan() != null ? getClan().getClanId() : 0;
+//                if (clanId > 0) {
+//                    set.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+//                } else {
+//                    set.set("clanName", "");
+//                }
+//                ClassId classId = getClassId();
+//                set.put("classId", classId.getId());
+//                set.put("level", getLevel());
+//                set.put("exp", exp);
+//                final int race = classId.getRace().ordinal();
+//                set.put("race", race);
+//
+//                RankManager.rankLimit150.put(name,set);
+//            }
+//        }
+//        int race = getRace().ordinal();
+//        if (exp> RankManager._raceRankLastExp[race] && !isGM()) {
+//            Map<Integer, StatsSet> setMap = RankManager._raceRankList.get(race);
+//            StatsSet statsSet = setMap.get(getObjectId());
+//            if (statsSet != null) {
+//                int clanId = getClan() != null ? getClan().getClanId() : 0;
+//                if (clanId > 0) {
+//                    statsSet.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+//                } else {
+//                    statsSet.set("clanName", "");
+//                }
+//                ClassId classId = getClassId();
+//                statsSet.put("classId", classId.getId());
+//                statsSet.put("level", getLevel());
+//                statsSet.put("exp", exp);
+//                final int race1 = classId.getRace().ordinal();
+//                statsSet.put("race", race1);
+//
+//            }
+//            else{
+//                StatsSet set = new StatsSet();
+//                String name = getName();
+//                set.put("charId", getObjectId());
+//                set.put("name", name);
+//                int clanId = getClan() != null ? getClan().getClanId() : 0;
+//                if (clanId > 0) {
+//                    set.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
+//                } else {
+//                    set.set("clanName", "");
+//                }
+//                ClassId classId = getClassId();
+//                set.put("classId", classId.getId());
+//                set.put("level", getLevel());
+//                set.put("exp", exp);
+//                final int race1 = classId.getRace().ordinal();
+//                set.put("race", race1);
+//                setMap.put(getObjectId(),set);
+//
+//            }
+//            RankManager._raceRankList.put(race,setMap);
+//        }
 
-                RankManager.rankLimit150.put(name,set);
-            }
-        }
-        int race = getRace().ordinal();
-        if (exp> RankManager._raceRankLastExp[race] && !isGM()) {
-            Map<Integer, StatsSet> setMap = RankManager._raceRankList.get(race);
-            StatsSet statsSet = setMap.get(getObjectId());
-            if (statsSet != null) {
-                int clanId = getClan() != null ? getClan().getClanId() : 0;
-                if (clanId > 0) {
-                    statsSet.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
-                } else {
-                    statsSet.set("clanName", "");
-                }
-                ClassId classId = getClassId();
-                statsSet.put("classId", classId.getId());
-                statsSet.put("level", getLevel());
-                statsSet.put("exp", exp);
-                final int race1 = classId.getRace().ordinal();
-                statsSet.put("race", race1);
-
-            }
-            else{
-                StatsSet set = new StatsSet();
-                String name = getName();
-                set.put("charId", getObjectId());
-                set.put("name", name);
-                int clanId = getClan() != null ? getClan().getClanId() : 0;
-                if (clanId > 0) {
-                    set.set("clanName", ClanTable.getInstance().getClan(clanId).getName());
-                } else {
-                    set.set("clanName", "");
-                }
-                ClassId classId = getClassId();
-                set.put("classId", classId.getId());
-                set.put("level", getLevel());
-                set.put("exp", exp);
-                final int race1 = classId.getRace().ordinal();
-                set.put("race", race1);
-                setMap.put(getObjectId(),set);
-
-            }
-            RankManager._raceRankList.put(race,setMap);
-        }
 
         if (sendMsg) {
             if ((addToExp > 0 || addToSp > 0) && bonusAddExp >= 0 && bonusAddSp >= 0)
@@ -2173,6 +2178,7 @@ public final class Player extends Playable implements PlayerGroup {
         }
 
         updateStats();
+	PlayerRankingManager.getInstance().updateRank(this);
     }
 
     private boolean _dontRewardSkills = false; // Глупая заглушка, но спасает.
@@ -4546,7 +4552,7 @@ public final class Player extends Playable implements PlayerGroup {
             statement = con.prepareStatement("INSERT INTO character_variables (obj_id, name, value, expire_time) VALUES (?,?,?,?)");
             statement.setInt(1, player.getObjectId());
             statement.setString(2, PlayerVariables.RANKING_HISTORY_DAY + "_" + 1 + "_rank");
-            statement.setInt(3, RankManager.getInstance().getPlayerGlobalRank(player.getObjectId()));
+            statement.setInt(3, PlayerRankingManager.getInstance().getPlayerGlobalRank(player.getObjectId()));
             statement.setInt(4, -1);
             statement.executeUpdate();
             statement.close();
@@ -5020,7 +5026,7 @@ public final class Player extends Playable implements PlayerGroup {
             storeSkill(newSkillEntry);
 
         updateUserBonus();
-
+	checkAbnormalBoard();
         return oldSkillEntry;
     }
 
@@ -7879,6 +7885,8 @@ public final class Player extends Playable implements PlayerGroup {
 //                _bowTask = null;
 //            }
 //        }
+//        if (_bowTask == null && isTopRank())
+//            _bowTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(new BowTask(getObjectId()), 20000L, 180000L);
 
         if (broadcastRelation)
             broadcastRelation();
@@ -7898,6 +7906,13 @@ public final class Player extends Playable implements PlayerGroup {
 //                crt.setHeading(PositionUtils.calculateHeadingFrom(crt, this), true);
 //                crt.sendPacket(new ExBowActionTo(this));
 //            }
+//        }
+//    }
+
+//    public void stopRankerBowTask() {
+//        if (_bowTask != null) {
+//            _bowTask.cancel(false);
+//            _bowTask = null;
 //        }
 //    }
 
@@ -10747,6 +10762,7 @@ public final class Player extends Playable implements PlayerGroup {
                 }
             }
             forceUseSkill(skillEntry, this);
+	    checkAbnormalBoard();
         }
     }
 
@@ -11498,7 +11514,7 @@ public final class Player extends Playable implements PlayerGroup {
                 statement2 = con.prepareStatement("INSERT INTO character_variables (obj_id,name,value,expire_time) VALUES (?,?,?,?)");
                 statement2.setInt(1, getObjectId());
                 statement2.setString(2, PlayerVariables.RANKING_HISTORY_DAY + "_" + 1 + "_rank");
-                statement2.setInt(3, RankManager.getInstance().getPlayerGlobalRank(getObjectId()));
+                statement2.setInt(3, PlayerRankingManager.getInstance().getPlayerGlobalRank(getObjectId()));
                 statement2.setInt(4, -1);
                 statement2.execute();
                 statement2.close();
@@ -11719,5 +11735,94 @@ public final class Player extends Playable implements PlayerGroup {
             sendElementalInfo();
             sendPacket(SystemMsg.YOU_HAVE_OBTAINED_AN_ATTRIBUTE_OPEN_YOUR_CHARACTER_INFORMATION_SCREEN_TO_CHECK_);
         }
+    }
+
+public long getTotalExp() {
+        long totalExp = 0L;
+        for (SubClass subClass : getSubClassList())
+            totalExp = SafeMath.addAndCheck(totalExp, subClass.getExp());
+        return totalExp;
+    }
+
+    public void checkRankingRewards() {
+        if (getVar("ranking_reward_server") == null && getVar("ranking_reward_class") == null && getVar("ranking_reward_class_special") == null)
+            return;
+
+        tryRankingReward(getVar("ranking_reward_server"));
+        tryRankingReward(getVar("ranking_reward_class"));
+        tryRankingRewardSpecial(getVar("ranking_reward_class_special"));
+
+        unsetVar("ranking_reward_server");
+        unsetVar("ranking_reward_class");
+        unsetVar("ranking_reward_class_special");
+    }
+
+    private void tryRankingReward(String value) {
+        if (value == null)
+            return; //one of them should be null expected
+
+        String[] parts = value.split("_");
+
+        int skill_id = Integer.parseInt(parts[0]);
+        long end_time = Long.parseLong(parts[1]);
+
+        if (end_time < System.currentTimeMillis())
+            return;
+
+        long time_left = end_time - System.currentTimeMillis();
+
+        SkillHolder.getInstance().getSkill(skill_id, 1).getEffects(this, this, (int) time_left, 1.); //todo check
+    }
+
+    private void tryRankingRewardSpecial(String value) {
+        if (value == null)
+            return; //one of them should be null expected
+
+        int skill_id = Integer.parseInt(value);
+        addSkill(SkillEntry.makeSkillEntry(SkillEntryType.NONE, skill_id, 1), true); //pernament
+        sendUserInfo();
+        updateStats();
+        sendSkillList();
+        sendPacket(new SystemMessagePacket(SystemMsg.YOU_HAVE_EARNED_S1_SKILL).addSkillName(skill_id, 1));
+    }
+
+    public boolean isTopRank() {
+        return PlayerRankingManager.getInstance().isTopRank(getObjectId());
+    }
+
+    public boolean isTopRaceRank() {
+        return PlayerRankingManager.getInstance().isTopRaceRank(getObjectId());
+    }
+
+    public void checkAbnormalBoard() {
+
+        AbnormalEffect abnormalEffect;
+        int rank = PlayerRankingManager.getInstance().getCurrentRank(PlayerRankingCategory.ALL, getObjectId());
+        if (rank >= 1 && rank <= 3) {
+            abnormalEffect = AbnormalEffect.H_SY_BOARD_RANKER_DECO;
+        } else {
+            int level = getSkillLevel(47101); // Elemental Spirit
+            if (level <= 1) {
+                abnormalEffect = AbnormalEffect.H_SY_BOARDD_DECO;
+            } else if (level == 2) {
+                abnormalEffect = AbnormalEffect.H_SY_BOARDC_DECO;
+            } else if (level == 3) {
+                abnormalEffect = AbnormalEffect.H_SY_BOARDB_DECO;
+            } else {
+                abnormalEffect = AbnormalEffect.H_SY_BOARDA_DECO;
+            }
+        }
+
+        startAbnormalEffect(abnormalEffect);
+        if (abnormalEffect != AbnormalEffect.H_SY_BOARD_RANKER_DECO)
+            stopAbnormalEffect(AbnormalEffect.H_SY_BOARD_RANKER_DECO);
+        if (abnormalEffect != AbnormalEffect.H_SY_BOARDD_DECO)
+            stopAbnormalEffect(AbnormalEffect.H_SY_BOARDD_DECO);
+        if (abnormalEffect != AbnormalEffect.H_SY_BOARDC_DECO)
+            stopAbnormalEffect(AbnormalEffect.H_SY_BOARDC_DECO);
+        if (abnormalEffect != AbnormalEffect.H_SY_BOARDB_DECO)
+            stopAbnormalEffect(AbnormalEffect.H_SY_BOARDB_DECO);
+        if (abnormalEffect != AbnormalEffect.H_SY_BOARDA_DECO)
+            stopAbnormalEffect(AbnormalEffect.H_SY_BOARDA_DECO);
     }
 }

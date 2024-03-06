@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import l2s.gameserver.core.RestartServerHangUpTime;
 import l2s.gameserver.core.TimerManager;
+import l2s.gameserver.model.entity.ranking.player.PlayerRankingManager;
 import l2s.gameserver.utils.*;
 import l2s.gameserver.utils.CompensationSystem.NewServerCompensationServiceImpl;
 import net.sf.ehcache.CacheManager;
@@ -334,6 +335,7 @@ public class GameServer
 		VoteRewardConfigHolder.getInstance().callInit();
 
 		RankManager.getInstance();
+		PlayerRankingManager.getInstance().load(); // new
 		
 		ServerVariables.unset("buffNpcActive");
 		ServerVariables.unset("buffNpcX");

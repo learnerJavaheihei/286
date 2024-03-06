@@ -600,22 +600,22 @@ public class MyUtilsFunction {
                 item57 = 40000;
                 exp57 = 30000000;
             }
-            if (player.getLevel() >= 70 && player.getLevel() < 76) {
+            if (player.getLevel() >= 70 && player.getLevel() < 78) {
                 itemid = 80003;
                 item57 = 50000;
                 exp57 = 100000000;
             }
-            if (player.getLevel() >= 76 && player.getLevel() < 80) {
+            if (player.getLevel() >= 78 && player.getLevel() < 82) {
                 itemid = 80004;
                 item57 = 60000;
                 exp57 = 10000000000L;
             }
-			if (player.getLevel() >= 80 && player.getLevel() < 85) {
+			if (player.getLevel() >= 82 && player.getLevel() < 87) {
                 itemid = 80005;
                 item57 = 60000;
                 exp57 = 30000000000L;
             }
-            if (player.getLevel() >= 85) {
+            if (player.getLevel() >= 87) {
                 itemid = 80006;
                 item57 = 70000;
                 exp57 = 50000000000L;

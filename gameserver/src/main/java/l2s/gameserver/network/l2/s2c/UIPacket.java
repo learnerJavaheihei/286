@@ -267,8 +267,13 @@ public class UIPacket extends AbstractMaskPacket<UserInfoType>
 		_elementalEarthDefence = player.getStat().getElementalDefence(ElementalElement.EARTH);
 		_activeElementId = player.getActiveElement().getId();
 
-		_rank = RankManager.getInstance().getPlayerGlobalRank(player) == 1 ? 1 : RankManager.getInstance().getPlayerRaceRank(player) == 1 ? 2 : 0;
-		
+		int rank = 0;
+		if (player.isTopRank())
+			rank |= 1 << 0;
+		if (player.isTopRaceRank())
+			rank |= 1 << 1;
+
+		_rank = rank;
 		_totalStatPoints = player.getTotalStatPoints();
 		_bonusSTR = player.getStatBonus(0);
 		_bonusDEX = player.getStatBonus(1);
