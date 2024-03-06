@@ -71,13 +71,5 @@ public final class i_get_costume extends i_abstract_effect {
 		player.sendPacket(new ExCostumeUseItem(true, costumeTemplate.getId())); // TODO: Нужен ли он здесь?
 		player.sendPacket(new ExSendCostumeList(player));
 
-		int costumeTemplateId = costumeTemplate.getId();
-		List<CostumesMulCollectHolder.CostumesSuitList> costumesSuitLists = CostumesMulCollectHolder.getInstance().getCostumesSuitLists();
-		for (CostumesMulCollectHolder.CostumesSuitList costumesSuitList : costumesSuitLists) {
-			if (costumesSuitList.getCostumeId().contains(costumeTemplateId)) {
-				player.unsetVar("costumes_suit_counter");
-				break;
-			}
-		}
 	}
 }

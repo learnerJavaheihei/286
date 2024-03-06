@@ -39,36 +39,6 @@ public class RequestExCostumeList extends L2GameClientPacket {
 		}
 
 		activeChar.sendPacket(new ExSendCostumeList(activeChar));
-		if (activeChar.getVar("costumes_suit_counter") == null) {
-			int suitCounter = 0;
-			List<CostumesMulCollectHolder.CostumesMulCollect> costumesMulCollects = null;
-			CostumeList costumeList = activeChar.getCostumeList();
-			if (costumeList!=null) {
-				costumesMulCollects = CostumesMulCollectHolder.getInstance().getCostumesMulCollects();
-				List<CostumesMulCollectHolder.CostumesSuitList> costumesSuitLists = CostumesMulCollectHolder.getInstance().getCostumesSuitLists();
 
-				mainLoop:
-				for (CostumesMulCollectHolder.CostumesSuitList costumesSuitList : costumesSuitLists) {
-					for (Integer l : costumesSuitList.getCostumeId()) {
-						if (!costumeList.contains(l)) {
-							continue mainLoop;
-						}
-					}
-					suitCounter++;
-				}
-			}
-			if (suitCounter > 0 && costumesMulCollects!=null) {
-				final int aSuitCounter = suitCounter;
-				Optional<CostumesMulCollectHolder.CostumesMulCollect> mulCollect = costumesMulCollects.stream().filter(o -> o.getMulCollectId() == aSuitCounter).findFirst();
-				if (mulCollect.isPresent()) {
-					CostumesMulCollectHolder.CostumesMulCollect costumesMulCollect = mulCollect.get();
-					for (Skill skill : costumesMulCollect.getSkills()) {
-						activeChar.addSkill(SkillEntry.makeSkillEntry(SkillEntryType.NONE,skill),true);
-					}
-					activeChar.sendSkillList();
-					activeChar.setVar("costumes_suit_counter",suitCounter);
-				}
-			}
-		}
 	}
 }
