@@ -5,6 +5,7 @@ import l2s.gameserver.Announcements;
 import l2s.gameserver.ThreadPoolManager;
 import l2s.gameserver.data.xml.holder.ItemHolder;
 import l2s.gameserver.data.xml.holder.RecipeHolder;
+import l2s.gameserver.data.xml.holder.VariationDataHolder;
 import l2s.gameserver.model.Creature;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.Skill;
@@ -18,15 +19,11 @@ import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.network.l2.s2c.StatusUpdatePacket;
 import l2s.gameserver.stats.Formulas;
 import l2s.gameserver.stats.Stats;
-import l2s.gameserver.templates.item.ItemTemplate;
-import l2s.gameserver.templates.item.RecipeTemplate;
+import l2s.gameserver.templates.item.*;
 import l2s.gameserver.templates.item.data.ChancedItemData;
 import l2s.gameserver.templates.item.data.ItemData;
-import l2s.gameserver.utils.DropSpecialItemAnnounce;
-import l2s.gameserver.utils.ItemFunctions;
-import l2s.gameserver.utils.LogGeneral;
-import l2s.gameserver.utils.TradeHelper;
-import l2s.gameserver.templates.item.ItemGrade;
+import l2s.gameserver.templates.item.support.variation.VariationStone;
+import l2s.gameserver.utils.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -212,28 +209,42 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 					//TODO maybe msg?
 					itemsCount++;
 				}
-				 /*製作裝備隨機強化--*/
-				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
+
+				ItemInstance item = ItemFunctions.createItem(itemId);
+				item.setCount(itemsCount);
+
+				addRefinedItem(item);
+				/*製作裝備隨機強化--*/
 				ItemGrade itemGrade = item.getGrade();
 				if (item.isWeapon() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
-					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(7));
+					buyer.getInventory().addItem(item);
+//					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
 				}
 				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
-					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(6));
+					buyer.getInventory().addItem(item);
+//					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
 				}
 				else if (item.isWeapon() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
 				{
-					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(5), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(5));
+					buyer.getInventory().addItem(item);
+//					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(5), true); //这样子会强化 0~7
 				}
 				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
 				{
-					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(4));
+					buyer.getInventory().addItem(item);
+//					ItemFunctions.addItem(buyer, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
 				}
 				else
 				{
-					ItemFunctions.addItem(buyer, itemId, itemsCount, true);
+					item.setEnchantLevel(0);
+					buyer.getInventory().addItem(item);
+//					ItemFunctions.addItem(buyer, itemId, itemsCount, true);
 				}
 				/*--製作裝備隨機強化*/
 //				ItemFunctions.addItem(buyer, itemId, itemsCount, true);
@@ -315,5 +326,61 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 
 		buyer.sendChanges();
 		buyer.sendPacket(new RecipeShopItemInfoPacket(buyer, manufacturer, _recipeId, _price, success));
+	}
+
+	public static void addRefinedItem(ItemInstance item) {
+		VariationStone stone =null;
+		int Stoneid = 0;
+		if (item.isWeapon()) {
+			Stoneid = 90007;
+			stone = VariationDataHolder.getInstance().getStone(VariationType.WEAPON, Stoneid);
+		}
+		else if (item.isArmor()) {
+			Stoneid = 90012;
+			if (item.getBodyPart() == Bodypart.FEET.mask()){
+
+				stone = VariationDataHolder.getInstance().getStone(VariationType.ARMOR_BOOTS, Stoneid);// 鞋子
+			}
+			else if (item.getBodyPart() == Bodypart.CHEST.mask() || item.getBodyPart() == Bodypart.FULL_ARMOR.mask())  {
+
+				stone = VariationDataHolder.getInstance().getStone(VariationType.ARMOR_CHEST, Stoneid);// 胸甲/连体
+			}
+			else if (item.getBodyPart() == Bodypart.GLOVES.mask()){
+
+				stone = VariationDataHolder.getInstance().getStone(VariationType.ARMOR_GLOVES, Stoneid);// 手套
+			}
+			else if (item.getBodyPart() == Bodypart.HEAD.mask()){
+
+				stone = VariationDataHolder.getInstance().getStone(VariationType.ARMOR_HELMET, Stoneid);// 头盔
+			}
+		}
+		else if (item.isAccessory()){
+			Stoneid = 80017;
+			if (item.getBodyPart() == (Bodypart.RIGHT_EAR.mask() + Bodypart.LEFT_EAR.mask()))  {
+				stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_EARRING, Stoneid);
+			}
+			else if (item.getBodyPart() == Bodypart.NECKLACE.mask())  {
+				stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_NECKLACE, Stoneid);
+			}
+			else if (item.getBodyPart() == (Bodypart.RIGHT_FINGER.mask() + Bodypart.LEFT_FINGER.mask()))  {
+				stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_RING, Stoneid);
+			}
+		}
+
+		if (stone != null) {
+			int variation1Id = VariationUtils.publicGetRandomOptionId(stone.getVariation(1));
+			int variation2Id = VariationUtils.publicGetRandomOptionId(stone.getVariation(2));
+			if (variation1Id != 0 && variation2Id == 0)
+			{
+				item.setVariationStoneId(Stoneid);
+				item.setVariation1Id(variation1Id);
+			}
+			else if (variation1Id != 0 && variation2Id != 0)
+			{
+				item.setVariationStoneId(Stoneid);
+				item.setVariation1Id(variation1Id);
+				item.setVariation2Id(variation2Id);
+			}
+		}
 	}
 }

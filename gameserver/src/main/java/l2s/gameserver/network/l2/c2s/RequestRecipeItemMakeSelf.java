@@ -181,29 +181,42 @@ public class RequestRecipeItemMakeSelf extends L2GameClientPacket
 					itemsCount++;
 				}
 				//TODO [G1ta0] добавить проверку на перевес
-				 /*製作裝備隨機強化--*/
-				ItemTemplate item = ItemHolder.getInstance().getTemplate(itemId);
+				ItemInstance item = ItemFunctions.createItem(itemId);
+				item.setCount(itemsCount);
+
+				RequestRecipeShopMakeDo.addRefinedItem(item);
+				/*製作裝備隨機強化--*/
 				ItemGrade itemGrade = item.getGrade();
 				if (item.isWeapon() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
-					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(7));
+					activeChar.getInventory().addItem(item);
+//					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(7), true); //这样子会强化 0~7
 				}
 				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.D) || (itemGrade == ItemGrade.C)))
 				{
-					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(6));
+					activeChar.getInventory().addItem(item);
+//					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(6), true); //这样子会强化 0~7
 				}
 				else if (item.isWeapon() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
 				{
-					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(5), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(5));
+					activeChar.getInventory().addItem(item);
+//					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(5), true); //这样子会强化 0~7
 				}
 				else if (item.isArmor() || item.isAccessory() && ((itemGrade == ItemGrade.B) || (itemGrade == ItemGrade.A) || (itemGrade == ItemGrade.S)))
 				{
-					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
+					item.setEnchantLevel(Rnd.get(4));
+					activeChar.getInventory().addItem(item);
+//					ItemFunctions.addItem(activeChar, itemId, itemsCount, Rnd.get(4), true); //这样子会强化 0~7
 				}
 				else
 				{
-					ItemFunctions.addItem(activeChar, itemId, itemsCount, true);
-				} 	
+					item.setEnchantLevel(0);
+					activeChar.getInventory().addItem(item);
+//					ItemFunctions.addItem(activeChar, itemId, itemsCount, true);
+				}
 				/*--製作裝備隨機強化*/
 				/*原始ItemFunctions.addItem(activeChar, itemId, itemsCount, true);*/
 				success = 1;
