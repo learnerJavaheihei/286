@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE list SYSTEM "variation.dtd">
+<!--AUTHOR: nexvill-->
+<list>
+    <augmentation type="weapon_left_right_hand">
+        <stone id="94184">
+            <variation id="1">
+                <category probability="100">
+                    <option id="33505" chance="1.25"/>
+                    <option id="33506" chance="1.25"/>
+                    <option id="33507" chance="1.25"/>
+                    <option id="33508" chance="1.25"/>
+                    <option id="33509" chance="1.25"/>
+                    <option id="33510" chance="1.25"/>
+                    <option id="33511" chance="1.25"/>
+                    <option id="33512" chance="1.25"/>
+                    <option id="33513" chance="1.25"/>
+                    <option id="33514" chance="1.25"/>
+                    <option id="33515" chance="1.25"/>
+                    <option id="33516" chance="1.25"/>
+                    <option id="33517" chance="1.25"/>
+                    <option id="33518" chance="1.25"/>
+                    <option id="33519" chance="1.25"/>
+                    <option id="33520" chance="1.25"/>
+                    <option id="33521" chance="1.25"/>
+                    <option id="33522" chance="1.25"/>
+                    <option id="33523" chance="1.25"/>
+                    <option id="33524" chance="1.25"/>
+                    <option id="33545" chance="1.25"/>
+                    <option id="33546" chance="1.25"/>
+                    <option id="33547" chance="1.25"/>
+                    <option id="33548" chance="1.25"/>
+                    <option id="33549" chance="1.25"/>
+                    <option id="33550" chance="1.25"/>
+                    <option id="33551" chance="1.25"/>
+                    <option id="33552" chance="1.25"/>
+                    <option id="33553" chance="1.25"/>
+                    <option id="33554" chance="1.25"/>
+                    <option id="33555" chance="1.25"/>
+                    <option id="33556" chance="1.25"/>
+                    <option id="33557" chance="1.25"/>
+                    <option id="33558" chance="1.25"/>
+                    <option id="33559" chance="1.25"/>
+                    <option id="33560" chance="1.25"/>
+                    <option id="33561" chance="1.25"/>
+                    <option id="33562" chance="1.25"/>
+                    <option id="33563" chance="1.25"/>
+                    <option id="33564" chance="1.25"/>
+                    <option id="33585" chance="1.25"/>
+                    <option id="33586" chance="1.25"/>
+                    <option id="33587" chance="1.25"/>
+                    <option id="33588" chance="1.25"/>
+                    <option id="33589" chance="1.25"/>
+                    <option id="33590" chance="1.25"/>
+                    <option id="33591" chance="1.25"/>
+                    <option id="33592" chance="1.25"/>
+                    <option id="33593" chance="1.25"/>
+                    <option id="33594" chance="1.25"/>
+                    <option id="33595" chance="1.25"/>
+                    <option id="33596" chance="1.25"/>
+                    <option id="33597" chance="1.25"/>
+                    <option id="33598" chance="1.25"/>
+                    <option id="33599" chance="1.25"/>
+                    <option id="33600" chance="1.25"/>
+                    <option id="33601" chance="1.25"/>
+                    <option id="33602" chance="1.25"/>
+                    <option id="33603" chance="1.25"/>
+                    <option id="33604" chance="1.25"/>
+                    <option id="33605" chance="1.25"/>
+                    <option id="33606" chance="1.25"/>
+                    <option id="33607" chance="1.25"/>
+                    <option id="33608" chance="1.25"/>
+                    <option id="33609" chance="1.25"/>
+                    <option id="33610" chance="1.25"/>
+                    <option id="33611" chance="1.25"/>
+                    <option id="33612" chance="1.25"/>
+                    <option id="33613" chance="1.25"/>
+                    <option id="33614" chance="1.25"/>
+                    <option id="33615" chance="1.25"/>
+                    <option id="33616" chance="1.25"/>
+                    <option id="33617" chance="1.25"/>
+                    <option id="33618" chance="1.25"/>
+                    <option id="33619" chance="1.25"/>
+                    <option id="33620" chance="1.25"/>
+                    <option id="33621" chance="1.25"/>
+                    <option id="33622" chance="1.25"/>
+                    <option id="33623" chance="1.25"/>
+                    <option id="33624" chance="1.25"/>
+                </category>
+            </variation>
+            <variation id="2">
+                <category probability="70">
+                    <option id="33665" chance="2.5"/>
+                    <option id="33666" chance="2.5"/>
+                    <option id="33667" chance="2.5"/>
+                    <option id="33668" chance="2.5"/>
+                    <option id="33669" chance="2.5"/>
+                    <option id="33670" chance="2.5"/>
+                    <option id="33671" chance="2.5"/>
+                    <option id="33672" chance="2.5"/>
+                    <option id="33673" chance="2.5"/>
+                    <option id="33674" chance="2.5"/>
+                    <option id="33675" chance="2.5"/>
+                    <option id="33676" chance="2.5"/>
+                    <option id="33677" chance="2.5"/>
+                    <option id="33678" chance="2.5"/>
+                    <option id="33679" chance="2.5"/>
+                    <option id="33680" chance="2.5"/>
+                    <option id="33681" chance="2.5"/>
+                    <option id="33682" chance="2.5"/>
+                    <option id="33683" chance="2.5"/>
+                    <option id="33684" chance="2.5"/>
+                    <option id="33705" chance="2.5"/>
+                    <option id="33706" chance="2.5"/>
+                    <option id="33707" chance="2.5"/>
+                    <option id="33708" chance="2.5"/>
+                    <option id="33709" chance="2.5"/>
+                    <option id="33710" chance="2.5"/>
+                    <option id="33711" chance="2.5"/>
+                    <option id="33712" chance="2.5"/>
+                    <option id="33713" chance="2.5"/>
+                    <option id="33714" chance="2.5"/>
+                    <option id="33715" chance="2.5"/>
+                    <option id="33716" chance="2.5"/>
+                    <option id="33717" chance="2.5"/>
+                    <option id="33718" chance="2.5"/>
+                    <option id="33719" chance="2.5"/>
+                    <option id="33720" chance="2.5"/>
+                    <option id="33721" chance="2.5"/>
+                    <option id="33722" chance="2.5"/>
+                    <option id="33723" chance="2.5"/>
+                    <option id="33724" chance="2.5"/>
+                </category>
+                <category probability="30">
+                    <option id="33745" chance="5.0"/>
+                    <option id="33746" chance="5.0"/>
+                    <option id="33747" chance="5.0"/>
+                    <option id="33748" chance="5.0"/>
+                    <option id="33749" chance="5.0"/>
+                    <option id="33750" chance="5.0"/>
+                    <option id="33751" chance="5.0"/>
+                    <option id="33752" chance="5.0"/>
+                    <option id="33753" chance="5.0"/>
+                    <option id="33754" chance="5.0"/>
+                    <option id="33755" chance="5.0"/>
+                    <option id="33756" chance="5.0"/>
+                    <option id="33757" chance="5.0"/>
+                    <option id="33758" chance="5.0"/>
+                    <option id="33759" chance="5.0"/>
+                    <option id="33760" chance="5.0"/>
+                    <option id="33761" chance="5.0"/>
+                    <option id="33762" chance="5.0"/>
+                    <option id="33763" chance="5.0"/>
+                    <option id="33764" chance="5.0"/>
+                </category>
+            </variation>
+        </stone>
+    </augmentation>
+</list>

@@ -24,7 +24,8 @@ public enum VariationType
 	/*16*/ELMOREDEN,
 	/*17*/ADEN,
 	/*18*/ELMORE,
-	/*19*/FERIOS;
+	/*19*/FERIOS,
+	WEAPON_LEFT_RIGHT_HAND;
 
 	public static final VariationType[] VALUES = values();
 }

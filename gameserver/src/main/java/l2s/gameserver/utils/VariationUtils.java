@@ -3,6 +3,7 @@ package l2s.gameserver.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import l2s.gameserver.templates.item.Bodypart;
 import org.apache.commons.lang3.ArrayUtils;
 
 import l2s.commons.dao.JdbcEntityState;
@@ -192,7 +193,12 @@ public final class VariationUtils
 		};
 		
 		if (targetItem.isWeapon())
-			stone = VariationDataHolder.getInstance().getStone(VariationType.WEAPON, stoneId);
+			if (targetItem.getBodyPart() == Bodypart.LEFT_RIGHT_HAND.mask()){
+				stoneId = 94184;
+				stone = VariationDataHolder.getInstance().getStone(VariationType.WEAPON_LEFT_RIGHT_HAND, stoneId);// 双刀
+			}
+			else
+				stone = VariationDataHolder.getInstance().getStone(VariationType.WEAPON, stoneId);
 		else if ((stoneId == 94188) || (stoneId == 94212))
 		{
 			if ((targetItem.getTemplate().getExType() == ExItemType.UPPER_PIECE) || (targetItem.getTemplate().getExType() == ExItemType.FULL_BODY))
