@@ -207,7 +207,8 @@ public class OlympiadMember
 			player.getClan().enableSkills(player);
 
 		// Активируем геройские скиллы.
-		player.activateHeroSkills(true);
+		if (player.isHero())
+			player.activateHeroSkills(true);
 
 		// Обновляем скилл лист, после добавления скилов
 		player.sendSkillList();
