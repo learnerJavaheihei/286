@@ -137,6 +137,10 @@ public class CostumeList implements Iterable<Costume> {
 	public boolean useCostume(int skillId) {
 		if (Config.EX_COSTUME_DISABLE)
 			return false;
+		if (owner.isInOlympiadMode()) {
+			owner.sendMessage("正在参加奥林匹亚竞赛,不能使用变身技能");
+			return false;
+		}
 
 		CostumeTemplate costumeTemplate = CostumesHolder.getInstance().getCostumeBySkillId(skillId);
 		if (costumeTemplate == null)
