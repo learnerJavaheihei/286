@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import l2s.gameserver.templates.item.Bodypart;
+import l2s.gameserver.templates.item.WeaponTemplate;
 import org.apache.commons.lang3.ArrayUtils;
 
 import l2s.commons.dao.JdbcEntityState;
@@ -193,7 +194,7 @@ public final class VariationUtils
 		};
 		
 		if (targetItem.isWeapon())
-			if (targetItem.getBodyPart() == Bodypart.LEFT_RIGHT_HAND.mask()){
+			if (targetItem.getBodyPart() == Bodypart.LEFT_RIGHT_HAND.mask() && targetItem.getTemplate().getItemType() == WeaponTemplate.WeaponType.DUAL){
 				stoneId = 94184;
 				stone = VariationDataHolder.getInstance().getStone(VariationType.WEAPON_LEFT_RIGHT_HAND, stoneId);// 双刀
 			}
