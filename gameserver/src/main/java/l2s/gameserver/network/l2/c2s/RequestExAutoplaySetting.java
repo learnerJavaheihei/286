@@ -47,6 +47,10 @@ public class RequestExAutoplaySetting extends L2GameClientPacket
 		autoFarm.setMeleeAttackMode(_meleeAttackMode);
 		if (_farmActivate){
 			if (botConfig.isAbort()) {
+				if(!player.isActive())
+				{
+					player.setActive();
+				}
 				BotEngine.getInstance().startBotTask(player);
 			}
 			// 狩猎 启动 后检查
