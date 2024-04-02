@@ -785,19 +785,19 @@ public class Formulas
 	
 			double finalRate = critRate;
 
-			double statModifier;
-			if(dexDep)
-			{
-				statModifier = BaseStats.DEX.calcBonus(attacker);
-				if(blow)
-					statModifier *= Config.BLOW_SKILL_DEX_CHANCE_MOD;
-				else
-					statModifier *= Config.NORMAL_SKILL_DEX_CHANCE_MOD;
-			}
-			else
-				statModifier = BaseStats.STR.calcBonus(attacker);
-
-			finalRate *= statModifier;
+//			double statModifier;
+//			if(dexDep)
+//			{
+//				statModifier = BaseStats.DEX.calcBonus(attacker);
+//				if(blow)
+//					statModifier *= Config.BLOW_SKILL_DEX_CHANCE_MOD;
+//				else
+//					statModifier *= Config.NORMAL_SKILL_DEX_CHANCE_MOD;
+//			}
+//			else
+//				statModifier = BaseStats.STR.calcBonus(attacker);
+//
+//			finalRate *= statModifier;
 
 			if(blow)
 				finalRate *= blowCritModifier;
@@ -824,7 +824,7 @@ public class Formulas
 				stat.append("\nblowCritModifier: ");
 				stat.append(String.format("%1.3f", blowCritModifier));
 				stat.append("\nstatModifier: ");
-				stat.append(String.format("%1.3f", statModifier));
+//				stat.append(String.format("%1.3f", statModifier));
 				stat.append("\nfinalRate: ");
 				stat.append(String.format("%1.3f", finalRate));
 
