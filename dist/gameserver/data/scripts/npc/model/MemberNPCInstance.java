@@ -22,6 +22,7 @@ import l2s.gameserver.model.actor.instances.player.Henna;
 import l2s.gameserver.model.base.ClassId;
 import l2s.gameserver.model.base.ClassLevel;
 import l2s.gameserver.model.entity.Hero;
+import l2s.gameserver.model.entity.olympiad.Olympiad;
 import l2s.gameserver.model.instances.NpcInstance;
 import l2s.gameserver.model.instances.PetInstance;
 import l2s.gameserver.model.items.Inventory;
@@ -1481,6 +1482,9 @@ public class MemberNPCInstance extends NpcInstance
 			name += player.getClassId().getName(player);
 			UpdateChangeClassId(player,oldId,myClassId);
 			Announcements.announceToAll(name);
+
+			Olympiad.manualSetParticipantPoints(player.getObjectId(),Config.OLYMPIAD_POINTS_DEFAULT);
+			player.sendMessage("你的奥林匹亚点数已经被清空!");
 
 //			//這裡應該要把武器轉換學習的技能給完全載入給玩家。 20210409 這部份需要去實測，很重要。
 //			int[] learnSkills = GetLearnedSkillList(player);
