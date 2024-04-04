@@ -1,6 +1,7 @@
 package l2s.gameserver.handler.items.impl;
 
 import l2s.gameserver.ai.PlayableAI.AINextAction;
+import l2s.gameserver.data.xml.holder.ItemHolder;
 import l2s.gameserver.model.Playable;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.base.SoulShotType;
@@ -12,6 +13,8 @@ import l2s.gameserver.network.l2.s2c.SystemMessage;
 import l2s.gameserver.network.l2.s2c.SystemMessagePacket;
 import l2s.gameserver.templates.item.ItemTemplate;
 import l2s.gameserver.utils.ItemFunctions;
+
+import java.util.List;
 
 /**
  * @author VISTALL
@@ -73,7 +76,10 @@ public class EquipableItemHandler extends DefaultItemHandler
 			player.sendActionFailed();
 			return false;
 		}
-
+		List<Integer> weaponVisuals = player.getWeaponVisuals();
+		ItemInstance activeWeaponInstance = player.getActiveWeaponInstance();
+		if (activeWeaponInstance!=null)
+			activeWeaponInstance.setVisualId(0);
 		if(item.isEquipped())
 		{
 			ItemInstance weapon = player.getActiveWeaponInstance();
@@ -85,7 +91,9 @@ public class EquipableItemHandler extends DefaultItemHandler
 				player.removeAutoShot(SoulShotType.SPIRITSHOT);
 			}
 			player.sendDisarmMessage(item);
+			item.setVisualId(0);
 			player.getInventory().unEquipItem(item);
+			player.getInventory().sendModifyItem(item);
 			return false;
 		}
 
@@ -96,7 +104,19 @@ public class EquipableItemHandler extends DefaultItemHandler
 			return false;
 		}
 
+		if (weaponVisuals!=null && !weaponVisuals.isEmpty()) {
+			for (Integer weaponVisual : weaponVisuals) {
+				ItemTemplate itemTemplate = ItemHolder.getInstance().getTemplate(weaponVisual);
+				if (itemTemplate!=null &&
+						itemTemplate.getItemType() == item.getItemType()
+				) {
+					item.setVisualId(weaponVisual);
+					break;
+				}
+			}
+		}
 		player.getInventory().equipItem(item);
+		player.getInventory().sendModifyItem(item);
 		if(!item.isEquipped())
 		{
 			player.sendActionFailed();

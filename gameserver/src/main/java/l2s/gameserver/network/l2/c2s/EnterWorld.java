@@ -1,10 +1,15 @@
 package l2s.gameserver.network.l2.c2s;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import l2s.commons.dao.JdbcEntityState;
+import l2s.commons.dbutils.DbUtils;
 import l2s.gameserver.Announcements;
 import l2s.gameserver.Config;
 import l2s.gameserver.botscript.BotHangUpTimeDao;
@@ -12,6 +17,7 @@ import l2s.gameserver.core.BotEngine;
 import l2s.gameserver.dao.MailDAO;
 import l2s.gameserver.data.htm.HtmCache;
 import l2s.gameserver.data.xml.holder.ResidenceHolder;
+import l2s.gameserver.database.DatabaseFactory;
 import l2s.gameserver.instancemanager.*;
 import l2s.gameserver.listener.actor.player.OnAnswerListener;
 import l2s.gameserver.listener.actor.player.impl.ReviveAnswerListener;
@@ -119,6 +125,7 @@ public class EnterWorld extends L2GameClientPacket
 				activeChar.getInventory().store();
 			}
 		}
+		restoreWeaponVisuals(activeChar);
 		//
 		if (Config.ENABLE_BOTSCRIPT_RESTRICT_TIME){
 			botScriptSellTime(activeChar);
@@ -523,7 +530,35 @@ public class EnterWorld extends L2GameClientPacket
 		int time = BotHangUpTimeDao.getInstance().selectIsBuyByObjId(activeChar.getObjectId());
 		Player._buyTimesByOBJ.putIfAbsent(activeChar.getObjectId(),time);
 	}
+	private static void restoreWeaponVisuals(Player activeChar) {
+		Connection con = null;
+		PreparedStatement statement = null;
+		List<Integer> visuals = new ArrayList<>();
+		try
+		{
+			con = DatabaseFactory.getInstance().getConnection();
 
+			statement = con.prepareStatement("SELECT deletetime, visual_id FROM _character_weapon WHERE player_id = ? AND use_item = 1");
+			statement.setInt(1, activeChar.getObjectId());
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()){
+				int deletetime = resultSet.getInt("deletetime");
+				if (deletetime <  (System.currentTimeMillis() / 1000))
+					continue;
+				int visual_id = resultSet.getInt("visual_id");
+				visuals.add(visual_id);
+			}
+			activeChar.setWeaponVisuals(visuals);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			DbUtils.closeQuietly(con, statement);
+		}
+	}
 	private static void checkNewMail(Player activeChar)
 	{
 		activeChar.sendPacket(new ExUnReadMailCount(activeChar));

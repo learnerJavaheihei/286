@@ -608,6 +608,24 @@ public final class Player extends Playable implements PlayerGroup {
     // 控制 领取补偿 按钮 默认关闭
     private boolean turnOnCompensationBtn = false;
 
+    private List<Integer> weaponVisuals;
+
+    public List<Integer> getWeaponVisuals() {
+        return weaponVisuals;
+    }
+
+    public void setWeaponVisuals(List<Integer> weaponVisuals) {
+        this.weaponVisuals = weaponVisuals;
+    }
+    public void addWeaponVisuals(int weaponVisual) {
+        if (!weaponVisuals.contains(weaponVisual))
+            weaponVisuals.add(weaponVisual);
+    }
+    public void deleteWeaponVisuals(int weaponVisual) {
+        if (weaponVisuals.contains(weaponVisual))
+            weaponVisuals.removeIf(o->o==weaponVisual);
+    }
+
     static {
         listAbnormalEffect.add(AbnormalEffect.RUNWAY_ARMOR5);
         listAbnormalEffect.add(AbnormalEffect.RUNWAY_ARMOR6);
