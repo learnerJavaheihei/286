@@ -355,7 +355,7 @@ public class RequestRecipeShopMakeDo extends L2GameClientPacket
 			}
 		}
 		else if (item.isAccessory()){
-			Stoneid = 80017;
+			Stoneid = 94423;
 			if (item.getBodyPart() == (Bodypart.RIGHT_EAR.mask() + Bodypart.LEFT_EAR.mask()))  {
 				stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_EARRING, Stoneid);
 			}

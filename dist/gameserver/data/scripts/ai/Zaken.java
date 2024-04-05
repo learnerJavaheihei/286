@@ -55,7 +55,22 @@ public class Zaken extends Fighter
 	private static final int TELEPORTER_DESPAWN_TIME = 15 * 60 * 1000; // 15 min
 
 	private static final int[][] COORDS = new int[][]{
-		{ 53950, 219860, -3488 },
+		{ 42280, 206008, -3752 },
+		{ 43784, 210328, -3712 },
+		{ 46424, 205640, -3640 },
+		{ 42280, 206008, -3752 },
+		{ 43784, 210328, -3712 },
+		{ 46424, 205640, -3640 },
+		{ 42280, 206008, -3752 },
+		{ 43784, 210328, -3712 },
+		{ 46424, 205640, -3640 },
+		{ 42280, 206008, -3752 },
+		{ 43784, 210328, -3712 },
+		{ 46424, 205640, -3640 },
+		{ 42280, 206008, -3752 },
+		{ 43784, 210328, -3712 },
+		{ 46424, 205640, -3640 }
+		/* { 53950, 219860, -3488 },
 		{ 55980, 219820, -3488 },
 		{ 54950, 218790, -3488 },
 		{ 55970, 217770, -3488 },
@@ -69,7 +84,7 @@ public class Zaken extends Fighter
 		{ 55980, 219920, -2944 },
 		{ 54960, 218790, -2944 },
 		{ 53950, 219860, -2944 },
-		{ 53930, 217760, -2944 }
+		{ 53930, 217760, -2944 } */
 	};
 
 	private static final Location ZAKEN_SHIP_COORD = new Location(52211, 217238, -3359);
@@ -235,8 +250,8 @@ public class Zaken extends Fighter
 					{
 						_rememberedTargetsCount = 0;
 						int loc[] = Rnd.get(COORDS);
-						_teleportX = loc[0] + Rnd.get(650);
-						_teleportY = loc[1] + Rnd.get(650);
+						_teleportX = loc[0] + Rnd.get(10);//原來650
+						_teleportY = loc[1] + Rnd.get(10);
 						_teleportZ = loc[2];
 						showMessage(NpcString.HA_HA_HA_TRY_AND_FIND_ME, 10000);
 						getActor().setSpawnedLoc(new Location(_teleportX, _teleportY, _teleportZ));
@@ -299,8 +314,8 @@ public class Zaken extends Fighter
 				if(Rnd.get(40) < 1)
 				{
 					int loc[] = Rnd.get(COORDS);
-					_teleportX = loc[0] + Rnd.get(650);
-					_teleportY = loc[1] + Rnd.get(650);
+					_teleportX = loc[0] + Rnd.get(10);//原來650
+					_teleportY = loc[1] + Rnd.get(10);
 					_teleportZ = loc[2];
 					showMessage(NpcString.HA_HA_HA_TRY_AND_FIND_ME, 10000);
 					getActor().setSpawnedLoc(new Location(_teleportX, _teleportY, _teleportZ));
@@ -328,8 +343,8 @@ public class Zaken extends Fighter
 					for(int c = 0; c < 1; c++)
 					{
 						int loc[] = COORDS[i];
-						int x = loc[0] + Rnd.get(650);
-						int y = loc[1] + Rnd.get(650);
+						int x = loc[0] + Rnd.get(10);//原來650
+						int y = loc[1] + Rnd.get(10);
 						int z = loc[2];
 						createOnePrivateEx(GUARDIAN_SPIRIT_NPC_ID, null, 0, 0, x, y, z, PositionUtils.convertDegreeToClientHeading(Rnd.get(360)), 0, 0, 0);
 					}
@@ -344,8 +359,8 @@ public class Zaken extends Fighter
 					for(int c = 0; c < 1; c++)
 					{
 						int loc[] = COORDS[i];
-						int x = loc[0] + Rnd.get(650);
-						int y = loc[1] + Rnd.get(650);
+						int x = loc[0] + Rnd.get(10);//原來650
+						int y = loc[1] + Rnd.get(10);
 						int z = loc[2];
 						createOnePrivateEx(MIDNIGHT_SAIRON_NPC_ID, null, 0, 0, x, y, z, PositionUtils.convertDegreeToClientHeading(Rnd.get(360)), 0, 0, 0);
 					}
@@ -360,8 +375,8 @@ public class Zaken extends Fighter
 					for(int c = 0; c < 2; c++)
 					{
 						int loc[] = COORDS[i];
-						int x = loc[0] + Rnd.get(650);
-						int y = loc[1] + Rnd.get(650);
+						int x = loc[0] + Rnd.get(10);//原來650
+						int y = loc[1] + Rnd.get(10);
 						int z = loc[2];
 						createOnePrivateEx(SEER_NPC_ID, null, 0, 0, x, y, z, PositionUtils.convertDegreeToClientHeading(Rnd.get(360)), 0, 0, 0);
 					}
@@ -376,8 +391,8 @@ public class Zaken extends Fighter
 					for(int c = 0; c < 5; c++)
 					{
 						int loc[] = COORDS[i];
-						int x = loc[0] + Rnd.get(650);
-						int y = loc[1] + Rnd.get(650);
+						int x = loc[0] + Rnd.get(10);//原來650
+						int y = loc[1] + Rnd.get(10);
 						int z = loc[2];
 						createOnePrivateEx(DAYMEN_NPC_ID, null, 0, 0, x, y, z, PositionUtils.convertDegreeToClientHeading(Rnd.get(360)), 0, 0, 0);
 					}
@@ -671,8 +686,8 @@ public class Zaken extends Fighter
 		{
 			_teleportCheckHpModifier--;
 			int loc[] = Rnd.get(COORDS);
-			_teleportX = loc[0] + Rnd.get(650);
-			_teleportY = loc[1] + Rnd.get(650);
+			_teleportX = loc[0] + Rnd.get(10);//原來650
+			_teleportY = loc[1] + Rnd.get(10);
 			_teleportZ = loc[2];
 			showMessage(NpcString.HA_HA_HA_TRY_AND_FIND_ME, 10000);
 			getActor().setSpawnedLoc(new Location(_teleportX, _teleportY, _teleportZ));
@@ -734,8 +749,8 @@ public class Zaken extends Fighter
 
 		Player player = creature.getPlayer();
 		int loc[] = Rnd.get(COORDS);
-		int x = loc[0] + Rnd.get(650);
-		int y = loc[1] + Rnd.get(650);
+		int x = loc[0] + Rnd.get(10);//原來650
+		int y = loc[1] + Rnd.get(10);
 		int z = loc[2];
 		showMessage(NpcString.YOURE_THE_WEAKEST_SHOO, 10000);
 		player.teleToLocation(x, y, z);

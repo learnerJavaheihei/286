@@ -600,25 +600,25 @@ public class MyUtilsFunction {
                 item57 = 40000;
                 exp57 = 30000000;
             }
-            if (player.getLevel() >= 70 && player.getLevel() < 78) {
+            if (player.getLevel() >= 70 && player.getLevel() < 75) {
                 itemid = 80003;
                 item57 = 50000;
                 exp57 = 100000000;
             }
-            if (player.getLevel() >= 78 && player.getLevel() < 82) {
+            if (player.getLevel() >= 75 && player.getLevel() < 80) {
                 itemid = 80004;
+                item57 = 60000;
+                exp57 = 1000000000L;
+            }
+			if (player.getLevel() >= 80 && player.getLevel() < 85) {
+                itemid = 80005;
                 item57 = 60000;
                 exp57 = 10000000000L;
             }
-			if (player.getLevel() >= 82 && player.getLevel() < 87) {
-                itemid = 80005;
-                item57 = 60000;
-                exp57 = 30000000000L;
-            }
-            if (player.getLevel() >= 87) {
+            if (player.getLevel() >= 85) {
                 itemid = 80006;
                 item57 = 70000;
-                exp57 = 50000000000L;
+                exp57 = 30000000000L;
             }
             if (!ItemFunctions.deleteItem(player, 57, item57)) {
                 player.sendMessage("金幣不足無法抽取经验");

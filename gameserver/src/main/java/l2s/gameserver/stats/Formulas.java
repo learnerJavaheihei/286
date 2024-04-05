@@ -784,7 +784,7 @@ public class Formulas
 			final double blowCritModifier = Config.ALT_BLOW_CRIT_RATE_MODIFIER;
 	
 			double finalRate = critRate;
-
+//力量增加技能暴击
 //			double statModifier;
 //			if(dexDep)
 //			{
@@ -824,6 +824,7 @@ public class Formulas
 				stat.append("\nblowCritModifier: ");
 				stat.append(String.format("%1.3f", blowCritModifier));
 				stat.append("\nstatModifier: ");
+//力量增加技能暴击
 //				stat.append(String.format("%1.3f", statModifier));
 				stat.append("\nfinalRate: ");
 				stat.append(String.format("%1.3f", finalRate));

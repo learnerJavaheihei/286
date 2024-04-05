@@ -41,6 +41,7 @@ public class LifeStone extends SimpleItemHandler
 			case 94304: // Life Stone - Heroic Circlet (Event)
 			case 94423: // Life Stone - Accessory
 			case 94424: // Life Stone - Accessory (Event)
+			case 80017: // 新增BOSS首飾生命石
 				player.sendPacket(SystemMsg.SELECT_THE_ITEM_TO_BE_AUGMENTED, ExShowVariationMakeWindow.STATIC);
 				player.sendPacket(new ExPutIntensiveResultForVariationMake(item.getObjectId(), itemId, 0, 0));
 				break;

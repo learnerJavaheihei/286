@@ -106,7 +106,7 @@ public abstract class Playable extends Creature
 		if(isInSiegeZone() && target.isInSiegeZone())
 			return false;
 
-		if(skillEntry == null || skillEntry.getTemplate().isDebuff())
+		if(skillEntry == null || skillEntry.getTemplate().isOffensive())
 		{
 			if(target.isPK())
 				return false;

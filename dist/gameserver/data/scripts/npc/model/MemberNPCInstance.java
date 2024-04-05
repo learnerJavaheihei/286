@@ -1651,7 +1651,7 @@ public class MemberNPCInstance extends NpcInstance
 				return;
 			}
 
-			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("確定要購買「" +  Weapon.getName(player) +"」外型？這將消耗 250 贊助幣"), new OnAnswerListener()
+			player.ask(new ConfirmDlgPacket(SystemMsg.S1, 10000).addString("確定要購買「" +  Weapon.getName() +"」外型？這將消耗 250 贊助幣"), new OnAnswerListener()
 			{
 				public void sayYes()
 				{
@@ -1683,8 +1683,7 @@ public class MemberNPCInstance extends NpcInstance
 						player.resetWeaponVisualId(item.getObjectId());
 					}
 					ItemFunctions.deleteItem(player, 29984, 250, true);
-					InsertIntoCharacterWeapon(player.getObjectId(), item.getObjectId(), VisualId,1);
-					player.addWeaponVisuals(VisualId);
+					InsertIntoCharacterWeapon(player.getObjectId(), item.getObjectId(), VisualId);
 					item.setVisualId(VisualId);
 					player.getInventory().sendModifyItem(item);
 					player.broadcastUserInfo(true);
@@ -1734,27 +1733,6 @@ public class MemberNPCInstance extends NpcInstance
 		}
 		else if(buypassOptions[0].equals("resetWeapenAppearance"))
 		{
-			if (buypassOptions.length == 1) {
-				ItemInstance item = player.getActiveWeaponInstance();
-				if (item == null)
-				{
-					player.sendMessage("請裝備武器在來解除。");
-					return;
-				}
-				int visualId = item.getVisualId();
-				if (visualId == 0) {
-					player.sendMessage("你佩戴的武器没有武器外观!");
-					return;
-				}
-				item.setVisualId(0);
-				player.getInventory().sendModifyItem(item);
-				player.sendPacket(new ExUserInfoEquipSlot(player));
-				player.broadcastUserInfo(true);
-				UpdateItemVisualId(player.getObjectId(), 0, visualId,0);
-				player.deleteWeaponVisuals(visualId);
-				ShowChangeWeapen(player);
-				return;
-			}
 			int objId = Integer.parseInt(buypassOptions[1]);
 			int VisualId = Integer.parseInt(buypassOptions[2]);
 			ItemInstance item = player.getActiveWeaponInstance();
@@ -1763,12 +1741,8 @@ public class MemberNPCInstance extends NpcInstance
 				player.sendMessage("請裝備武器在來解除。");
 				return;
 			}
-			ItemTemplate weapon = ItemHolder.getInstance().getTemplate(VisualId);
-			if (weapon == null) {
-				player.sendMessage("未知错误,请联系管理员。");
-				return;
-			}
-			if (weapon.getItemType() != item.getItemType()) {
+			if (item.getObjectId() != objId)
+			{
 				player.sendMessage("是否拿錯把武器，請再次確認。");
 				return;
 			}
@@ -1782,9 +1756,9 @@ public class MemberNPCInstance extends NpcInstance
 			//player.getInventory().sendEquipInfo(Inventory.PAPERDOLL_RHAND);//更新右手 人物显示武器
 			//player.getInventory().sendEquipInfo(Inventory.PAPERDOLL_LHAND);//更新左手 人物显示武器
 			player.broadcastUserInfo(true);
-			UpdateItemVisualId(player.getObjectId(), 0, VisualId,0);
-			player.deleteWeaponVisuals(VisualId);
+			UpdateItemVisualId(player.getObjectId(), 0, VisualId);
 			ShowChangeWeapen(player);
+
 		}
 		else if(buypassOptions[0].equals("UseWeapenAppearance"))
 		{
@@ -1806,17 +1780,8 @@ public class MemberNPCInstance extends NpcInstance
 				item.setVisualId(0);
 				player.resetWeaponVisualId(item.getObjectId());
 			}
-			UpdateItemVisualId(player.getObjectId(), item.getObjectId(), VisualId, 1);
-			List<Integer> weaponVisuals = player.getWeaponVisuals();
-			if (!weaponVisuals.isEmpty()) {
-				for (Integer weaponVisual : weaponVisuals) {
-					ItemTemplate itemTemplate = ItemHolder.getInstance().getTemplate(weaponVisual);
-					if (itemTemplate.getItemType() == item.getItemType() && weaponVisual != VisualId) {
-						UpdateItemVisualId(player.getObjectId(), item.getObjectId(), weaponVisual, 0);
-					}
-				}
-			}
-			player.addWeaponVisuals(VisualId);
+			UpdateItemVisualId(player.getObjectId(), item.getObjectId(), VisualId);
+			//InsertIntoCharacterWeapon(player.getObjectId(), item.getObjectId(), VisualId);
 			item.setVisualId(VisualId);
 			player.getInventory().sendModifyItem(item);
 
@@ -2598,7 +2563,7 @@ public class MemberNPCInstance extends NpcInstance
 		}
 		return buy;
 	}
-	private static boolean InsertIntoCharacterWeapon(int player_id, int objId, int visualId, int use_item)
+	private static boolean InsertIntoCharacterWeapon(int player_id, int objId, int visualId)
 	{
 		Connection con = null;
 		PreparedStatement statement = null;
@@ -2607,12 +2572,11 @@ public class MemberNPCInstance extends NpcInstance
 		{
 			con = DatabaseFactory.getInstance().getConnection();
 
-			statement = con.prepareStatement("REPLACE INTO _character_weapon (player_id, obj_id, visual_id ,deletetime, use_item) VALUES (?,?,?,?,?)");
+			statement = con.prepareStatement("REPLACE INTO _character_weapon (player_id, obj_id, visual_id ,deletetime) VALUES (?,?,?,?)");
 			statement.setInt(1, player_id);
 			statement.setInt(2, objId);
 			statement.setInt(3, visualId);
 			statement.setInt(4, (int) (times / 1000));
-			statement.setInt(5, use_item);
 			statement.execute();
 			statement.close();
 		}
@@ -2690,32 +2654,30 @@ public class MemberNPCInstance extends NpcInstance
 		try
 		{
 			con = DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("SELECT visual_id ,obj_id ,deletetime, use_item FROM _character_weapon where player_id = ? and deletetime > ?");
+			statement = con.prepareStatement("SELECT visual_id ,obj_id ,deletetime FROM _character_weapon where player_id = ? and deletetime > ?");
 			statement.setInt(1, player.getObjectId());
 			statement.setLong(2, System.currentTimeMillis() / 1000);
 			rset = statement.executeQuery();
 			content.append("<table border=0 cellspacing=0>");
 			while (rset.next())
 			{
-				visual_id = rset.getInt("visual_id");
-				ItemTemplate item = ItemHolder.getInstance().getTemplate(visual_id);
+				ItemTemplate item = ItemHolder.getInstance().getTemplate(rset.getInt("visual_id"));
 				if(item == null)
 					continue;
 				long t = rset.getInt("deletetime") * 1000L;
 				obj_id = rset.getInt("obj_id");
-				boolean using = rset.getInt("use_item") > 0;
-//				visual_id = rset.getInt("visual_id");
+				visual_id = rset.getInt("visual_id");
 				content.append("<tr>");
 				content.append("<td align=center width=38 height=38><img src=\"");
 				content.append(item.getIcon());
 				content.append("\" width=32 height=32></td>");
 				content.append("<td fixwidth=80><font color=\"F4F4F4\">");
-				content.append(item.getName(player));
+				content.append(item.getName());
 				content.append("</font></td>");
 				content.append("<td fixwidth=100 align=center><font color=LEVEL>有效期至</font><font color=00ff00><br1>");
 				content.append(dateFormat.format(t));
 				content.append("</font></td>");
-				if (using)//這裡需要出現移除
+				if (obj_id > 0)//這裡需要出現移除
 				{
 					content.append("<td><font color=\"FF0000\"><button value=\"移除\" action=\"");
 					content.append("bypass -h npc?resetWeapenAppearance " + obj_id + " " + visual_id);
@@ -2746,19 +2708,54 @@ public class MemberNPCInstance extends NpcInstance
 		player.sendPacket(msg);
 		player.sendActionFailed();
 	}
-	public static void UpdateItemVisualId( int player_id, int objId, int VisualId, int useItem)
+	public static void UpdateItemVisualId( int player_id, int objId, int VisualId)
 	{
 		Connection con = null;
 		PreparedStatement statement = null;
 		try
 		{
 			con = DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("update _character_weapon set obj_id = ?, use_item = ? WHERE player_id = ? and visual_id =? ");
+			statement = con.prepareStatement("update _character_weapon set obj_id = ? WHERE player_id = ? and visual_id =? ");
 			statement.setInt(1, objId);
-			statement.setInt(2, useItem);
-			statement.setInt(3, player_id);
-			statement.setInt(4, VisualId);
+			statement.setInt(2, player_id);
+			statement.setInt(3, VisualId);
 			statement.execute();
+//			rset = statement.executeQuery();
+//			int owner_id = 0;
+//			if (rset.next())//這一區是假設物品id仍存在的情況下，
+//			{
+//				owner_id = rset.getInt("owner_id");//
+//				Player player = GameObjectsStorage.getPlayer(owner_id);
+//				if (player != null)//如果在某人的身上情況下執行清除
+//				{
+//					Announcements.announceToAll("物品在誰身上:" + player.getName());//不可上伺服器
+//					ItemInstance item = player.getInventory().getItemByObjectId(268466462);
+//					if (item != null)
+//					{
+//						item.setVisualId(0);
+//						player.getInventory().sendModifyItem(item);//這一個是會更新畫面圖示武器ICON
+//						player.getInventory().sendEquipInfo(Inventory.PAPERDOLL_RHAND);//更新右手 人物顯示武器
+//						player.getInventory().sendEquipInfo(Inventory.PAPERDOLL_LHAND);//更新左手 人物顯示武器
+//						if (item == player.getActiveWeaponInstance())//假設物品裝在身上情況下
+//						{
+//							player.getInventory().refreshEquip(item);
+//							Announcements.announceToAll("裝備武器狀態更新:" + player.getName());//不可上伺服器
+//						}
+//						else
+//						{
+//							Announcements.announceToAll("應該是丟在背包:" + player.getName());//不可上伺服器
+//							player.getInventory().refreshEquip(); // .refreshEquip(item);
+//						}
+//					}
+//				}
+//				else {
+//					Announcements.announceToAll("不在某人身上或許是下線，這樣子直接改資料庫:"  );//不可上伺服器
+//					statement.close();
+//					statement = con.prepareStatement("update `items` set visual_id = 0 where `object_id` = 268466462 ");
+//					statement.execute();
+//				}
+//			}
+
 		}
 		catch(Exception e)
 		{

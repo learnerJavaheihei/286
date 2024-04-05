@@ -512,13 +512,13 @@ public class NpcInstance extends Creature
 				else if (item.isAccessory()){
 					Stoneid = 94423;
 					if (item.getTemplate().getBodyPart() == (Bodypart.RIGHT_EAR.mask() + Bodypart.LEFT_EAR.mask()))  {
-						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_EARRING, Stoneid);
+						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_STANDARD_EARRING, Stoneid);
 					}
 					else if (item.getTemplate().getBodyPart() == Bodypart.NECKLACE.mask())  {
-						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_NECKLACE, Stoneid);
+						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_STANDARD_NECKLACE, Stoneid);
 					}
 					else if (item.getTemplate().getBodyPart() == (Bodypart.RIGHT_FINGER.mask() + Bodypart.LEFT_FINGER.mask()))  {
-						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_RARE_RING, Stoneid);
+						stone = VariationDataHolder.getInstance().getStone(VariationType.ACCESSORY_STANDARD_RING, Stoneid);
 					}
 				}
 

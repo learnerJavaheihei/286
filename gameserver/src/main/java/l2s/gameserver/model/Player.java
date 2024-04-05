@@ -164,7 +164,7 @@ public final class Player extends Playable implements PlayerGroup {
     public static final int DEFAULT_TITLE_COLOR = 0xFFFF77;
     public static final int MAX_POST_FRIEND_SIZE = 100;
 
-    public static final Location STABLE_LOCATION = new Location(-119664, 246306, 1232);
+    public static final Location STABLE_LOCATION = new Location(-12456, 182568, -3480);//修改過位置
 
     private static final Logger _log = LoggerFactory.getLogger(Player.class);
 
@@ -10476,58 +10476,38 @@ public final class Player extends Playable implements PlayerGroup {
 
     private static final int[] ADDITIONAL_SS_EFFECTS = new int[]
     {
-            70455, // Ruby - Lv. 5
-            70454, // Ruby - Lv. 4
-            70453, // Ruby - Lv. 3
-            70452, // Ruby - Lv. 2
-            70451, // Ruby - Lv. 1
-            90332, // Ruby - Lv. 5
-            90331, // Ruby - Lv. 4
-            90330, // Ruby - Lv. 3
-            90329, // Ruby - Lv. 2
-            90328, // Ruby - Lv. 1
-            70460, // Sapphire - Lv. 5
-            70459, // Sapphire - Lv. 4
-            70458, // Sapphire - Lv. 3
-            70457, // Sapphire - Lv. 2
-            70456, // Sapphire - Lv. 1
-            90337, // Sapphire - Lv. 5
-            90336, // Sapphire - Lv. 4
-            90335, // Sapphire - Lv. 3
-            90334, // Sapphire - Lv. 2
-            90333, // Sapphire - Lv. 1
-            71372,
-            71371,
-            71370,
-            71369,
-            71368,
-            70455,
-            70454,
-            70769,
-            70453,
-            70452,
-            70451,
-            90332,
-            90331,
-            90330,
-            90329,
-            90328,
-            71377,
-            71376,
-            71375,
-            71374,
-            71373,
-            70460,
-            70459,
-            70770,
-            70458,
-            70457,
-            70456,
-            90337,
-            90336,
-            90335,
-            90334,
-            90333
+		70455, // Ruby - Lv. 5
+		70454, // Ruby - Lv. 4
+		70453, // Ruby - Lv. 3
+		70452, // Ruby - Lv. 2
+		70451, // Ruby - Lv. 1
+		90332, // Ruby - Lv. 5
+		90331, // Ruby - Lv. 4
+		90330, // Ruby - Lv. 3
+		90329, // Ruby - Lv. 2
+		90328, // Ruby - Lv. 1
+		70460, // Sapphire - Lv. 5
+		70459, // Sapphire - Lv. 4
+		70458, // Sapphire - Lv. 3
+		70457, // Sapphire - Lv. 2
+		70456, // Sapphire - Lv. 1
+		90337, // Sapphire - Lv. 5
+		90336, // Sapphire - Lv. 4
+		90335, // Sapphire - Lv. 3
+		90334, // Sapphire - Lv. 2
+		90333, // Sapphire - Lv. 1
+		71372,
+		71371,
+		71370,
+		71369,
+		71368,
+		70769,
+		70770,
+		71377,
+		71376,
+		71375,
+		71374,
+		71373
     };
 
     @Override
@@ -10544,97 +10524,97 @@ public final class Player extends Playable implements PlayerGroup {
         if (!spiritshot) {
             if (!blessed) {
                 // Ruby's
-                if (ItemFunctions.checkIsEquipped(this, -1, 70455, 0)) // Ruby - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 70455, 0)) // 紅寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17817, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70454, 0)) // Ruby - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 70454, 0)) // 紅寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17816, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70453, 0)) // Ruby - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 70453, 0)) // 紅寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17815, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70452, 0)) // Ruby - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 70452, 0)) // 紅寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70451, 0)) // Ruby - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 70451, 0)) // 紅寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 1);
                 //
-                if (ItemFunctions.checkIsEquipped(this, -1, 90332, 0)) // Ruby - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 90332, 0)) // 紅寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17817, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90331, 0)) // Ruby - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 90331, 0)) // 紅寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17816, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90330, 0)) // Ruby - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 90330, 0)) // 紅寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17815, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90329, 0)) // Ruby - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 90329, 0)) // 紅寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90328, 0)) // Ruby - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 90328, 0)) // 紅寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 1);
             } else {
                 // Ruby's
-                if (ItemFunctions.checkIsEquipped(this, -1, 70455, 0)) // Ruby - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 70455, 0)) // 紅寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17817, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70454, 0)) // Ruby - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 70454, 0)) // 紅寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17816, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70453, 0)) // Ruby - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 70453, 0)) // 紅寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17815, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70452, 0)) // Ruby - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 70452, 0)) // 紅寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 4);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70451, 0)) // Ruby - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 70451, 0)) // 紅寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 3);
                 //
-                if (ItemFunctions.checkIsEquipped(this, -1, 90332, 0)) // Ruby - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 90332, 0)) // 紅寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17817, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90331, 0)) // Ruby - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 90331, 0)) // 紅寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17816, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90330, 0)) // Ruby - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 90330, 0)) // 紅寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17815, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90329, 0)) // Ruby - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 90329, 0)) // 紅寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 4);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90328, 0)) // Ruby - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 90328, 0)) // 紅寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17814, 3);
             }
         } else {
             if (!blessed) {
                 // Sapphire's
-                if (ItemFunctions.checkIsEquipped(this, -1, 70460, 0)) // Sapphire - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 70460, 0)) // 藍寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17821, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70459, 0)) // Sapphire - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 70459, 0)) // 藍寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17820, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70458, 0)) // Sapphire - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 70458, 0)) // 藍寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17819, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70457, 0)) // Sapphire - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 70457, 0)) // 藍寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70456, 0)) // Sapphire - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 70456, 0)) // 藍寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 1);
                 //
-                if (ItemFunctions.checkIsEquipped(this, -1, 90337, 0)) // Sapphire - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 90337, 0)) // 藍寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17821, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90336, 0)) // Sapphire - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 90336, 0)) // 藍寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17820, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90335, 0)) // Sapphire - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 90335, 0)) // 藍寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17819, 1);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90334, 0)) // Sapphire - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 90334, 0)) // 藍寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90333, 0)) // Sapphire - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 90333, 0)) // 藍寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 1);
             } else {
                 // Sapphire's
-                if (ItemFunctions.checkIsEquipped(this, -1, 70460, 0)) // Sapphire - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 70460, 0)) // 藍寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17821, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70459, 0)) // Sapphire - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 70459, 0)) // 藍寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17820, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70458, 0)) // Sapphire - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 70458, 0)) // 藍寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17819, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70457, 0)) // Sapphire - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 70457, 0)) // 藍寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 4);
-                if (ItemFunctions.checkIsEquipped(this, -1, 70456, 0)) // Sapphire - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 70456, 0)) // 藍寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 3);
                 //
-                if (ItemFunctions.checkIsEquipped(this, -1, 90337, 0)) // Sapphire - Lv. 5
+                if (ItemFunctions.checkIsEquipped(this, -1, 90337, 0)) // 藍寶石 - Lv. 5
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17821, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90336, 0)) // Sapphire - Lv. 4
+                if (ItemFunctions.checkIsEquipped(this, -1, 90336, 0)) // 藍寶石 - Lv. 4
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17820, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90335, 0)) // Sapphire - Lv. 3
+                if (ItemFunctions.checkIsEquipped(this, -1, 90335, 0)) // 藍寶石 - Lv. 3
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17819, 2);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90334, 0)) // Sapphire - Lv. 2
+                if (ItemFunctions.checkIsEquipped(this, -1, 90334, 0)) // 藍寶石 - Lv. 2
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 4);
-                if (ItemFunctions.checkIsEquipped(this, -1, 90333, 0)) // Sapphire - Lv. 1
+                if (ItemFunctions.checkIsEquipped(this, -1, 90333, 0)) // 藍寶石 - Lv. 1
                     return SkillEntry.makeSkillEntry(SkillEntryType.CUNSUMABLE_ITEM, 17818, 3);
             }
         }
