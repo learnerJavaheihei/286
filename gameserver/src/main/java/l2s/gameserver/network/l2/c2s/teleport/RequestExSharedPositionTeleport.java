@@ -32,6 +32,11 @@ public class RequestExSharedPositionTeleport extends L2GameClientPacket
 		if (_allow == 1)
 		{
 			Player player = getClient().getActiveChar();
+
+			if (player.isInJail()) {
+				player.sendMessage("监狱中不能使用共享传送!");
+                return;
+			}
 			if (player.isInCombat()) {
 				player.ask(new ConfirmDlgPacket(SystemMsg.S1, 0).addString("战斗状态无法传送!"), new OnAnswerListener() {
 					@Override

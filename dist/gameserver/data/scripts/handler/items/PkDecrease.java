@@ -65,7 +65,7 @@ public class PkDecrease extends SimpleItemHandler
 				player.setPkKills(player.getPkKills() - count);
 			ItemFunctions.deleteItem(player, item, 1);
 			/*PK自动关监狱--*/
-			if(jal)
+			if(jal && !player.isGmJailed())
 			{
 				if(player.getPkKills() < Config.PK_MIN_JAILAIl)
 				{

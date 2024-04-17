@@ -609,6 +609,9 @@ public final class Player extends Playable implements PlayerGroup {
     private boolean turnOnCompensationBtn = false;
 
     private List<Integer> weaponVisuals;
+    public boolean isGmJailed() {
+        return getVarBoolean("gmJailed",false);
+    }
 
     public List<Integer> getWeaponVisuals() {
         return weaponVisuals;

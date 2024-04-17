@@ -186,6 +186,7 @@ public class AdminOldBan implements IAdminCommandHandler
 						if(target != null)
 						{
 							target.toJail(Integer.parseInt(period));
+							target.setVar("gmJailed",true);
 							target.sendMessage("You moved to jail, time to escape - " + period + " minutes, reason - " + reason + " .");
 							activeChar.sendMessage("You jailed " + player + ".");
 						}
@@ -207,8 +208,10 @@ public class AdminOldBan implements IAdminCommandHandler
 
 						if(target.isInJail())
 						{
-							if(target.fromJail())
+							if(target.fromJail()){
 								target.sendMessage("You unjailed " + player + ".");
+								target.setVar("gmJailed",false);
+							}
 							else
 								activeChar.sendMessage("Cannot unjailed " + player + ".");
 						}
