@@ -1,5 +1,7 @@
 package l2s.gameserver.network.l2.c2s;
 
+import l2s.commons.dbutils.DbUtils;
+import l2s.gameserver.database.DatabaseFactory;
 import org.apache.commons.lang3.ArrayUtils;
 import l2s.commons.dao.JdbcEntityState;
 import l2s.gameserver.Config;
@@ -20,6 +22,9 @@ import l2s.gameserver.templates.item.ItemType;
 import l2s.gameserver.templates.item.support.AppearanceStone;
 import l2s.gameserver.templates.item.support.AppearanceStone.ShapeTargetType;
 import l2s.gameserver.templates.item.support.AppearanceStone.ShapeType;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 /**
  * @author Bonux
@@ -435,6 +440,8 @@ public class RequestShapeShiftingItem extends L2GameClientPacket
 						}
 						targetItem.setVisualId(visualId);
 						targetItem.setAppearanceStoneId(94042);
+						InsertIntoCharacterWeapon(player.getObjectId(), targetItem.getObjectId(), visualId,1);
+						player.addWeaponVisuals(visualId);
 					}
 					else
 					{
@@ -469,5 +476,34 @@ public class RequestShapeShiftingItem extends L2GameClientPacket
 
 		player.setAppearanceStone(null);
 		player.setAppearanceExtractItem(null);
+	}
+	private static boolean InsertIntoCharacterWeapon(int player_id, int objId, int visualId, int use_item)
+	{
+		Connection con = null;
+		PreparedStatement statement = null;
+		long times = System.currentTimeMillis() + 365 * 24 * 60 * 60 * 1000L;
+		try
+		{
+			con = DatabaseFactory.getInstance().getConnection();
+
+			statement = con.prepareStatement("REPLACE INTO _character_weapon (player_id, obj_id, visual_id ,deletetime, use_item) VALUES (?,?,?,?,?)");
+			statement.setInt(1, player_id);
+			statement.setInt(2, objId);
+			statement.setInt(3, visualId);
+			statement.setInt(4, (int) (times / 1000));
+			statement.setInt(5, use_item);
+			statement.execute();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		finally
+		{
+			DbUtils.closeQuietly(con, statement);
+		}
+		return true;
 	}
 }
