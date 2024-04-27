@@ -1,9 +1,13 @@
 package l2s.gameserver.network.l2.c2s;
 
+import l2s.gameserver.data.xml.holder.CostumesHolder;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.model.actor.instances.player.ShortCut;
 import l2s.gameserver.network.l2.components.IBroadcastPacket;
 import l2s.gameserver.network.l2.s2c.ShortCutRegisterPacket;
+import l2s.gameserver.skills.SkillEntry;
+import l2s.gameserver.skills.SkillEntryType;
+import l2s.gameserver.templates.CostumeTemplate;
 
 public class RequestShortCutReg extends L2GameClientPacket
 {
@@ -58,6 +62,13 @@ public class RequestShortCutReg extends L2GameClientPacket
 		ShortCut shortCut = new ShortCut(_slot, _page, _type, _id, _lvl, _characterType);
 		activeChar.sendPacket(new ShortCutRegisterPacket(activeChar, shortCut));
 		activeChar.registerShortCut(shortCut);
+
+		CostumeTemplate costumeTemplate = CostumesHolder.getInstance().getCostumeBySkillId(_id);
+		if (costumeTemplate != null){
+			activeChar.addSkill(SkillEntry.makeSkillEntry(SkillEntryType.COSTUME,_id,1),true);
+			activeChar.sendSkillList();
+		}
+
 		
 		if ((_slot == 1) && (_page == 23))
 			activeChar.getAutoShortCuts().activate(277, true);

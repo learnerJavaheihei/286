@@ -1,8 +1,11 @@
 package l2s.gameserver.network.l2.c2s;
 
 import l2s.gameserver.Config;
+import l2s.gameserver.data.xml.holder.CostumesHolder;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.network.l2.s2c.ExSendCostumeList;
+import l2s.gameserver.skills.SkillEntry;
+import l2s.gameserver.templates.CostumeTemplate;
 
 /**
  * @author Bonux (Head Developer L2-scripts.com)
@@ -39,6 +42,10 @@ public class RequestExCostumeExtract extends L2GameClientPacket {
 			activeChar.sendActionFailed();
 			return;
 		}
+		CostumeTemplate costumeTemplate = CostumesHolder.getInstance().getCostume(costumeId);
+		if (costumeTemplate!=null)
+			activeChar.removeSkill(costumeTemplate.getSkillEntry().getId(),true);
+
 		activeChar.sendPacket(new ExSendCostumeList(activeChar));
 	}
 }

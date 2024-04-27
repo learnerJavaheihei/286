@@ -1,8 +1,10 @@
 package l2s.gameserver.network.l2.c2s;
 
 import l2s.gameserver.Config;
+import l2s.gameserver.data.xml.holder.CostumesHolder;
 import l2s.gameserver.model.Player;
 import l2s.gameserver.network.l2.s2c.ExSendCostumeList;
+import l2s.gameserver.templates.CostumeTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,12 @@ public class RequestExCostumeEvolution extends L2GameClientPacket {
 			activeChar.sendActionFailed();
 			return;
 		}
+		costumesConsume.forEach(o->{
+			CostumeTemplate costumeTemplate = CostumesHolder.getInstance().getCostume(o[0]);
+			if (costumeTemplate!=null)
+				activeChar.removeSkill(costumeTemplate.getSkillEntry().getId(),true);
+		});
+
 		activeChar.sendPacket(new ExSendCostumeList(activeChar));
 	}
 }
